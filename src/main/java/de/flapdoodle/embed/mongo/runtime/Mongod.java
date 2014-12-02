@@ -45,6 +45,9 @@ import org.slf4j.LoggerFactory;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static java.lang.String.format;
+import static java.util.Arrays.asList;
+
 /**
  *
  */
@@ -122,11 +125,19 @@ public class Mongod extends AbstractMongo {
 	public static List<String> getCommandLine(IMongodConfig config, IExtractedFileSet files, File dbDir)
 			throws UnknownHostException {
 		List<String> ret = new ArrayList<String>();
-		ret.addAll(Arrays.asList(files.executable().getAbsolutePath(),
-				"--dbpath",
-				"" + dbDir.getAbsolutePath(),
-				"--noauth"));
+		ret.addAll(asList(files.executable().getAbsolutePath(),
+			"--dbpath", "" + dbDir.getAbsolutePath()));
 
+		if (config.params() != null && !config.params().isEmpty()) {
+			for (Object key : config.params().keySet()) {
+				ret.addAll(asList(format("--setParameter"), format("%s=%s", key, config.params().get(key))));
+			}
+		}
+		if (config.cmdOptions().auth()) {
+			ret.add("--auth");
+		} else {
+			ret.add("--noauth");
+		}
 		if (config.cmdOptions().useNoPrealloc()) {
 			ret.add("--noprealloc");
 		}
@@ -135,6 +146,14 @@ public class Mongod extends AbstractMongo {
 		}
 		if (config.cmdOptions().useNoJournal()) {
 			ret.add("--nojournal");
+		}
+		if (config.cmdOptions().master()) {
+			ret.add("--master");
+		}
+
+		if (config.cmdOptions().storageEngine() != null) {
+			ret.add("--storageEngine");
+			ret.add(config.cmdOptions().storageEngine());
 		}
 
 		if (config.cmdOptions().isVerbose()) {
@@ -171,7 +190,7 @@ public class Mongod extends AbstractMongo {
 			ret.add("--syncdelay=" + syncDelay);
 		}
 	}
-	
+
 	private static void applyTextSearch(List<String> ret, IMongoCmdOptions cmdOptions) {
 		if (cmdOptions.enableTextSearch()) {
 			ret.add("--setParameter");

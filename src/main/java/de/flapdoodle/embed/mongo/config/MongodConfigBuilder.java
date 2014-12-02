@@ -22,6 +22,8 @@ package de.flapdoodle.embed.mongo.config;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.HashMap;
+import java.util.Map;
 
 import de.flapdoodle.embed.mongo.Command;
 import de.flapdoodle.embed.mongo.config.processlistener.IMongoProcessListener;
@@ -33,6 +35,7 @@ import de.flapdoodle.embed.process.distribution.IVersion;
 public class MongodConfigBuilder extends AbstractMongoConfigBuilder<IMongodConfig> {
 
 	protected static final TypedProperty<Storage> REPLICATION = TypedProperty.with("Replication", Storage.class);
+	protected static final TypedProperty<Map> PARAMS = TypedProperty.with("Params", Map.class);
 	protected static final TypedProperty<Boolean> CONFIG_SERVER = TypedProperty.with("ConfigServer", Boolean.class);
 	protected static final TypedProperty<IMongoProcessListener> PROCESS_LISTENER = TypedProperty.with("ProcessListener", IMongoProcessListener.class);
 
@@ -42,18 +45,19 @@ public class MongodConfigBuilder extends AbstractMongoConfigBuilder<IMongodConfi
 		property(CONFIG_SERVER).setDefault(false);
 		property(PROCESS_LISTENER).setDefault(new NoopProcessListener());
 		property(PID_FILE).setDefault("mongod.pid");
+		property(PARAMS).setDefault(new HashMap());
 	}
 
 	public MongodConfigBuilder version(IFeatureAwareVersion version) {
 		version().set(version);
 		return this;
 	}
-	
+
 	public MongodConfigBuilder timeout(Timeout timeout) {
 		timeout().set(timeout);
 		return this;
 	}
-	
+
 	public MongodConfigBuilder net(Net net) {
 		net().set(net);
 		return this;
@@ -63,27 +67,32 @@ public class MongodConfigBuilder extends AbstractMongoConfigBuilder<IMongodConfi
 		cmdOptions().set(cmdOptions);
 		return this;
 	}
-	
+
+	public MongodConfigBuilder setParameter(String name, String value) {
+		get(PARAMS).put(name, value);
+		return this;
+	}
+
 	public MongodConfigBuilder replication(Storage replication) {
 		set(REPLICATION,replication);
 		return this;
 	}
-	
+
 	public MongodConfigBuilder configServer(boolean configServer) {
 		set(CONFIG_SERVER,configServer);
 		return this;
 	}
-	
+
 	public MongodConfigBuilder processListener(IMongoProcessListener processListener) {
 		set(PROCESS_LISTENER,processListener);
 		return this;
 	}
-	
+
 	public MongodConfigBuilder pidFile(String pidFile) {
         pidFile().set(pidFile);
         return this;
     }
-	
+
 	@Override
 	public IMongodConfig build() {
 		IFeatureAwareVersion version=version().get();
@@ -94,8 +103,9 @@ public class MongodConfigBuilder extends AbstractMongoConfigBuilder<IMongodConfi
 		IMongoCmdOptions cmdOptions=get(CMD_OPTIONS);
 		IMongoProcessListener processListener=get(PROCESS_LISTENER);
 		String pidFile=get(PID_FILE);
-		
-		return new ImmutableMongodConfig(version, net, timeout, cmdOptions, pidFile, replication, configServer,processListener);
+		Map params = get(PARAMS);
+
+		return new ImmutableMongodConfig(version, net, timeout, cmdOptions, pidFile, replication, configServer, processListener, params);
 	}
 
 	static class ImmutableMongodConfig extends ImmutableMongoConfig implements IMongodConfig {
@@ -103,12 +113,16 @@ public class MongodConfigBuilder extends AbstractMongoConfigBuilder<IMongodConfi
 		private final Storage _replication;
 		private final boolean _configServer;
 		private final IMongoProcessListener _processListener;
+		private final Map _params;
 
-		public ImmutableMongodConfig(IFeatureAwareVersion version, Net net, Timeout timeout, IMongoCmdOptions cmdOptions, String pidFile, Storage replication,boolean configServer, IMongoProcessListener processListener) {
-			super(new SupportConfig(Command.MongoD),version, net, timeout,cmdOptions,pidFile);
+		public ImmutableMongodConfig(IFeatureAwareVersion version, Net net, Timeout timeout, IMongoCmdOptions cmdOptions,
+										String pidFile, Storage replication, boolean configServer,
+										IMongoProcessListener processListener, Map params) {
+			super(new SupportConfig(Command.MongoD), version, net, null, null, timeout, cmdOptions, pidFile);
 			_replication = replication;
 			_configServer = configServer;
 			_processListener = processListener;
+			_params = params;
 		}
 
 		@Override
@@ -124,6 +138,11 @@ public class MongodConfigBuilder extends AbstractMongoConfigBuilder<IMongodConfi
 		@Override
 		public IMongoProcessListener processListener() {
 			return _processListener;
+		}
+
+		@Override
+		public Map params() {
+			return _params;
 		}
 	}
 }

@@ -29,6 +29,8 @@ import de.flapdoodle.embed.mongo.config.IMongoShellConfig;
 import de.flapdoodle.embed.mongo.config.Net;
 import de.flapdoodle.embed.process.extract.IExtractedFileSet;
 
+import static java.util.Arrays.asList;
+
 /**
  *
  */
@@ -38,7 +40,7 @@ public class MongoShell extends AbstractMongo {
 			throws UnknownHostException {
 		List<String> ret = new ArrayList<String>();
 		ret.addAll(Arrays.asList(files.executable().getAbsolutePath()));
-		
+
 		String hostname="localhost";
 		Net net = config.net();
 		if (net.isIpv6()) {
@@ -48,10 +50,22 @@ public class MongoShell extends AbstractMongo {
 			hostname=net.getBindIp();
 		}
 
-		
+		if (config.password() != null && !config.userName().isEmpty()) {
+			ret.addAll(asList(
+				"--username", config.userName()
+			));
+		}
+		if (config.password() != null && !config.password().isEmpty()) {
+			ret.addAll(asList(
+				"--password", config.password()
+			));
+		}
 
-		
-		ret.add(hostname+":" + net.getPort());
+		if (config.getDbName() != null && !config.getDbName().isEmpty()) {
+			ret.add(hostname + ":" + net.getPort() + "/" + config.getDbName());
+		} else {
+			ret.add(hostname+":" + net.getPort());
+        }
 		if (!config.getScriptParameters().isEmpty()) {
 			ret.add("--eval");
 			StringBuilder eval = new StringBuilder();
@@ -63,7 +77,7 @@ public class MongoShell extends AbstractMongo {
 		if (config.getScriptName()!=null) {
 			ret.add(config.getScriptName());
 		}
-		
+
 		return ret;
 	}
 }

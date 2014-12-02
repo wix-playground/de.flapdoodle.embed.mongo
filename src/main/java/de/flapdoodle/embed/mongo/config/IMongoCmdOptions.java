@@ -24,7 +24,9 @@ package de.flapdoodle.embed.mongo.config;
 public interface IMongoCmdOptions {
 
 	Integer syncDelay();
-	
+
+	String storageEngine();
+
 	boolean isVerbose();
 
 	boolean useNoPrealloc();
@@ -34,4 +36,8 @@ public interface IMongoCmdOptions {
 	boolean useNoJournal();
 	
 	boolean enableTextSearch();
+
+	boolean auth();
+
+	boolean master();
 }

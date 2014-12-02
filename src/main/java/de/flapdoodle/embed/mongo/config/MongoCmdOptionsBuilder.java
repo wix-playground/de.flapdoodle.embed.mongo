@@ -27,20 +27,26 @@ import de.flapdoodle.embed.process.builder.TypedProperty;
 public class MongoCmdOptionsBuilder extends AbstractBuilder<IMongoCmdOptions> {
 
 	protected static final TypedProperty<Integer> SYNC_DELAY = TypedProperty.with("syncDelay", Integer.class);
+	protected static final TypedProperty<String> STORAGE_ENGINE = TypedProperty.with("storageEngine", String.class);
 	protected static final TypedProperty<Boolean> VERBOSE = TypedProperty.with("verbose", Boolean.class);
 	protected static final TypedProperty<Boolean> NOPREALLOC = TypedProperty.with("noprealloc", Boolean.class);
 	protected static final TypedProperty<Boolean> SMALLFILES = TypedProperty.with("smallfiles", Boolean.class);
 	protected static final TypedProperty<Boolean> NOJOURNAL = TypedProperty.with("nojournal", Boolean.class);
 	protected static final TypedProperty<Boolean> ENABLE_TEXTSEARCH = TypedProperty.with("enableTextSearch", Boolean.class);
-	
-	
+	protected static final TypedProperty<Boolean> ENABLE_AUTH = TypedProperty.with("auth", Boolean.class);
+	protected static final TypedProperty<Boolean> MASTER = TypedProperty.with("master", Boolean.class);
+
+
 	public MongoCmdOptionsBuilder() {
 		property(SYNC_DELAY).setDefault(0);
+		property(STORAGE_ENGINE).setDefault(null);
 		property(VERBOSE).setDefault(false);
 		property(NOPREALLOC).setDefault(true);
 		property(SMALLFILES).setDefault(true);
 		property(NOJOURNAL).setDefault(true);
 		property(ENABLE_TEXTSEARCH).setDefault(false);
+		property(ENABLE_AUTH).setDefault(false);
+		property(MASTER).setDefault(false);
 	}
 
 	public MongoCmdOptionsBuilder useNoPrealloc(boolean value) {
@@ -72,7 +78,22 @@ public class MongoCmdOptionsBuilder extends AbstractBuilder<IMongoCmdOptions> {
 		set(ENABLE_TEXTSEARCH, verbose);
 		return this;
 	}
-	
+
+	public MongoCmdOptionsBuilder useStorageEngine(String storageEngine) {
+		set(STORAGE_ENGINE, storageEngine);
+		return this;
+	}
+
+	public MongoCmdOptionsBuilder enableAuth(boolean enable) {
+		set(ENABLE_AUTH, enable);
+		return this;
+	}
+
+	public MongoCmdOptionsBuilder master(boolean enable) {
+		set(MASTER, enable);
+		return this;
+	}
+
 	public MongoCmdOptionsBuilder defaultSyncDelay() {
 		set(SYNC_DELAY, null);
 		return this;
@@ -81,12 +102,15 @@ public class MongoCmdOptionsBuilder extends AbstractBuilder<IMongoCmdOptions> {
 	@Override
 	public IMongoCmdOptions build() {
 		Integer syncDelay = get(SYNC_DELAY, null);
+		String storageEngine = get(STORAGE_ENGINE, null);
 		boolean verbose = get(VERBOSE);
 		boolean noPrealloc = get(NOPREALLOC);
 		boolean smallFiles = get(SMALLFILES);
 		boolean noJournal = get(NOJOURNAL);
 		boolean enableTextSearch = get(ENABLE_TEXTSEARCH);
-		return new MongoCmdOptions(syncDelay, verbose, noPrealloc, smallFiles, noJournal, enableTextSearch);
+		boolean auth = get(ENABLE_AUTH);
+		boolean master = get(MASTER);
+		return new MongoCmdOptions(syncDelay, storageEngine, verbose, noPrealloc, smallFiles, noJournal, enableTextSearch, auth, master);
 	}
 
 	static class MongoCmdOptions implements IMongoCmdOptions {
@@ -97,21 +121,31 @@ public class MongoCmdOptionsBuilder extends AbstractBuilder<IMongoCmdOptions> {
 		private final boolean _smallFiles;
 		private final boolean _noJournal;
 		private final boolean _enableTextSearch;
+		private final boolean _auth;
+		private final boolean _master;
+		private final String _storageEngine;
 
-
-		public MongoCmdOptions(Integer syncDelay, boolean verbose, boolean noPrealloc, boolean smallFiles,
-		                       boolean noJournal, boolean enableTextSearch) {
+		public MongoCmdOptions(Integer syncDelay, String storageEngine, boolean verbose, boolean noPrealloc, boolean smallFiles,
+                               boolean noJournal, boolean enableTextSearch, boolean auth, boolean master) {
 			_syncDelay = syncDelay;
+			_storageEngine = storageEngine;
 			_verbose = verbose;
 			_noPrealloc = noPrealloc;
 			_smallFiles = smallFiles;
 			_noJournal = noJournal;
 			_enableTextSearch = enableTextSearch;
+			_auth = auth;
+			_master = master;
 		}
 
 		@Override
 		public Integer syncDelay() {
 			return _syncDelay;
+		}
+
+		@Override
+		public String storageEngine() {
+			return _storageEngine;
 		}
 
 		@Override
@@ -137,6 +171,16 @@ public class MongoCmdOptionsBuilder extends AbstractBuilder<IMongoCmdOptions> {
 		@Override
 		public boolean enableTextSearch() {
 			return _enableTextSearch;
+		}
+
+		@Override
+		public boolean auth() {
+			return _auth;
+		}
+
+		@Override
+		public boolean master() {
+			return _master;
 		}
 	}
 }

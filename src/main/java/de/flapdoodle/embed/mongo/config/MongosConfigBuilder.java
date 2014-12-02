@@ -77,8 +77,9 @@ public class MongosConfigBuilder extends AbstractMongoConfigBuilder<IMongosConfi
 
 		private final String _configDB;
 
-		public ImmutableMongosConfig(IFeatureAwareVersion version, Net net, Timeout timeout, IMongoCmdOptions cmdOptions, String pidFile, String configDB) {
-			super(MongosSupportConfig.getInstance(), version, net, timeout,cmdOptions,pidFile);
+		public ImmutableMongosConfig(IFeatureAwareVersion version, Net net, Timeout timeout, IMongoCmdOptions cmdOptions,
+										String pidFile, String configDB) {
+			super(MongosSupportConfig.getInstance(), version, net, null, null, timeout, cmdOptions, pidFile);
 			_configDB = configDB;
 		}
 
