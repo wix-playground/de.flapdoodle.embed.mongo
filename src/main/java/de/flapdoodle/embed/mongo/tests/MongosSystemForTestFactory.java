@@ -25,7 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
@@ -53,8 +54,8 @@ import de.flapdoodle.embed.mongo.config.RuntimeConfigBuilder;
 
 public class MongosSystemForTestFactory {
 
-	private final static Logger logger = Logger
-			.getLogger(MongosSystemForTestFactory.class.getName());
+	private final static Logger logger = LoggerFactory
+			.getLogger(MongosSystemForTestFactory.class);
 
 	public static final String ADMIN_DATABASE_NAME = "admin";
 	public static final String LOCAL_DATABASE_NAME = "local";
@@ -129,7 +130,7 @@ public class MongosSystemForTestFactory {
 
 		CommandResult cr = mongoAdminDB
 				.command(new BasicDBObject("isMaster", 1));
-		logger.info("isMaster: " + cr);
+		logger.info("isMaster: {}", cr);
 
 		// Build BSON object replica set settings
 		DBObject replicaSetSetting = new BasicDBObject();
@@ -149,18 +150,18 @@ public class MongosSystemForTestFactory {
 		// Initialize replica set
 		cr = mongoAdminDB.command(new BasicDBObject("replSetInitiate",
 				replicaSetSetting));
-		logger.info("replSetInitiate: " + cr);
+		logger.info("replSetInitiate: {}", cr);
 
 		Thread.sleep(5000);
 		cr = mongoAdminDB.command(new BasicDBObject("replSetGetStatus", 1));
-		logger.info("replSetGetStatus: " + cr);
+		logger.info("replSetGetStatus: {}", cr);
 
 		// Check replica set status before to proceed
 		while (!isReplicaSetStarted(cr)) {
 			logger.info("Waiting for 3 seconds...");
 			Thread.sleep(1000);
 			cr = mongoAdminDB.command(new BasicDBObject("replSetGetStatus", 1));
-			logger.info("replSetGetStatus: " + cr);
+			logger.info("replSetGetStatus: {}", cr);
 		}
 
 		mongo.close();
@@ -177,7 +178,7 @@ public class MongosSystemForTestFactory {
 			BasicDBObject member = (BasicDBObject) m;
 			logger.info(member.toString());
 			int state = member.getInt("state");
-			logger.info("state: " + state);
+			logger.info("state: {}", state);
 			// 1 - PRIMARY, 2 - SECONDARY, 7 - ARBITER
 			if (state != 1 && state != 2 && state != 7) {
 				return false;
@@ -229,7 +230,7 @@ public class MongosSystemForTestFactory {
 				command += mongodConfig.net().getServerAddress().getHostName()
 						+ ":" + mongodConfig.net().getPort();
 			}
-			logger.info("Execute add shard command: " + command);
+			logger.info("Execute add shard command: {}", command);
 			cr = mongoAdminDB.command(new BasicDBObject("addShard", command));
 			logger.info(cr.toString());
 		}
@@ -250,8 +251,7 @@ public class MongosSystemForTestFactory {
 		db.getCollection(this.shardCollection).ensureIndex(this.shardKey);
 
 		// Shard the collection
-		logger.info("Shard the collection: " + this.shardDatabase + "."
-				+ this.shardCollection);
+		logger.info("Shard the collection: {}.{}", this.shardDatabase, this.shardCollection);
 		DBObject cmd = new BasicDBObject();
 		cmd.put("shardCollection", this.shardDatabase + "." + this.shardCollection);
 		cmd.put("key", new BasicDBObject(this.shardKey, 1));

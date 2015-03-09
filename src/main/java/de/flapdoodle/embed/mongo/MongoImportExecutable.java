@@ -29,7 +29,6 @@ import de.flapdoodle.embed.process.extract.IExtractedFileSet;
 import de.flapdoodle.embed.process.runtime.Executable;
 
 import java.io.IOException;
-import java.util.logging.Logger;
 
 /**
  * Created by canyaman on 10/04/14.
@@ -39,8 +38,6 @@ public class MongoImportExecutable extends Executable<IMongoImportConfig, MongoI
                             IExtractedFileSet files) {
         super(distribution, mongodConfig, runtimeConfig, files);
     }
-
-    private static Logger logger = Logger.getLogger(MongosExecutable.class.getName());
 
     @Override
     protected MongoImportProcess start(Distribution distribution, IMongoImportConfig config, IRuntimeConfig runtime)

@@ -20,9 +20,7 @@
  */
 package de.flapdoodle.embed.mongo;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.logging.Logger;
 
 import de.flapdoodle.embed.mongo.config.IMongosConfig;
 import de.flapdoodle.embed.process.config.IRuntimeConfig;
@@ -39,8 +37,6 @@ public class MongosExecutable extends Executable<IMongosConfig, MongosProcess> {
 			IExtractedFileSet files) {
 		super(distribution, mongodConfig, runtimeConfig, files);
 	}
-
-	private static Logger logger = Logger.getLogger(MongosExecutable.class.getName());
 
 	@Override
 	protected MongosProcess start(Distribution distribution, IMongosConfig config, IRuntimeConfig runtime)

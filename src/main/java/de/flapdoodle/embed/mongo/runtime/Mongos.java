@@ -24,7 +24,6 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Logger;
 
 import de.flapdoodle.embed.mongo.config.IMongosConfig;
 import de.flapdoodle.embed.process.extract.IExtractedFileSet;
@@ -33,8 +32,6 @@ import de.flapdoodle.embed.process.extract.IExtractedFileSet;
  *
  */
 public class Mongos extends AbstractMongo {
-
-	private static Logger logger = Logger.getLogger(Mongos.class.getName());
 
 	public static List<String> getCommandLine(IMongosConfig config, IExtractedFileSet files)
 			throws UnknownHostException {

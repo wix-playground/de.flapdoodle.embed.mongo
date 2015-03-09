@@ -22,7 +22,6 @@ package de.flapdoodle.embed.mongo;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.logging.Logger;
 
 import de.flapdoodle.embed.mongo.config.IMongoShellConfig;
 import de.flapdoodle.embed.mongo.config.SupportConfig;

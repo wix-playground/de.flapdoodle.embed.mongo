@@ -40,8 +40,8 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -50,7 +50,7 @@ import java.util.regex.Pattern;
  */
 public class Mongod extends AbstractMongo {
 
-	private static Logger logger = Logger.getLogger(Mongod.class.getName());
+	private static Logger logger = LoggerFactory.getLogger(Mongod.class);
 
 	/**
 	 * Binary sample of shutdown command
@@ -67,11 +67,10 @@ public class Mongod extends AbstractMongo {
 
 	public static boolean sendShutdown(InetAddress hostname, int port) {
 		if (!hostname.isLoopbackAddress()) {
-			logger.log(Level.WARNING,
-					"" + "---------------------------------------\n" + "Your localhost (" + hostname.getHostAddress()
-							+ ") is not a loopback adress\n"
-							+ "We can NOT send shutdown to mongod, because it is denied from remote."
-							+ "---------------------------------------\n");
+			logger.warn("---------------------------------------\n"
+                    + "Your localhost ({}) is not a loopback adress\n"
+                    + "We can NOT send shutdown to mongod, because it is denied from remote.\n"
+                    + "---------------------------------------\n", hostname.getHostAddress());
 			return false;
 		}
 
@@ -88,7 +87,7 @@ public class Mongod extends AbstractMongo {
 			tryToReadErrorResponse = true;
 			InputStream inputStream = s.getInputStream();
 			if (inputStream.read(new byte[BYTE_BUFFER_LENGTH]) != -1) {
-				logger.severe("Got some response, should be an error message");
+				logger.error("Got some response, should be an error message");
 				return false;
 			}
 			return true;
@@ -96,15 +95,15 @@ public class Mongod extends AbstractMongo {
 			if (tryToReadErrorResponse) {
 				return true;
 			}
-			logger.log(Level.WARNING, String.format("sendShutdown %s:%d", hostname, port), iox);
+			logger.warn("sendShutdown {}:{}", hostname, port, iox);
 		} finally {
 			try {
 				s.close();
 				Thread.sleep(WAITING_TIME_SHUTDOWN_IN_MS);
 			} catch (InterruptedException ix) {
-				logger.log(Level.WARNING, String.format("sendShutdown closing %s:%d", hostname, port), ix);
+				logger.warn("sendShutdown closing {}:{}", hostname, port, ix);
 			} catch (IOException iox) {
-				logger.log(Level.WARNING, String.format("sendShutdown closing %s:%s", hostname, port), iox);
+				logger.warn("sendShutdown closing {}:{}", hostname, port, iox);
 			}
 		}
 		return false;
@@ -189,8 +188,8 @@ public class Mongod extends AbstractMongo {
 					ret.add("--interleave=all");
 					ret.addAll(commands);
 					return ret;
-				default:
-					logger.warning("NUMA Plattform detected, but not supported.");
+                default:
+                    logger.warn("NUMA Plattform detected, but not supported.");
 			}
 		}
 		return commands;
