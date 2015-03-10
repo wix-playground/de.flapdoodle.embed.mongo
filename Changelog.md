@@ -1,6 +1,8 @@
 ### Changelog
 
-#### 1.46.5 (SNAPSHOT)
+#### 1.47.1 (SNAPSHOT)
+
+#### 1.47.0
 
 - changed logging to slf4j
 - mongo version upgrade (2.6.8, 3.0.0)

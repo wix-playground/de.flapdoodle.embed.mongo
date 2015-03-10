@@ -1,5 +1,5 @@
 group = 'de.flapdoodle.embedmongo'
-version = '1.46.5-SNAPSHOT'
+version = '1.47.1-SNAPSHOT'
 
 project.ext.gradleVersion = "1.12"
 
@@ -22,7 +22,7 @@ eclipse {
 dependencies {
 
     compile 'commons-io:commons-io:2.1'
-    compile 'de.flapdoodle.embed:de.flapdoodle.embed.process:1.40.1'
+    compile 'de.flapdoodle.embed:de.flapdoodle.embed.process:1.41.0'
     compile 'org.mongodb:mongo-java-driver:2.11.3'
     compile 'org.slf4j:slf4j-api:1.7.10'
 
