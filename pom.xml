@@ -284,7 +284,8 @@
 			de.flapdoodle.embed.process.io.progress,
 			de.flapdoodle.embed.process.runtime,
 			de.flapdoodle.embed.process.store,
-			org.apache.commons.io
+			org.apache.commons.io,
+			org.slf4j
 		</osgi.import>
 	</properties>
 	
@@ -299,7 +300,13 @@
 		<dependency>
 			<groupId>de.flapdoodle.embed</groupId>
 			<artifactId>de.flapdoodle.embed.process</artifactId>
-			<version>1.40.1</version>
+			<version>1.40.2-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.10</version>
 		</dependency>
 
 		<dependency>
@@ -326,6 +333,13 @@
 			<groupId>org.mortbay.jetty</groupId>
 			<artifactId>jetty</artifactId>
 			<version>6.1.25</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>1.7.10</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

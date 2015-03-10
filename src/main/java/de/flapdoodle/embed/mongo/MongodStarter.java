@@ -20,10 +20,6 @@
  */
 package de.flapdoodle.embed.mongo;
 
-import java.io.File;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import de.flapdoodle.embed.mongo.config.IMongodConfig;
 import de.flapdoodle.embed.mongo.config.RuntimeConfigBuilder;
 import de.flapdoodle.embed.mongo.config.SupportConfig;
@@ -38,8 +34,6 @@ import de.flapdoodle.embed.process.runtime.Starter;
  *
  */
 public class MongodStarter extends Starter<IMongodConfig,MongodExecutable,MongodProcess> {
-
-	private static Logger logger = Logger.getLogger(MongodStarter.class.getName());
 
 	private MongodStarter(IRuntimeConfig config) {
 		super(config);

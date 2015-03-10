@@ -34,14 +34,15 @@ import org.junit.Test;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.Date;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created by canyaman on 10/04/14.
  */
 public class MongoImportExecutableTest  extends TestCase {
 
-    private static final Logger _logger = Logger.getLogger(MongoImportExecutableTest.class.getName());
+    private static final Logger _logger = LoggerFactory.getLogger(MongoImportExecutableTest.class.getName());
 
     @Test
     public void testStartMongoImport() throws IOException, InterruptedException {
@@ -63,7 +64,7 @@ public class MongoImportExecutableTest  extends TestCase {
             mongoImportProcess=mongoImportExecutable.start();
             dataImported=true;
         }catch (Exception e){
-            _logger.info("MongoImport exception:" + e.getStackTrace());
+            _logger.info("MongoImport exception: {}", e.getStackTrace());
             dataImported=false;
         }finally {
            Assert.assertTrue("mongoDB import data in json format", dataImported);

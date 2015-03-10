@@ -25,14 +25,11 @@ import de.flapdoodle.embed.process.config.store.FileType;
 import de.flapdoodle.embed.process.config.store.IPackageResolver;
 import de.flapdoodle.embed.process.distribution.*;
 
-import java.util.logging.Logger;
-
 /**
  *
  */
 public class Paths implements IPackageResolver {
 
-	private static Logger logger = Logger.getLogger(Paths.class.getName());
 	private final Command command;
 
 	public Paths(Command command) {

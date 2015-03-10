@@ -20,8 +20,6 @@
  */
 package de.flapdoodle.embed.mongo.config;
 
-import java.util.logging.Logger;
-
 import de.flapdoodle.embed.mongo.Command;
 import de.flapdoodle.embed.process.config.io.ProcessOutput;
 
@@ -34,7 +32,12 @@ public class MongodProcessOutputConfig {
 		return ProcessOutput.getDefaultInstance(command.commandName());
 	}
 
-	public static ProcessOutput getInstance(Command command, Logger logger) {
+	@Deprecated
+	public static ProcessOutput getInstance(Command command, java.util.logging.Logger logger) {
+		return ProcessOutput.getInstance(command.commandName(), logger);
+	}
+
+	public static ProcessOutput getInstance(Command command, org.slf4j.Logger logger) {
 		return ProcessOutput.getInstance(command.commandName(), logger);
 	}
 }

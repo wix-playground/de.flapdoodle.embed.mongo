@@ -24,12 +24,14 @@ dependencies {
     compile 'commons-io:commons-io:2.1'
     compile 'de.flapdoodle.embed:de.flapdoodle.embed.process:1.40.1'
     compile 'org.mongodb:mongo-java-driver:2.11.3'
+    compile 'org.slf4j:slf4j-api:1.7.10'
 
     testCompile 'junit:junit:4.11'
     testCompile 'org.mongodb:mongo-java-driver:2.6.3'
     testCompile 'org.mockito:mockito-core:1.9.0'
     testCompile 'org.mortbay.jetty:jetty:6.1.25'
     testCompile 'com.google.guava:guava:14.0.1'
+    testCompile 'org.slf4j:slf4j-simple:1.7.10'
 }
 
 task wrapper(type: Wrapper) {

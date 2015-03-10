@@ -29,14 +29,10 @@ import de.flapdoodle.embed.process.distribution.Distribution;
 import de.flapdoodle.embed.process.extract.IExtractedFileSet;
 import de.flapdoodle.embed.process.runtime.Starter;
 
-import java.util.logging.Logger;
-
 /**
  * Created by canyaman on 10/04/14.
  */
 public class MongoImportStarter extends Starter<IMongoImportConfig,MongoImportExecutable,MongoImportProcess> {
-
-    private static Logger logger = Logger.getLogger(MongosStarter.class.getName());
 
     private MongoImportStarter(IRuntimeConfig config) {
         super(config);

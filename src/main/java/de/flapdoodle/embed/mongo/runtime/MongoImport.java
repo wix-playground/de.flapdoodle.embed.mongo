@@ -28,14 +28,11 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * Created by canyaman on 10/04/14.
  */
 public class MongoImport extends AbstractMongo {
-
-    private static Logger logger = Logger.getLogger(Mongos.class.getName());
 
     public static List<String> getCommandLine(IMongoImportConfig config, IExtractedFileSet files)
             throws UnknownHostException {

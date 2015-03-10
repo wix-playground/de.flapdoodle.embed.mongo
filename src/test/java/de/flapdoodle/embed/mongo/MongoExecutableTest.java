@@ -22,7 +22,8 @@ package de.flapdoodle.embed.mongo;
 
 import java.io.IOException;
 import java.util.Date;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
@@ -52,7 +53,7 @@ import de.flapdoodle.embed.process.runtime.Network;
 //CHECKSTYLE:OFF
 public class MongoExecutableTest extends TestCase {
 
-	private static final Logger _logger = Logger.getLogger(MongoExecutableTest.class.getName());
+	private static final Logger _logger = LoggerFactory.getLogger(MongoExecutableTest.class.getName());
 
 	@Test
 	public void testStartStopTenTimesWithNewMongoExecutable() throws IOException {
@@ -64,7 +65,7 @@ public class MongoExecutableTest extends TestCase {
 		IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder().defaults(Command.MongoD).build();
 
 		for (int i = 0; i < loops; i++) {
-			_logger.info("Loop: " + i);
+			_logger.info("Loop: {}", i);
 			MongodExecutable mongodExe = MongodStarter.getInstance(runtimeConfig).prepare(mongodConfig);
 			try {
 				MongodProcess mongod = mongodExe.start();

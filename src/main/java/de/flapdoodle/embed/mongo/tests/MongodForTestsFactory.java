@@ -23,7 +23,8 @@ package de.flapdoodle.embed.mongo.tests;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.UUID;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.mongodb.DB;
 import com.mongodb.Mongo;
@@ -47,7 +48,7 @@ import de.flapdoodle.embed.mongo.distribution.Version;
  */
 public class MongodForTestsFactory {
 
-	private static Logger logger = Logger.getLogger(MongodForTestsFactory.class
+	private static Logger logger = LoggerFactory.getLogger(MongodForTestsFactory.class
 			.getName());
 
 	public static MongodForTestsFactory with(final IFeatureAwareVersion version)

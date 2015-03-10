@@ -23,7 +23,8 @@ package de.flapdoodle.embed.mongo;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.flapdoodle.embed.mongo.config.IMongodConfig;
 import de.flapdoodle.embed.mongo.config.SupportConfig;
@@ -40,7 +41,7 @@ import de.flapdoodle.embed.process.io.file.Files;
  */
 public class MongodProcess extends AbstractMongoProcess<IMongodConfig, MongodExecutable, MongodProcess> {
 
-	private static Logger logger = Logger.getLogger(MongodProcess.class.getName());
+	private static Logger logger = LoggerFactory.getLogger(MongodProcess.class);
 
 	private File dbDir;
 	boolean dbDirIsTemp;
@@ -90,7 +91,7 @@ public class MongodProcess extends AbstractMongoProcess<IMongodConfig, MongodExe
 		super.deleteTempFiles();
 		
 		if ((dbDir != null) && (dbDirIsTemp) && (!Files.forceDelete(dbDir))) {
-			logger.warning("Could not delete temp db dir: " + dbDir);
+			logger.warn("Could not delete temp db dir: {}", dbDir);
 		}
 		
 	}
