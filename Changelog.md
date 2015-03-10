@@ -2,6 +2,9 @@
 
 #### 1.46.5 (SNAPSHOT)
 
+- changed logging to slf4j
+- mongo version upgrade (2.6.8, 3.0.0)
+
 #### 1.46.4
 
 - Implement equals and hashCode on GenericFeatureAwareVersion so that CachingArtifactStore can work. Version is a component of Distribution, which is used as the cache key of CachingArtifactStore
