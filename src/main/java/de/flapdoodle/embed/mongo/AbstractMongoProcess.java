@@ -51,7 +51,7 @@ public abstract class AbstractMongoProcess<T extends IMongoConfig, E extends Exe
 			throws IOException {
 		super(distribution, config, runtimeConfig, executable);
 	}
-	
+
 	@Override
 	protected final void onAfterProcessStart(ProcessControl process, IRuntimeConfig runtimeConfig) throws IOException {
 		ProcessOutput outputConfig = runtimeConfig.getProcessOutput();
@@ -72,7 +72,14 @@ public abstract class AbstractMongoProcess<T extends IMongoConfig, E extends Exe
 						"----------------------\n" +
 						""+logWatch.getOutput();
 			}
-			throw new IOException("Could not start process: "+failureFound);
+			try {
+				// Process could be finished with success here! In this case no need to throw an exception!
+				if(process.waitFor() != 0){
+					throw new IOException("Could not start process: "+failureFound);
+				}
+			} catch (InterruptedException e) {
+				throw new IOException("Could not start process: "+failureFound, e);
+			}
 		}
 	}
 

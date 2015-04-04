@@ -29,4 +29,5 @@ public interface IMongoShellConfig extends IMongoConfig {
 
 	String getScriptName();
 
+	String getDbName();
 }

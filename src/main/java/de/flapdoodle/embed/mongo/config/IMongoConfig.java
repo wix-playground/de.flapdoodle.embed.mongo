@@ -33,6 +33,10 @@ public interface IMongoConfig extends IExecutableProcessConfig {
 	Net net();
 
 	IMongoCmdOptions cmdOptions();
-	
+
+	String password();
+
+	String userName();
+
     String pidFile();
 }

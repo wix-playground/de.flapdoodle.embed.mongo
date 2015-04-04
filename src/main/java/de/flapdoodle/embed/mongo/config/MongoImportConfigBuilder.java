@@ -111,7 +111,8 @@ public class MongoImportConfigBuilder extends AbstractMongoConfigBuilder<IMongoI
         IMongoCmdOptions cmdOptions=get(CMD_OPTIONS);
         String pidFile = get(PID_FILE);
 
-        return new ImmutableMongoImportConfig(version, net, timeout, cmdOptions, pidFile, database, collection ,importFile,jsonArray, upsert, drop);
+		return new ImmutableMongoImportConfig(version, net, timeout, cmdOptions, pidFile,
+				database, collection, importFile, jsonArray, upsert, drop);
     }
 
     static class ImmutableMongoImportConfig extends ImmutableMongoConfig implements IMongoImportConfig {
@@ -122,8 +123,9 @@ public class MongoImportConfigBuilder extends AbstractMongoConfigBuilder<IMongoI
         private final Boolean _dropCollection;
         private final Boolean _upsetDocuments;
 
-        public ImmutableMongoImportConfig(IFeatureAwareVersion version, Net net, Timeout timeout, IMongoCmdOptions cmdOptions, String pidFile, String database, String collection, String importFile,Boolean jsonArray, Boolean upsert, Boolean drop) {
-            super(new SupportConfig(Command.MongoImport),version, net, timeout,cmdOptions,pidFile);
+		public ImmutableMongoImportConfig(IFeatureAwareVersion version, Net net, Timeout timeout, IMongoCmdOptions cmdOptions, String pidFile,
+											String database, String collection, String importFile, Boolean jsonArray, Boolean upsert, Boolean drop) {
+			super(new SupportConfig(Command.MongoImport), version, net, null, null, timeout, cmdOptions, pidFile);
             _databaseName=database;
             _collectionName=collection;
             _getImportFile=importFile;

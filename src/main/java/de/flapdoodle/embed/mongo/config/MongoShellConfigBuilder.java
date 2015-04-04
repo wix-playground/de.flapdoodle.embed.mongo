@@ -20,6 +20,10 @@
  */
 package de.flapdoodle.embed.mongo.config;
 
+import de.flapdoodle.embed.mongo.Command;
+import de.flapdoodle.embed.mongo.distribution.IFeatureAwareVersion;
+import de.flapdoodle.embed.process.builder.TypedProperty;
+
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -50,8 +54,23 @@ public class MongoShellConfigBuilder extends AbstractMongoConfigBuilder<IMongoSh
 		return this;
 	}
 
+	public MongoShellConfigBuilder username(String username) {
+		username().set(username);
+		return this;
+	}
+
+	public MongoShellConfigBuilder password(String password) {
+		password().set(password);
+		return this;
+	}
+
 	public MongoShellConfigBuilder net(Net net) {
 		net().set(net);
+		return this;
+	}
+
+	public MongoShellConfigBuilder dbName(String dbName) {
+		dbName().set(dbName);
 		return this;
 	}
 
@@ -64,11 +83,11 @@ public class MongoShellConfigBuilder extends AbstractMongoConfigBuilder<IMongoSh
 		set(JS_SCRIPT, scriptName);
 		return this;
 	}
-	
+
 	public MongoShellConfigBuilder parameters(String... parameters) {
 		return parameters(Arrays.asList(parameters));
 	}
-	
+
 	public MongoShellConfigBuilder parameters(List<String> parameters) {
 		set(JS_SCRIPT_PARAMETERS, parameters);
 		return this;
@@ -81,23 +100,29 @@ public class MongoShellConfigBuilder extends AbstractMongoConfigBuilder<IMongoSh
 		Timeout timeout = timeout().get();
 		IMongoCmdOptions cmdOptions=get(CMD_OPTIONS);
 		String pidFile = get(PID_FILE);
-		
+
 		String name = get(JS_SCRIPT,null);
 		List<String> parameters = get(JS_SCRIPT_PARAMETERS,new ArrayList<String>());
 		if ((name==null) && (parameters.isEmpty())) {
 			throw new RuntimeException("you must set parameters or scriptName");
 		}
 
-		return new ImmutableMongoShellConfig(version, net, timeout, cmdOptions, pidFile, name, parameters);
+		return new ImmutableMongoShellConfig(version, net, timeout, cmdOptions, pidFile, name,
+					username().get(), password().get(), dbName().get(), parameters);
 	}
 
 	static class ImmutableMongoShellConfig extends ImmutableMongoConfig implements IMongoShellConfig {
 
 		private final String _name;
+		private final String _dbname;
 		private final List<String> _parameters;
 
-		public ImmutableMongoShellConfig(IFeatureAwareVersion version, Net net, Timeout timeout, IMongoCmdOptions cmdOptions, String pidFile, String scriptName, List<String> parameters) {
-			super(new SupportConfig(Command.Mongo), version, net, timeout,cmdOptions,pidFile);
+		public ImmutableMongoShellConfig(IFeatureAwareVersion version, Net net, Timeout timeout,
+											IMongoCmdOptions cmdOptions, String pidFile,
+											String scriptName, String username, String password, String dbName,
+											List<String> parameters) {
+ 			super(new SupportConfig(Command.Mongo), version, net, username, password, timeout, cmdOptions, pidFile);
+ 			this._dbname = dbName;
 			this._name = scriptName;
 			this._parameters = Collections.unmodifiableList(new ArrayList<String>(parameters));
 		}
@@ -110,6 +135,11 @@ public class MongoShellConfigBuilder extends AbstractMongoConfigBuilder<IMongoSh
 		@Override
 		public String getScriptName() {
 			return _name;
+ 		}
+
+ 		@Override
+ 		public String getDbName() {
+ 			return _dbname;
 		}
 
 	}
