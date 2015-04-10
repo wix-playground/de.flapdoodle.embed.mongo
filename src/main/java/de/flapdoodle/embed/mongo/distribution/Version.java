@@ -148,6 +148,7 @@ public enum Version implements IFeatureAwareVersion {
    */
   V3_0_0("3.0.0", Feature.SYNC_DELAY),
   V3_0_1("3.0.1",Feature.SYNC_DELAY),
+  V3_0_2("3.0.2",Feature.SYNC_DELAY),
   /**
    * Latest 3.1 series development release
    */
@@ -200,7 +201,7 @@ public enum Version implements IFeatureAwareVersion {
 		/**
 		 * Latest production release
 		 */
-		V3_0(V3_0_1),
+		V3_0(V3_0_2),
 		/**
 		 * Latest development release
 		 */
