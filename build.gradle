@@ -23,7 +23,7 @@ dependencies {
 
     compile 'commons-io:commons-io:2.4'
     compile 'de.flapdoodle.embed:de.flapdoodle.embed.process:1.41.0'
-    compile 'org.mongodb:mongo-java-driver:3.0.0'
+    compile 'org.mongodb:mongo-java-driver:2.13.0'
     compile 'org.slf4j:slf4j-api:1.7.12'
 
     testCompile 'junit:junit:4.12'
