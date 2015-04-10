@@ -23,11 +23,13 @@ package de.flapdoodle.embed.mongo.tests;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.UUID;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mongodb.DB;
 import com.mongodb.Mongo;
+import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
 import com.mongodb.ServerAddress;
 
@@ -41,7 +43,6 @@ import de.flapdoodle.embed.mongo.config.Net;
 import de.flapdoodle.embed.mongo.config.RuntimeConfigBuilder;
 import de.flapdoodle.embed.mongo.distribution.IFeatureAwareVersion;
 import de.flapdoodle.embed.mongo.distribution.Version;
-import de.flapdoodle.embed.process.distribution.IVersion;
 import de.flapdoodle.embed.process.runtime.Network;
 
 /**
@@ -120,7 +121,7 @@ public class MongosForTestsFactory {
 	 * @throws UnknownHostException
 	 */
 	public Mongo newMongo() throws UnknownHostException, MongoException {
-		return new Mongo(new ServerAddress(mongosProcess.getConfig().net().getServerAddress(),
+		return new MongoClient(new ServerAddress(mongosProcess.getConfig().net().getServerAddress(),
 				mongosProcess.getConfig().net().getPort()));
 	}
 	

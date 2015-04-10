@@ -20,14 +20,8 @@
  */
 package de.flapdoodle.embed.mongo.runtime;
 
-import de.flapdoodle.embed.mongo.Command;
-import de.flapdoodle.embed.mongo.config.IMongoCmdOptions;
-import de.flapdoodle.embed.mongo.config.IMongodConfig;
-import de.flapdoodle.embed.mongo.config.SupportConfig;
-import de.flapdoodle.embed.mongo.distribution.Feature;
-import de.flapdoodle.embed.process.distribution.Distribution;
-import de.flapdoodle.embed.process.extract.IExtractedFileSet;
-import de.flapdoodle.embed.process.runtime.NUMA;
+import static java.lang.String.format;
+import static java.util.Arrays.asList;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,15 +32,21 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static java.lang.String.format;
-import static java.util.Arrays.asList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import de.flapdoodle.embed.mongo.Command;
+import de.flapdoodle.embed.mongo.config.IMongoCmdOptions;
+import de.flapdoodle.embed.mongo.config.IMongodConfig;
+import de.flapdoodle.embed.mongo.config.SupportConfig;
+import de.flapdoodle.embed.mongo.distribution.Feature;
+import de.flapdoodle.embed.process.distribution.Distribution;
+import de.flapdoodle.embed.process.extract.IExtractedFileSet;
+import de.flapdoodle.embed.process.runtime.NUMA;
 
 /**
  *

@@ -35,6 +35,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.Mongo;
+import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
 
 import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
@@ -83,7 +84,7 @@ public class MongoDBExampleAllVersionsTest {
 				Network.localhostIsIPv6())).build());
 		mongod = mongodExe.start();
 
-		mongo = new Mongo(new ServerAddress(Network.getLocalHost(), PORT));
+		mongo = new MongoClient(new ServerAddress(Network.getLocalHost(), PORT));
 	}
 
 	@After

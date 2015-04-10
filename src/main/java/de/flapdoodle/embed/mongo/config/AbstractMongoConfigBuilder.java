@@ -28,7 +28,6 @@ import de.flapdoodle.embed.process.builder.AbstractBuilder;
 import de.flapdoodle.embed.process.builder.IProperty;
 import de.flapdoodle.embed.process.builder.TypedProperty;
 import de.flapdoodle.embed.process.config.ISupportConfig;
-import de.flapdoodle.embed.process.distribution.IVersion;
 
 public abstract class AbstractMongoConfigBuilder<T extends IMongoConfig> extends AbstractBuilder<T> {
 

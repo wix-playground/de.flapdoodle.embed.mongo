@@ -22,10 +22,8 @@ package de.flapdoodle.embed.mongo.runtime;
 
 import java.util.List;
 
-import de.flapdoodle.embed.mongo.config.IMongoCmdOptions;
 import de.flapdoodle.embed.mongo.config.IMongoConfig;
 import de.flapdoodle.embed.mongo.config.Net;
-import de.flapdoodle.embed.mongo.distribution.Feature;
 
 
 public class AbstractMongo {

@@ -23,7 +23,11 @@ package de.flapdoodle.embed.mongo;
 import de.flapdoodle.embed.process.config.store.FileSet;
 import de.flapdoodle.embed.process.config.store.FileType;
 import de.flapdoodle.embed.process.config.store.IPackageResolver;
-import de.flapdoodle.embed.process.distribution.*;
+import de.flapdoodle.embed.process.distribution.ArchiveType;
+import de.flapdoodle.embed.process.distribution.BitSize;
+import de.flapdoodle.embed.process.distribution.Distribution;
+import de.flapdoodle.embed.process.distribution.IVersion;
+import de.flapdoodle.embed.process.distribution.Platform;
 
 /**
  *

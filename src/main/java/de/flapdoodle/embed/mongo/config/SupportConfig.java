@@ -21,8 +21,6 @@
 package de.flapdoodle.embed.mongo.config;
 
 import de.flapdoodle.embed.mongo.Command;
-import de.flapdoodle.embed.process.config.ISupportConfig;
-import de.flapdoodle.embed.process.extract.ExecutableFileAlreadyExistsException;
 
 
 public class SupportConfig extends AbstractSupportConfig {

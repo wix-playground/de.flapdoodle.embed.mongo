@@ -21,13 +21,12 @@
  */
 package de.flapdoodle.embed.mongo.config;
 
-import de.flapdoodle.embed.mongo.Command;
-import de.flapdoodle.embed.mongo.config.processlistener.IMongoProcessListener;
-import de.flapdoodle.embed.mongo.distribution.IFeatureAwareVersion;
-import de.flapdoodle.embed.process.builder.TypedProperty;
-
 import java.io.IOException;
 import java.net.UnknownHostException;
+
+import de.flapdoodle.embed.mongo.Command;
+import de.flapdoodle.embed.mongo.distribution.IFeatureAwareVersion;
+import de.flapdoodle.embed.process.builder.TypedProperty;
 
 /**
  * Created by canyaman on 10/04/14.

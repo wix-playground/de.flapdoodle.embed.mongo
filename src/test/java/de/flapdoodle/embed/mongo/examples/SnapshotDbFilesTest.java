@@ -20,17 +20,18 @@
  */
 package de.flapdoodle.embed.mongo.examples;
 
+import java.io.IOException;
+import java.util.Date;
+
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
+
 import de.flapdoodle.embed.mongo.config.MongoCmdOptionsBuilder;
 import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
 import de.flapdoodle.embed.mongo.config.processlistener.ProcessListenerBuilder;
 import de.flapdoodle.embed.process.io.directories.PlatformTempDir;
 import de.flapdoodle.embed.process.io.file.Files;
-
-import java.io.IOException;
-import java.util.Date;
 
 
 public class SnapshotDbFilesTest extends AbstractMongoDBTest {

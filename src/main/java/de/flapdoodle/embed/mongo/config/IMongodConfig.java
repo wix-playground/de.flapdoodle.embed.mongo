@@ -20,9 +20,9 @@
  */
 package de.flapdoodle.embed.mongo.config;
 
-import de.flapdoodle.embed.mongo.config.processlistener.IMongoProcessListener;
-
 import java.util.Map;
+
+import de.flapdoodle.embed.mongo.config.processlistener.IMongoProcessListener;
 
 public interface IMongodConfig extends IMongoConfig {
 

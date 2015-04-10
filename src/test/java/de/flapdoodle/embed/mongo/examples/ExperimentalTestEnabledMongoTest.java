@@ -20,19 +20,20 @@
  */
 package de.flapdoodle.embed.mongo.examples;
 
-import com.mongodb.*;
+import java.io.IOException;
+
+import com.mongodb.BasicDBList;
+import com.mongodb.BasicDBObject;
+import com.mongodb.CommandResult;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
+
 import de.flapdoodle.embed.mongo.config.MongoCmdOptionsBuilder;
 import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
 import de.flapdoodle.embed.mongo.config.Net;
-import de.flapdoodle.embed.mongo.config.processlistener.ProcessListenerBuilder;
 import de.flapdoodle.embed.mongo.distribution.Version;
-import de.flapdoodle.embed.process.io.directories.PlatformTempDir;
-import de.flapdoodle.embed.process.io.file.Files;
 import de.flapdoodle.embed.process.runtime.Network;
-
-import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
 
 
 public class ExperimentalTestEnabledMongoTest extends AbstractMongoDBTest {
@@ -49,7 +50,7 @@ public class ExperimentalTestEnabledMongoTest extends AbstractMongoDBTest {
     public void testCreateTextIndex() {
         DB db = getMongo().getDB("test");
         DBCollection col = db.createCollection("testCol", new BasicDBObject());
-        col.ensureIndex(new BasicDBObject("subject", "text"));
+        col.createIndex(new BasicDBObject("subject", "text"));
         col.save(new BasicDBObject("subject", "some text"));
 
         DBObject textSearchCommand = new BasicDBObject();

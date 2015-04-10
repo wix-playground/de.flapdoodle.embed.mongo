@@ -21,21 +21,25 @@
  */
 package de.flapdoodle.embed.mongo;
 
-import com.mongodb.*;
-import de.flapdoodle.embed.mongo.config.*;
-import de.flapdoodle.embed.mongo.distribution.Version;
-import de.flapdoodle.embed.mongo.runtime.MongoImport;
-import de.flapdoodle.embed.process.config.IRuntimeConfig;
-import de.flapdoodle.embed.process.runtime.Network;
-import junit.framework.Assert;
-import junit.framework.TestCase;
-import org.junit.Test;
-
 import java.io.IOException;
 import java.net.UnknownHostException;
-import java.util.Date;
+
+import junit.framework.TestCase;
+
+import org.junit.Assert;
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import de.flapdoodle.embed.mongo.config.IMongoImportConfig;
+import de.flapdoodle.embed.mongo.config.IMongodConfig;
+import de.flapdoodle.embed.mongo.config.MongoImportConfigBuilder;
+import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
+import de.flapdoodle.embed.mongo.config.Net;
+import de.flapdoodle.embed.mongo.config.RuntimeConfigBuilder;
+import de.flapdoodle.embed.mongo.distribution.Version;
+import de.flapdoodle.embed.process.config.IRuntimeConfig;
+import de.flapdoodle.embed.process.runtime.Network;
 
 /**
  * Created by canyaman on 10/04/14.

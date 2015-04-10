@@ -24,10 +24,8 @@ import java.io.IOException;
 import java.util.List;
 
 import de.flapdoodle.embed.mongo.config.IMongosConfig;
-import de.flapdoodle.embed.mongo.config.MongosSupportConfig;
 import de.flapdoodle.embed.mongo.runtime.Mongos;
 import de.flapdoodle.embed.process.config.IRuntimeConfig;
-import de.flapdoodle.embed.process.config.ISupportConfig;
 import de.flapdoodle.embed.process.distribution.Distribution;
 import de.flapdoodle.embed.process.extract.IExtractedFileSet;
 
