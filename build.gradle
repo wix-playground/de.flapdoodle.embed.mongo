@@ -1,7 +1,7 @@
 group = 'de.flapdoodle.embedmongo'
 version = '1.47.1-SNAPSHOT'
 
-project.ext.gradleVersion = "1.12"
+project.ext.gradleVersion = "2.3"
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
