@@ -30,7 +30,6 @@ import de.flapdoodle.embed.mongo.config.processlistener.IMongoProcessListener;
 import de.flapdoodle.embed.mongo.config.processlistener.NoopProcessListener;
 import de.flapdoodle.embed.mongo.distribution.IFeatureAwareVersion;
 import de.flapdoodle.embed.process.builder.TypedProperty;
-import de.flapdoodle.embed.process.distribution.IVersion;
 
 public class MongodConfigBuilder extends AbstractMongoConfigBuilder<IMongodConfig> {
 

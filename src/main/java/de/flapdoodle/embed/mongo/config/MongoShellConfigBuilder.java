@@ -20,10 +20,6 @@
  */
 package de.flapdoodle.embed.mongo.config;
 
-import de.flapdoodle.embed.mongo.Command;
-import de.flapdoodle.embed.mongo.distribution.IFeatureAwareVersion;
-import de.flapdoodle.embed.process.builder.TypedProperty;
-
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;

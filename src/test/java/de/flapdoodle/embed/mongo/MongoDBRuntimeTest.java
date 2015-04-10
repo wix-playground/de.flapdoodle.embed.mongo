@@ -20,11 +20,24 @@
  */
 package de.flapdoodle.embed.mongo;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import junit.framework.TestCase;
+
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.Mongo;
-import de.flapdoodle.embed.mongo.config.*;
+import com.mongodb.MongoClient;
+
+import de.flapdoodle.embed.mongo.config.ArtifactStoreBuilder;
+import de.flapdoodle.embed.mongo.config.DownloadConfigBuilder;
+import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
+import de.flapdoodle.embed.mongo.config.Net;
+import de.flapdoodle.embed.mongo.config.RuntimeConfigBuilder;
 import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.process.config.IRuntimeConfig;
 import de.flapdoodle.embed.process.distribution.BitSize;
@@ -33,12 +46,6 @@ import de.flapdoodle.embed.process.distribution.IVersion;
 import de.flapdoodle.embed.process.distribution.Platform;
 import de.flapdoodle.embed.process.extract.IExtractedFileSet;
 import de.flapdoodle.embed.process.runtime.Network;
-import junit.framework.TestCase;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 // CHECKSTYLE:OFF
 public class MongoDBRuntimeTest extends TestCase {
@@ -141,7 +148,7 @@ public class MongoDBRuntimeTest extends TestCase {
 			mongodProcess = mongod.start();
 			timer.check("After mongodProcess");
 
-			Mongo mongo = new Mongo("localhost", port);
+			Mongo mongo = new MongoClient("localhost", port);
 			timer.check("After Mongo");
 			DB db = mongo.getDB("test");
 			timer.check("After DB test");

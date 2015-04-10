@@ -20,14 +20,13 @@
  */
 package de.flapdoodle.embed.mongo.config;
 
-import de.flapdoodle.embed.process.io.progress.LoggingProgressListener;
-import de.flapdoodle.embed.process.io.progress.Slf4jProgressListener;
+import java.util.logging.Level;
 
 import de.flapdoodle.embed.mongo.Command;
 import de.flapdoodle.embed.process.config.store.IDownloadConfig;
+import de.flapdoodle.embed.process.io.progress.LoggingProgressListener;
+import de.flapdoodle.embed.process.io.progress.Slf4jProgressListener;
 import de.flapdoodle.embed.process.runtime.ICommandLinePostProcessor;
-
-import java.util.logging.Level;
 
 
 public class RuntimeConfigBuilder extends de.flapdoodle.embed.process.config.RuntimeConfigBuilder {

@@ -20,13 +20,11 @@
  */
 package de.flapdoodle.embed.mongo;
 
-import de.flapdoodle.embed.mongo.Paths;
+import junit.framework.TestCase;
 import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.process.distribution.BitSize;
 import de.flapdoodle.embed.process.distribution.Distribution;
 import de.flapdoodle.embed.process.distribution.Platform;
-
-import junit.framework.TestCase;
 
 //CHECKSTYLE:OFF
 public class TestPaths extends TestCase {

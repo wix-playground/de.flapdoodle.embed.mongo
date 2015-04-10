@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,7 +39,6 @@ import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientOptions;
 import com.mongodb.MongoException;
-import com.mongodb.MongoOptions;
 import com.mongodb.ServerAddress;
 
 import de.flapdoodle.embed.mongo.Command;
@@ -209,11 +209,10 @@ public class MongosSystemForTestFactory {
 
 	private void configureMongos() throws Exception {
 		CommandResult cr;
-		MongoOptions mo = new MongoOptions();
-		mo.autoConnectRetry = true;
-		Mongo mongo = new Mongo(
+		MongoClientOptions options = MongoClientOptions.builder().autoConnectRetry(true).build();
+		Mongo mongo = new MongoClient(
 				new ServerAddress(this.config.net().getServerAddress()
-						.getHostName(), this.config.net().getPort()), mo);
+						.getHostName(), this.config.net().getPort()), options);
 		DB mongoAdminDB = mongo.getDB(ADMIN_DATABASE_NAME);
 
 		// Add shard from the replica set list
@@ -248,7 +247,7 @@ public class MongosSystemForTestFactory {
 		// Create index in sharded collection
 		logger.info("Create index in sharded collection");
 		DB db = mongo.getDB(this.shardDatabase);
-		db.getCollection(this.shardCollection).ensureIndex(this.shardKey);
+		db.getCollection(this.shardCollection).createIndex(this.shardKey);
 
 		// Shard the collection
 		logger.info("Shard the collection: {}.{}", this.shardDatabase, this.shardCollection);
@@ -268,7 +267,7 @@ public class MongosSystemForTestFactory {
 	}
 
 	public Mongo getMongo() throws UnknownHostException, MongoException {
-		return new Mongo(new ServerAddress(mongosProcess.getConfig().net()
+		return new MongoClient(new ServerAddress(mongosProcess.getConfig().net()
 				.getServerAddress(), mongosProcess.getConfig().net().getPort()));
 	}
 

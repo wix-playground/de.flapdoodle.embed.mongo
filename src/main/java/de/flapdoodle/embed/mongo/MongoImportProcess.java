@@ -21,14 +21,14 @@
  */
 package de.flapdoodle.embed.mongo;
 
+import java.io.IOException;
+import java.util.List;
+
 import de.flapdoodle.embed.mongo.config.IMongoImportConfig;
 import de.flapdoodle.embed.mongo.runtime.MongoImport;
 import de.flapdoodle.embed.process.config.IRuntimeConfig;
 import de.flapdoodle.embed.process.distribution.Distribution;
 import de.flapdoodle.embed.process.extract.IExtractedFileSet;
-
-import java.io.IOException;
-import java.util.List;
 
 /**
  * Created by canyaman on 10/04/14.

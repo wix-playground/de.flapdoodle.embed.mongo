@@ -20,7 +20,6 @@
  */
 package de.flapdoodle.embed.mongo.runtime;
 
-import de.flapdoodle.embed.mongo.runtime.Mongod;
 import junit.framework.TestCase;
 
 //CHECKSTYLE:OFF

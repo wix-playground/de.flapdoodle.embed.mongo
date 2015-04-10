@@ -25,7 +25,6 @@ import java.net.UnknownHostException;
 
 import de.flapdoodle.embed.mongo.distribution.IFeatureAwareVersion;
 import de.flapdoodle.embed.process.builder.TypedProperty;
-import de.flapdoodle.embed.process.distribution.IVersion;
 
 public class MongosConfigBuilder extends AbstractMongoConfigBuilder<IMongosConfig> {
 
