@@ -1,6 +1,11 @@
 ### Changelog
 
-#### 1.47.1 (SNAPSHOT)
+#### 1.47.2 (SNAPSHOT)
+
+#### 1.47.1
+
+- many fixes by https://github.com/jochenberger
+- mongo version upgrade to (3.0.2)
 
 #### 1.47.0
 
