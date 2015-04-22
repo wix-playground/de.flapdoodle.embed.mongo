@@ -121,7 +121,7 @@ public class MongosSystemForTestFactory {
 		}
 		Thread.sleep(1000);
 		MongoClientOptions mo = MongoClientOptions.builder()
-				.autoConnectRetry(true)
+				.connectTimeout(10)
 				.build();
 		MongoClient mongo = new MongoClient(new ServerAddress(mongoConfigList.get(0).net()
 				.getServerAddress().getHostName(), mongoConfigList.get(0).net()
@@ -209,7 +209,9 @@ public class MongosSystemForTestFactory {
 
 	private void configureMongos() throws Exception {
 		CommandResult cr;
-		MongoClientOptions options = MongoClientOptions.builder().autoConnectRetry(true).build();
+		MongoClientOptions options = MongoClientOptions.builder()
+				.connectTimeout(10)
+				.build();
 		Mongo mongo = new MongoClient(
 				new ServerAddress(this.config.net().getServerAddress()
 						.getHostName(), this.config.net().getPort()), options);
