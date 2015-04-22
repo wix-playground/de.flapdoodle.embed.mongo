@@ -1,6 +1,10 @@
 ### Changelog
 
-#### 1.47.2 (SNAPSHOT)
+#### 1.47.3 (SNAPSHOT)
+
+- mongo client dependency changed to provided
+
+#### 1.47.2
 
 #### 1.47.1
 
