@@ -1,8 +1,10 @@
 ### Changelog
 
-#### 1.47.3 (SNAPSHOT)
+#### 1.47.4 (SNAPSHOT)
 
-- mongo client dependency changed to provided
+#### 1.47.3
+
+- mongo client dependency changed to provided, now you can use version 2.x.x or 3.0.0
 
 #### 1.47.2
 
