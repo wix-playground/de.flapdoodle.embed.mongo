@@ -53,7 +53,7 @@ Stable (Maven Central Repository, Released: 22.04.2015 - wait 24hrs for [maven c
 	<dependency>
 		<groupId>de.flapdoodle.embed</groupId>
 		<artifactId>de.flapdoodle.embed.mongo</artifactId>
-		<version>1.47.3</version>
+		<version>1.48.0</version>
 	</dependency>
 
 Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
@@ -61,15 +61,15 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 	<dependency>
 		<groupId>de.flapdoodle.embed</groupId>
 		<artifactId>de.flapdoodle.embed.mongo</artifactId>
-		<version>1.47.4-SNAPSHOT</version>
+		<version>1.48.1-SNAPSHOT</version>
 	</dependency>
 
 ### Gradle
 
-Make sure you have mavenCentral() in your repositories or that your enterprise/local server prixies the maven central repository.
+Make sure you have mavenCentral() in your repositories or that your enterprise/local server proxies the maven central repository.
 
 	dependencies {
-		testCompile group: "de.flapdoodle.embed", name: "de.flapdoodle.embed.mongo", version: "1.47.0"
+		testCompile group: "de.flapdoodle.embed", name: "de.flapdoodle.embed.mongo", version: "1.48.0"
 	}
 
 ### Build from source
