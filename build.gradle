@@ -1,7 +1,7 @@
 group = 'de.flapdoodle.embedmongo'
 version = '1.47.3-SNAPSHOT'
 
-project.ext.gradleVersion = "2.3"
+project.ext.gradleVersion = "2.4"
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
@@ -51,3 +51,26 @@ task jenkinsTest {
 }
 
 build.dependsOn(jenkinsTest)
+
+test {
+
+    // show standard out and standard error of the test JVM(s) on the console
+    testLogging.showStandardStreams = false
+
+    // set heap size for the test JVM(s)
+    minHeapSize = "128m"
+    maxHeapSize = "512m"
+
+    // set JVM arguments for the test JVM(s)
+    jvmArgs '-XX:MaxPermSize=256m'
+
+    // listen to events in the test execution lifecycle
+    beforeTest { descriptor ->
+        logger.lifecycle("Running test: " + descriptor)
+    }
+
+    // listen to standard out and standard error of the test JVM(s)
+    //onOutput { descriptor, event ->
+    //    logger.lifecycle("Test: " + descriptor + " produced standard out/err: " + event.message )
+    //}
+}
