@@ -21,7 +21,7 @@ Embedded MongoDB will provide a platform neutral way for running mongodb in unit
 
 ### Other ways to use Embedded MongoDB
 
-- in a Maven build using [embedmongo-maven-plugin](https://github.com/joelittlejohn/embedmongo-maven-plugin)
+- in a Maven build using [maven-mongodb-plugin](https://github.com/Syncleus/maven-mongodb-plugin) or the older [embedmongo-maven-plugin](https://github.com/joelittlejohn/embedmongo-maven-plugin)
 - in a Clojure/Leiningen project using [lein-embongo](https://github.com/joelittlejohn/lein-embongo)
 - in a Gradle build using [gradle-mongo-plugin](https://github.com/sourcemuse/GradleMongoPlugin)
 - in a Scala/specs2 specification using [specs2-embedmongo](https://github.com/athieriot/specs2-embedmongo)
