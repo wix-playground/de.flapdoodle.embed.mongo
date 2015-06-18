@@ -1,7 +1,7 @@
-# Organisation Flapdoodle OSS
+# Organization Flapdoodle OSS
 [![Build Status](https://travis-ci.org/flapdoodle-oss/de.flapdoodle.embed.mongo.svg?branch=master)](https://travis-ci.org/flapdoodle-oss/de.flapdoodle.embed.mongo)
 
-We are now a github organisation. You are invited to participate. :)
+We are now a github organization. You are invited to participate. :)
 
 # Embedded MongoDB
 
