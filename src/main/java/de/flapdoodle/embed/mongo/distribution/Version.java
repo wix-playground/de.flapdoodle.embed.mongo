@@ -129,11 +129,13 @@ public enum Version implements IFeatureAwareVersion {
   V2_6_0("2.6.0",Feature.SYNC_DELAY),
   @Deprecated
   V2_6_1("2.6.1",Feature.SYNC_DELAY),
+  @Deprecated
+  V2_6_8("2.6.8",Feature.SYNC_DELAY),
 
   /**
    * Latest 2.6 production release
    */
-  V2_6_8("2.6.8",Feature.SYNC_DELAY),
+  V2_6_10("2.6.10",Feature.SYNC_DELAY),
 
   /**
    * Latest 2.7 series development release
@@ -146,9 +148,13 @@ public enum Version implements IFeatureAwareVersion {
   /**
    * Latest 3.0 series development release
    */
+  @Deprecated
   V3_0_0("3.0.0", Feature.SYNC_DELAY),
+  @Deprecated
   V3_0_1("3.0.1",Feature.SYNC_DELAY),
+  @Deprecated
   V3_0_2("3.0.2",Feature.SYNC_DELAY),
+  V3_0_4("3.0.4",Feature.SYNC_DELAY),
   /**
    * Latest 3.1 series development release
    */
@@ -194,19 +200,21 @@ public enum Version implements IFeatureAwareVersion {
         @Deprecated
 		V2_5(V2_5_4),
         @Deprecated
-		V2_6(V2_6_8),
+		V2_6(V2_6_10),
         @Deprecated
         V2_7(V2_7_1),
 
 		/**
 		 * Latest production release
 		 */
-		V3_0(V3_0_2),
+		V3_0(V3_0_4),
 		/**
 		 * Latest development release
 		 */
 		V3_1(V3_1_0),
 
+		@Deprecated
+		LEGACY(V2_6),
 		PRODUCTION(V3_0),
 		DEVELOPMENT(V3_1), ;
 
