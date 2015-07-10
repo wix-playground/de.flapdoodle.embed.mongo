@@ -1,6 +1,10 @@
 ### Changelog
 
-#### 1.47.4 (SNAPSHOT)
+#### 1.48.2 (SNAPSHOT)
+
+#### 1.48.1
+
+- mongo version upgrade (2.6.10, 3.0.4, 3.1.5)
 
 #### 1.47.3
 
