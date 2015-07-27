@@ -1,6 +1,10 @@
 ### Changelog
 
-#### 1.48.2 (SNAPSHOT)
+#### 1.48.3 (SNAPSHOT)
+
+#### 1.48.2
+
+- re-release of 1.48.1
 
 #### 1.48.1
 
