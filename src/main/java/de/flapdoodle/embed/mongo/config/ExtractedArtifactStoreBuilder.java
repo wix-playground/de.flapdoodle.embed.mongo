@@ -21,19 +21,17 @@
 package de.flapdoodle.embed.mongo.config;
 
 import de.flapdoodle.embed.mongo.Command;
+import de.flapdoodle.embed.process.extract.NoopTempNaming;
 import de.flapdoodle.embed.process.extract.UUIDTempNaming;
 import de.flapdoodle.embed.process.io.directories.PropertyOrPlatformTempDir;
+import de.flapdoodle.embed.process.io.directories.UserHome;
 import de.flapdoodle.embed.process.store.Downloader;
 
-@Deprecated
-/**
- * @see ExtractedArtifactStoreBuilder
- * @author mosmann
- *
- */
-public class ArtifactStoreBuilder extends de.flapdoodle.embed.process.store.ArtifactStoreBuilder {
+public class ExtractedArtifactStoreBuilder extends de.flapdoodle.embed.process.store.ExtractedArtifactStoreBuilder {
 
-	public ArtifactStoreBuilder defaults(Command command) {
+	public ExtractedArtifactStoreBuilder defaults(Command command) {
+		extractDir().setDefault(new UserHome(".embedmongo/extracted"));
+		extractExecutableNaming().setDefault(new NoopTempNaming());
 		tempDir().setDefault(new PropertyOrPlatformTempDir());
 		executableNaming().setDefault(new UUIDTempNaming());
 		download().setDefault(new DownloadConfigBuilder().defaultsForCommand(command).build());

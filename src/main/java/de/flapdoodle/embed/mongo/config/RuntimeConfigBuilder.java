@@ -41,7 +41,7 @@ public class RuntimeConfigBuilder extends de.flapdoodle.embed.process.config.Run
 				.progressListener(new LoggingProgressListener(logger, Level.FINE))
 				.build();
 
-		artifactStore().overwriteDefault(new ArtifactStoreBuilder().defaults(command).download(downloadConfig).build());
+		artifactStore().overwriteDefault(storeBuilder().defaults(command).download(downloadConfig).build());
 		return this;
 	}
 
@@ -54,14 +54,18 @@ public class RuntimeConfigBuilder extends de.flapdoodle.embed.process.config.Run
 				.progressListener(new Slf4jProgressListener(logger))
 				.build();
 
-		artifactStore().overwriteDefault(new ArtifactStoreBuilder().defaults(command).download(downloadConfig).build());
+		artifactStore().overwriteDefault(storeBuilder().defaults(command).download(downloadConfig).build());
 		return this;
 	}
 	
 	public RuntimeConfigBuilder defaults(Command command) {
 		processOutput().setDefault(MongodProcessOutputConfig.getDefaultInstance(command));
 		commandLinePostProcessor().setDefault(new ICommandLinePostProcessor.Noop());
-		artifactStore().setDefault(new ArtifactStoreBuilder().defaults(command).build());
+		artifactStore().setDefault(storeBuilder().defaults(command).build());
 		return this;
+	}
+
+	private ExtractedArtifactStoreBuilder storeBuilder() {
+		return new ExtractedArtifactStoreBuilder();
 	}
 }

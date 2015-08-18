@@ -22,6 +22,8 @@ package de.flapdoodle.embed.mongo.examples;
 
 import java.io.IOException;
 
+import org.junit.Test;
+
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.CommandResult;
@@ -47,6 +49,7 @@ public class ExperimentalTestEnabledMongoTest extends AbstractMongoDBTest {
                 .cmdOptions(new MongoCmdOptionsBuilder().enableTextSearch(true).build());
     }
 
+    @Test
     public void testCreateTextIndex() {
         DB db = getMongo().getDB("test");
         DBCollection col = db.createCollection("testCol", new BasicDBObject());

@@ -33,8 +33,8 @@ import com.mongodb.DBCollection;
 import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
 
-import de.flapdoodle.embed.mongo.config.ArtifactStoreBuilder;
 import de.flapdoodle.embed.mongo.config.DownloadConfigBuilder;
+import de.flapdoodle.embed.mongo.config.ExtractedArtifactStoreBuilder;
 import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
 import de.flapdoodle.embed.mongo.config.Net;
 import de.flapdoodle.embed.mongo.config.RuntimeConfigBuilder;
@@ -82,7 +82,7 @@ public class MongoDBRuntimeTest extends TestCase {
 			}
 		}
 
-		config = defaultBuilder.artifactStore(new ArtifactStoreBuilder()
+		config = defaultBuilder.artifactStore(new ExtractedArtifactStoreBuilder()
 						.defaults(Command.MongoD)
 						.download(new DownloadConfigBuilder()
 								.defaults()

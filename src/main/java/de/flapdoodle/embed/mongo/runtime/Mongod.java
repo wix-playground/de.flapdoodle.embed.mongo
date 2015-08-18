@@ -46,6 +46,7 @@ import de.flapdoodle.embed.mongo.config.SupportConfig;
 import de.flapdoodle.embed.mongo.distribution.Feature;
 import de.flapdoodle.embed.process.distribution.Distribution;
 import de.flapdoodle.embed.process.extract.IExtractedFileSet;
+import de.flapdoodle.embed.process.io.file.Files;
 import de.flapdoodle.embed.process.runtime.NUMA;
 
 /**
@@ -125,7 +126,7 @@ public class Mongod extends AbstractMongo {
 	public static List<String> getCommandLine(IMongodConfig config, IExtractedFileSet files, File dbDir)
 			throws UnknownHostException {
 		List<String> ret = new ArrayList<String>();
-		ret.addAll(asList(files.executable().getAbsolutePath(),
+		ret.addAll(asList(Files.fileOf(files.baseDir(), files.executable()).getAbsolutePath(),
 			"--dbpath", "" + dbDir.getAbsolutePath()));
 
 		if (config.params() != null && !config.params().isEmpty()) {

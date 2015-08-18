@@ -43,8 +43,8 @@ import de.flapdoodle.embed.mongo.Command;
 import de.flapdoodle.embed.mongo.MongodExecutable;
 import de.flapdoodle.embed.mongo.MongodProcess;
 import de.flapdoodle.embed.mongo.MongodStarter;
-import de.flapdoodle.embed.mongo.config.ArtifactStoreBuilder;
 import de.flapdoodle.embed.mongo.config.DownloadConfigBuilder;
+import de.flapdoodle.embed.mongo.config.ExtractedArtifactStoreBuilder;
 import de.flapdoodle.embed.mongo.config.IMongodConfig;
 import de.flapdoodle.embed.mongo.config.MongoCmdOptionsBuilder;
 import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
@@ -129,15 +129,10 @@ public class TestExampleReadMeCode extends TestCase {
 
 		IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder()
 		.defaults(command)
-		.artifactStore(new ArtifactStoreBuilder()
+		.artifactStore(new ExtractedArtifactStoreBuilder()
 				.defaults(command)
 				.download(new DownloadConfigBuilder()
-						.defaultsForCommand(command))
-		// <-
-		// disable caching with user temp naming if runtimeConfig is not the only
-		// instance in this test
-				.useCache(false)
-		// ->
+						.defaultsForCommand(command).build())
 				.executableNaming(new UserTempNaming()))
 		.build();
 
@@ -200,7 +195,7 @@ public class TestExampleReadMeCode extends TestCase {
 
 		IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder()
 				.defaults(command)
-				.artifactStore(new ArtifactStoreBuilder()
+				.artifactStore(new ExtractedArtifactStoreBuilder()
 						.defaults(command)
 						.download(new DownloadConfigBuilder()
 								.defaultsForCommand(command)
@@ -218,7 +213,7 @@ public class TestExampleReadMeCode extends TestCase {
 
 		IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder()
 				.defaults(command)
-				.artifactStore(new ArtifactStoreBuilder()
+				.artifactStore(new ExtractedArtifactStoreBuilder()
 						.defaults(command)
 						.download(new DownloadConfigBuilder()
 								.defaultsForCommand(command)
@@ -245,7 +240,7 @@ public class TestExampleReadMeCode extends TestCase {
 
 		IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder()
 				.defaults(command)
-				.artifactStore(new ArtifactStoreBuilder()
+				.artifactStore(new ExtractedArtifactStoreBuilder()
 						.defaults(command)
 						.download(new DownloadConfigBuilder()
 								.defaultsForCommand(command)
@@ -308,7 +303,7 @@ public class TestExampleReadMeCode extends TestCase {
 	// ...
 	public class FileStreamProcessor implements IStreamProcessor {
 
-		private FileOutputStream outputStream;
+		private final FileOutputStream outputStream;
 
 		public FileStreamProcessor(File file) throws FileNotFoundException {
 			outputStream = new FileOutputStream(file);
@@ -348,7 +343,7 @@ public class TestExampleReadMeCode extends TestCase {
 		IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder()
 				.defaultsWithLogger(Command.MongoD, logger)
 				.processOutput(processOutput)
-				.artifactStore(new ArtifactStoreBuilder()
+				.artifactStore(new ExtractedArtifactStoreBuilder()
 						.defaults(Command.MongoD)
 						.download(new DownloadConfigBuilder()
 								.defaultsForCommand(Command.MongoD)
