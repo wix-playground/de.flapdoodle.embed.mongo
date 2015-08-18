@@ -43,17 +43,12 @@ Embedded MongoDB will provide a platform neutral way for running mongodb in unit
 
 ### Maven
 
-**IMPORTANT NOTE: maven groupId and artifactId change**
-
-*	groupId from __de.flapdoodle.embedmongo__ to __de.flapdoodle.embed__
-*	artifactId from __de.flapdoodle.embedmongo__ to __de.flapdoodle.embed.mongo__
-
-Stable (Maven Central Repository, Released: 27.07.2015 - wait 24hrs for [maven central](http://repo1.maven.org/maven2/de/flapdoodle/embed/de.flapdoodle.embed.mongo/maven-metadata.xml))
+Stable (Maven Central Repository, Released: 18.08.2015 - wait 24hrs for [maven central](http://repo1.maven.org/maven2/de/flapdoodle/embed/de.flapdoodle.embed.mongo/maven-metadata.xml))
 
 	<dependency>
 		<groupId>de.flapdoodle.embed</groupId>
 		<artifactId>de.flapdoodle.embed.mongo</artifactId>
-		<version>1.48.2</version>
+		<version>1.50.0</version>
 	</dependency>
 
 Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
@@ -61,7 +56,7 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 	<dependency>
 		<groupId>de.flapdoodle.embed</groupId>
 		<artifactId>de.flapdoodle.embed.mongo</artifactId>
-		<version>1.48.3-SNAPSHOT</version>
+		<version>1.50.1-SNAPSHOT</version>
 	</dependency>
 
 ### Gradle
@@ -69,7 +64,7 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 Make sure you have mavenCentral() in your repositories or that your enterprise/local server proxies the maven central repository.
 
 	dependencies {
-		testCompile group: "de.flapdoodle.embed", name: "de.flapdoodle.embed.mongo", version: "1.48.2"
+		testCompile group: "de.flapdoodle.embed", name: "de.flapdoodle.embed.mongo", version: "1.50.0"
 	}
 
 ### Build from source
@@ -136,7 +131,7 @@ ArtifactStores an multiple caches with much less cache hits:)
 To avoid windows firewall dialog popups you can chose a stable executable name with UserTempNaming.
 This way the firewall dialog only popup once any your done. See [Executable Collision](#executable-collision)
 ```java
-	import de.flapdoodle.embed.mongo.config.ArtifactStoreBuilder;
+	import de.flapdoodle.embed.mongo.config.ExtractedArtifactStoreBuilder;
 
 	...
 
@@ -146,10 +141,10 @@ This way the firewall dialog only popup once any your done. See [Executable Coll
 
 	IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder()
 		.defaults(command)
-		.artifactStore(new ArtifactStoreBuilder()
+		.artifactStore(new ExtractedArtifactStoreBuilder()
 			.defaults(command)
 			.download(new DownloadConfigBuilder()
-			.defaultsForCommand(command))
+					.defaultsForCommand(command).build())
 			.executableNaming(new UserTempNaming()))
 		.build();
 
@@ -245,7 +240,7 @@ This way the firewall dialog only popup once any your done. See [Executable Coll
 
 	IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder()
 		.defaults(command)
-		.artifactStore(new ArtifactStoreBuilder()
+		.artifactStore(new ExtractedArtifactStoreBuilder()
 			.defaults(command)
 			.download(new DownloadConfigBuilder()
 				.defaultsForCommand(command)
@@ -261,7 +256,7 @@ This way the firewall dialog only popup once any your done. See [Executable Coll
 
 	IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder()
 		.defaults(command)
-		.artifactStore(new ArtifactStoreBuilder()
+		.artifactStore(new ExtractedArtifactStoreBuilder()
 			.defaults(command)
 			.download(new DownloadConfigBuilder()
 				.defaultsForCommand(command)
@@ -280,7 +275,7 @@ This way the firewall dialog only popup once any your done. See [Executable Coll
 
 	IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder()
 		.defaults(command)
-		.artifactStore(new ArtifactStoreBuilder()
+		.artifactStore(new ExtractedArtifactStoreBuilder()
 			.defaults(command)
 			.download(new DownloadConfigBuilder()
 				.defaultsForCommand(command)
@@ -367,7 +362,7 @@ This way the firewall dialog only popup once any your done. See [Executable Coll
 	IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder()
 		.defaultsWithLogger(Command.MongoD,logger)
 		.processOutput(processOutput)
-		.artifactStore(new ArtifactStoreBuilder()
+		.artifactStore(new ExtractedArtifactStoreBuilder()
 			.defaults(Command.MongoD)
 			.download(new DownloadConfigBuilder()
 				.defaultsForCommand(Command.MongoD)
@@ -510,7 +505,7 @@ We changed the syncDelay to 0 which turns off sync to disc. To turn on default v
 	IMongodConfig mongodConfig = new MongodConfigBuilder()
 	.version(Version.Main.PRODUCTION)
 	.cmdOptions(new MongoCmdOptionsBuilder()
-		.syncDeplay(10)
+		.syncDelay(10)
 		.useNoPrealloc(false)
 		.useSmallFiles(false)
 		.useNoJournal(false)

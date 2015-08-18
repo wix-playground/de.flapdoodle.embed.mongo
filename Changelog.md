@@ -1,6 +1,11 @@
 ### Changelog
 
-#### 1.48.3 (SNAPSHOT)
+#### 1.50.1 (SNAPSHOT)
+
+#### 1.50.0
+
+- major refactoring in de.flapdoodle.embed.process thanks to https://github.com/julien-may
+- extracted files are keept, which should give some faster tests :)
 
 #### 1.48.2
 
