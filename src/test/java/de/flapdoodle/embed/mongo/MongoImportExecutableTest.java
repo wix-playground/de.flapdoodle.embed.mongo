@@ -79,6 +79,33 @@ public class MongoImportExecutableTest  extends TestCase {
         mongodExe.stop();
     }
 
+    @Test
+    public void testMongoImportDoesNotStopMainMongodProcess() throws IOException, InterruptedException {
+
+        IMongodConfig mongodConfig = new MongodConfigBuilder().version(Version.Main.PRODUCTION).net(new Net(12346, Network.localhostIsIPv6())).build();
+
+        IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder().defaults(Command.MongoD).build();
+
+        MongodExecutable mongodExe = MongodStarter.getInstance(runtimeConfig).prepare(mongodConfig);
+        MongodProcess mongod = mongodExe.start();
+
+        String jsonFile = Thread.currentThread().getContextClassLoader().getResource("sample.json").toString();
+        jsonFile = jsonFile.replaceFirst("file:","");
+
+        MongoImportExecutable mongoImportExecutable=mongoImportExecutable(12346,"importDatabase","importCollection",jsonFile,true,true,true);
+        MongoImportProcess mongoImportProcess=null;
+
+        try {
+            mongoImportProcess=mongoImportExecutable.start();
+            mongoImportProcess.stop();
+        } finally {
+            Assert.assertTrue("mongoDB process should still be running", mongod.isProcessRunning());
+        }
+
+        mongod.stop();
+        mongodExe.stop();
+    }
+
     private MongoImportExecutable mongoImportExecutable(int port, String dbName, String collection, String jsonFile, Boolean jsonArray,Boolean upsert, Boolean drop) throws UnknownHostException,
             IOException {
         IMongoImportConfig mongoImportConfig = new MongoImportConfigBuilder()
