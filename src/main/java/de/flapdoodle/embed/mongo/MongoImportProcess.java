@@ -29,11 +29,12 @@ import de.flapdoodle.embed.mongo.runtime.MongoImport;
 import de.flapdoodle.embed.process.config.IRuntimeConfig;
 import de.flapdoodle.embed.process.distribution.Distribution;
 import de.flapdoodle.embed.process.extract.IExtractedFileSet;
+import de.flapdoodle.embed.process.runtime.AbstractProcess;
 
 /**
  * Created by canyaman on 10/04/14.
  */
-public class MongoImportProcess  extends AbstractMongoProcess<IMongoImportConfig, MongoImportExecutable, MongoImportProcess> {
+public class MongoImportProcess  extends AbstractProcess<IMongoImportConfig, MongoImportExecutable, MongoImportProcess> {
 
     public MongoImportProcess(Distribution distribution, IMongoImportConfig config, IRuntimeConfig runtimeConfig,
                          MongoImportExecutable mongosExecutable) throws IOException {
@@ -45,9 +46,13 @@ public class MongoImportProcess  extends AbstractMongoProcess<IMongoImportConfig
             throws IOException {
         return MongoImport.getCommandLine(getConfig(), files);
     }
+
     @Override
-    protected String successMessage() {
-        return "imported";
+    protected void stopInternal() {
+    }
+
+    @Override
+    protected void cleanupInternal() {
     }
 }
 
