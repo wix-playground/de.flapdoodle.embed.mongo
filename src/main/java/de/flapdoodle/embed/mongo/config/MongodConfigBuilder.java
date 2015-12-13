@@ -73,8 +73,13 @@ public class MongodConfigBuilder extends AbstractMongoConfigBuilder<IMongodConfi
 		get(PARAMS).put(name, value);
 		return this;
 	}
+
+	public MongodConfigBuilder withLaunchArgument(String name) {
+		get(ARGS).put(name, null);
+		return this;
+	}
 	
-	public MongodConfigBuilder setLaunchArgument(String name, String value) {
+	public MongodConfigBuilder withLaunchArgument(String name, String value) {
 		get(ARGS).put(name, value);
 		return this;
 	}

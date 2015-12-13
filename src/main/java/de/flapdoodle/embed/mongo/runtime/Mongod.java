@@ -137,7 +137,10 @@ public class Mongod extends AbstractMongo {
 		if (config.args() != null && !config.args().isEmpty()) {
 			for (Object key : config.args().keySet()) {
 				ret.add((String) key);
-				ret.add((String) config.args().get(key));
+				String val = (String) config.args().get(key);
+				if ( val != null) {
+					ret.add(val);
+				}
 			}
 		}
 		if (config.cmdOptions().auth()) {
