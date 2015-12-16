@@ -64,6 +64,13 @@ public class MongoImport extends AbstractMongo {
             ret.add("--file");
             ret.add(config.getImportFile());
         }
+		if (config.isHeaderline()) {
+			ret.add("--headerline");
+		}
+		if (config.getType() != null) {
+			ret.add("--type");
+			ret.add(config.getType());
+		}
 
         return ret;
     }
