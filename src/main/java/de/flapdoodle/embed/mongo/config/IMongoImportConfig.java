@@ -28,6 +28,8 @@ public interface IMongoImportConfig extends IMongoConfig{
     public String getDatabaseName();
     public String getCollectionName();
     public String getImportFile();
+	public String getType();
+	public boolean isHeaderline();
     public boolean isJsonArray();
     public boolean isDropCollection();
     public boolean isUpsertDocuments();

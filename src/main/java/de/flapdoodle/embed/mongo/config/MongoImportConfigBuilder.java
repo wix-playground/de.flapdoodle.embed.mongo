@@ -36,6 +36,8 @@ public class MongoImportConfigBuilder extends AbstractMongoConfigBuilder<IMongoI
     protected static final TypedProperty<String> DB_NAME = TypedProperty.with("db", String.class);
     protected static final TypedProperty<String> IMPORT_FILE = TypedProperty.with("file", String.class);
     protected static final TypedProperty<String> COLLECTION = TypedProperty.with("collection", String.class);
+	protected static final TypedProperty<String> TYPE = TypedProperty.with("type", String.class);
+    protected static final TypedProperty<Boolean> HEADERLINE = TypedProperty.with("headerline", Boolean.class);
     protected static final TypedProperty<Boolean> JSON_ARRAY = TypedProperty.with("jsonArray", Boolean.class);
     protected static final TypedProperty<Boolean> UPSERT = TypedProperty.with("upsert", Boolean.class);
     protected static final TypedProperty<Boolean> DROP = TypedProperty.with("drop", Boolean.class);
@@ -44,6 +46,8 @@ public class MongoImportConfigBuilder extends AbstractMongoConfigBuilder<IMongoI
     public MongoImportConfigBuilder() throws UnknownHostException, IOException {
         super();
         property(PID_FILE).setDefault("mongoimport.pid");
+		property(TYPE).setDefault("json");
+		property(HEADERLINE).setDefault(Boolean.FALSE);
     }
 
     public MongoImportConfigBuilder version(IFeatureAwareVersion version) {
@@ -80,6 +84,16 @@ public class MongoImportConfigBuilder extends AbstractMongoConfigBuilder<IMongoI
         set(COLLECTION, collection);
         return this;
     }
+	
+	public MongoImportConfigBuilder type(String type) {
+		set(TYPE, type);
+		return this;
+	}
+	
+	public MongoImportConfigBuilder headerline(Boolean headerline) {
+		set(HEADERLINE, headerline);
+		return this;
+	}
 
     public MongoImportConfigBuilder jsonArray(Boolean jsonArray) {
         set(JSON_ARRAY, jsonArray);
@@ -104,6 +118,8 @@ public class MongoImportConfigBuilder extends AbstractMongoConfigBuilder<IMongoI
         String database = get(DB_NAME);
         String collection = get(COLLECTION);
         String importFile = get(IMPORT_FILE);
+		String type = get(TYPE);
+        Boolean headerline = get(HEADERLINE);
         Boolean jsonArray= get(JSON_ARRAY);
         Boolean upsert = get(UPSERT);
         Boolean drop = get(DROP);
@@ -111,19 +127,22 @@ public class MongoImportConfigBuilder extends AbstractMongoConfigBuilder<IMongoI
         String pidFile = get(PID_FILE);
 
 		return new ImmutableMongoImportConfig(version, net, timeout, cmdOptions, pidFile,
-				database, collection, importFile, jsonArray, upsert, drop);
+				database, collection, importFile, type, headerline, jsonArray, upsert, drop);
     }
 
     static class ImmutableMongoImportConfig extends ImmutableMongoConfig implements IMongoImportConfig {
         private final String _databaseName;
         private final String _getImportFile;
         private final String _collectionName;
+		private final String _type;
+		private final Boolean _headerline;
         private final Boolean _jsonArray;
         private final Boolean _dropCollection;
         private final Boolean _upsetDocuments;
 
 		public ImmutableMongoImportConfig(IFeatureAwareVersion version, Net net, Timeout timeout, IMongoCmdOptions cmdOptions, String pidFile,
-											String database, String collection, String importFile, Boolean jsonArray, Boolean upsert, Boolean drop) {
+											String database, String collection, String importFile, String type, Boolean headerline,
+											Boolean jsonArray, Boolean upsert, Boolean drop) {
 			super(new SupportConfig(Command.MongoImport), version, net, null, null, timeout, cmdOptions, pidFile);
             _databaseName=database;
             _collectionName=collection;
@@ -131,6 +150,8 @@ public class MongoImportConfigBuilder extends AbstractMongoConfigBuilder<IMongoI
             _jsonArray=jsonArray;
             _dropCollection=drop;
             _upsetDocuments=upsert;
+			_type=type;
+			_headerline=headerline;
         }
 
         public String getDatabaseName(){
@@ -142,6 +163,12 @@ public class MongoImportConfigBuilder extends AbstractMongoConfigBuilder<IMongoI
         public String getImportFile(){
             return _getImportFile;
         }
+		public String getType(){
+			return _type;
+		}
+		public boolean isHeaderline(){
+			return _headerline;
+		}
         public boolean isJsonArray() {
             return _jsonArray;
         }
