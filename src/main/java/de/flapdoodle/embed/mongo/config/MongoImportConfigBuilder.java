@@ -90,22 +90,22 @@ public class MongoImportConfigBuilder extends AbstractMongoConfigBuilder<IMongoI
 		return this;
 	}
 	
-	public MongoImportConfigBuilder headerline(Boolean headerline) {
+	public MongoImportConfigBuilder headerline(boolean headerline) {
 		set(HEADERLINE, headerline);
 		return this;
 	}
 
-    public MongoImportConfigBuilder jsonArray(Boolean jsonArray) {
+    public MongoImportConfigBuilder jsonArray(boolean jsonArray) {
         set(JSON_ARRAY, jsonArray);
         return this;
     }
 
-    public MongoImportConfigBuilder upsert(Boolean upsert) {
+    public MongoImportConfigBuilder upsert(boolean upsert) {
         set(UPSERT, upsert);
         return this;
     }
 
-    public MongoImportConfigBuilder dropCollection(Boolean dropCollection) {
+    public MongoImportConfigBuilder dropCollection(boolean dropCollection) {
         set(DROP, dropCollection);
         return this;
     }
@@ -135,14 +135,14 @@ public class MongoImportConfigBuilder extends AbstractMongoConfigBuilder<IMongoI
         private final String _getImportFile;
         private final String _collectionName;
 		private final String _type;
-		private final Boolean _headerline;
-        private final Boolean _jsonArray;
-        private final Boolean _dropCollection;
-        private final Boolean _upsetDocuments;
+		private final boolean _headerline;
+        private final boolean _jsonArray;
+        private final boolean _dropCollection;
+        private final boolean _upsetDocuments;
 
 		public ImmutableMongoImportConfig(IFeatureAwareVersion version, Net net, Timeout timeout, IMongoCmdOptions cmdOptions, String pidFile,
-											String database, String collection, String importFile, String type, Boolean headerline,
-											Boolean jsonArray, Boolean upsert, Boolean drop) {
+											String database, String collection, String importFile, String type, boolean headerline,
+											boolean jsonArray, boolean upsert, boolean drop) {
 			super(new SupportConfig(Command.MongoImport), version, net, null, null, timeout, cmdOptions, pidFile);
             _databaseName=database;
             _collectionName=collection;

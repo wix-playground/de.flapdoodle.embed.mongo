@@ -51,7 +51,9 @@ public class MongoImportExecutableTest  extends TestCase {
     @Test
     public void testStartMongoImport() throws IOException, InterruptedException {
 
-        IMongodConfig mongodConfig = new MongodConfigBuilder().version(Version.Main.PRODUCTION).net(new Net(12346, Network.localhostIsIPv6())).build();
+        int serverPort = Network.getFreeServerPort();
+        
+		IMongodConfig mongodConfig = new MongodConfigBuilder().version(Version.Main.PRODUCTION).net(new Net(serverPort, Network.localhostIsIPv6())).build();
 
         IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder().defaults(Command.MongoD).build();
 
@@ -59,9 +61,13 @@ public class MongoImportExecutableTest  extends TestCase {
         MongodProcess mongod = mongodExe.start();
 
         String jsonFile=Thread.currentThread().getContextClassLoader().getResource("sample.json").toString();
-        jsonFile=jsonFile.replaceFirst("file:/","");
+        if (jsonFile.startsWith("file://")) {
+        	jsonFile=jsonFile.replaceFirst("file:/","");
+        } else {
+            jsonFile=jsonFile.replaceFirst("file:","");
+        }
 
-        MongoImportExecutable mongoImportExecutable=mongoImportExecutable(12346,"importDatabase","importCollection",jsonFile,true,true,true);
+        MongoImportExecutable mongoImportExecutable=mongoImportExecutable(serverPort,"importDatabase","importCollection",jsonFile,true,true,true);
         MongoImportProcess mongoImportProcess=null;
         Boolean dataImported=false;
         try {

@@ -25,7 +25,8 @@ import java.util.EnumSet;
 
 public enum Feature {
 	SYNC_DELAY, 
-	TEXT_SEARCH /* enabled by default in mongodb >=2.6 */;
+	TEXT_SEARCH /* enabled by default in mongodb >=2.6 */,
+	STORAGE_ENGINE /* with >=3.0, default changhed with 3.2 */;
 
 	public static EnumSet<Feature> asSet(Feature... features) {
 		if (features.length == 0) {
