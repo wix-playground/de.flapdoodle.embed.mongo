@@ -40,6 +40,7 @@ import de.flapdoodle.embed.mongo.config.RuntimeConfigBuilder;
 import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.process.config.IRuntimeConfig;
 import de.flapdoodle.embed.process.runtime.Network;
+import java.io.File;
 
 /**
  * Created by canyaman on 10/04/14.
@@ -61,12 +62,8 @@ public class MongoImportExecutableTest  extends TestCase {
         MongodProcess mongod = mongodExe.start();
 
         String jsonFile=Thread.currentThread().getContextClassLoader().getResource("sample.json").toString();
-        if (jsonFile.startsWith("file://")) {
-        	jsonFile=jsonFile.replaceFirst("file:/","");
-        } else {
-            jsonFile=jsonFile.replaceFirst("file:","");
-        }
-
+        jsonFile=jsonFile.replaceFirst("file:","");
+        jsonFile = new File(jsonFile).getAbsolutePath();
         MongoImportExecutable mongoImportExecutable=mongoImportExecutable(serverPort,"importDatabase","importCollection",jsonFile,true,true,true);
         MongoImportProcess mongoImportProcess=null;
         Boolean dataImported=false;
