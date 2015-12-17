@@ -59,11 +59,11 @@ public class Mongod extends AbstractMongo {
 	/**
 	 * Binary sample of shutdown command
 	 */
-	static final byte[] SHUTDOWN_COMMAND = {0x47, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	static final byte[] SHUTDOWN_COMMAND = { 0x47, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 			(byte) 0xD4, 0x07, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x61, 0x64, 0x6D, 0x69, 0x6E, 0x2E, 0x24, 0x63, 0x6D,
 			0x64, 0x00, 0x00, 0x00, 0x00, 0x00, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, 0x1B, 0x00, 0x00,
 			0x00, 0x10, 0x73, 0x68, 0x75, 0x74, 0x64, 0x6F, 0x77, 0x6E, 0x00, 0x01, 0x00, 0x00, 0x00, 0x08, 0x66, 0x6F,
-			0x72, 0x63, 0x65, 0x00, 0x01, 0x00, 0x05, 0x00, 0x00, 0x00, 0x00};
+			0x72, 0x63, 0x65, 0x00, 0x01, 0x00, 0x05, 0x00, 0x00, 0x00, 0x00 };
 	public static final int SOCKET_TIMEOUT = 2000;
 	public static final int CONNECT_TIMEOUT = 2000;
 	public static final int BYTE_BUFFER_LENGTH = 512;
@@ -72,9 +72,9 @@ public class Mongod extends AbstractMongo {
 	public static boolean sendShutdown(InetAddress hostname, int port) {
 		if (!hostname.isLoopbackAddress()) {
 			logger.warn("---------------------------------------\n"
-                    + "Your localhost ({}) is not a loopback adress\n"
-                    + "We can NOT send shutdown to mongod, because it is denied from remote.\n"
-                    + "---------------------------------------\n", hostname.getHostAddress());
+					+ "Your localhost ({}) is not a loopback adress\n"
+					+ "We can NOT send shutdown to mongod, because it is denied from remote.\n"
+					+ "---------------------------------------\n", hostname.getHostAddress());
 			return false;
 		}
 
@@ -132,6 +132,15 @@ public class Mongod extends AbstractMongo {
 		if (config.params() != null && !config.params().isEmpty()) {
 			for (Object key : config.params().keySet()) {
 				ret.addAll(asList(format("--setParameter"), format("%s=%s", key, config.params().get(key))));
+			}
+		}
+		if (config.args() != null && !config.args().isEmpty()) {
+			for (Object key : config.args().keySet()) {
+				ret.add((String) key);
+				String val = (String) config.args().get(key);
+				if ( val != null) {
+					ret.add(val);
+				}
 			}
 		}
 		if (config.cmdOptions().auth()) {
@@ -204,14 +213,14 @@ public class Mongod extends AbstractMongo {
 	public static List<String> enhanceCommandLinePlattformSpecific(Distribution distribution, List<String> commands) {
 		if (NUMA.isNUMA(new SupportConfig(Command.MongoD), distribution.getPlatform())) {
 			switch (distribution.getPlatform()) {
-				case Linux:
-					List<String> ret = new ArrayList<String>();
-					ret.add("numactl");
-					ret.add("--interleave=all");
-					ret.addAll(commands);
-					return ret;
-                default:
-                    logger.warn("NUMA Plattform detected, but not supported.");
+			case Linux:
+				List<String> ret = new ArrayList<String>();
+				ret.add("numactl");
+				ret.add("--interleave=all");
+				ret.addAll(commands);
+				return ret;
+			default:
+				logger.warn("NUMA Plattform detected, but not supported.");
 			}
 		}
 		return commands;
