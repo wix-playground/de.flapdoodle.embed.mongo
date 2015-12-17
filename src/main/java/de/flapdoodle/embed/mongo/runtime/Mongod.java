@@ -152,9 +152,11 @@ public class Mongod extends AbstractMongo {
 			ret.add("--master");
 		}
 
-		if (config.cmdOptions().storageEngine() != null) {
-			ret.add("--storageEngine");
-			ret.add(config.cmdOptions().storageEngine());
+		if (config.version().enabled(Feature.STORAGE_ENGINE)) { 
+			if (config.cmdOptions().storageEngine() != null) {
+				ret.add("--storageEngine");
+				ret.add(config.cmdOptions().storageEngine());
+			}
 		}
 
 		if (config.cmdOptions().isVerbose()) {

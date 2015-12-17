@@ -151,22 +151,22 @@ public enum Version implements IFeatureAwareVersion {
    * Latest 3.0 series development release
    */
   @Deprecated
-  V3_0_0("3.0.0", Feature.SYNC_DELAY),
+  V3_0_0("3.0.0", Feature.SYNC_DELAY, Feature.STORAGE_ENGINE),
   @Deprecated
-  V3_0_1("3.0.1",Feature.SYNC_DELAY),
+  V3_0_1("3.0.1",Feature.SYNC_DELAY, Feature.STORAGE_ENGINE),
   @Deprecated
-  V3_0_2("3.0.2",Feature.SYNC_DELAY),
+  V3_0_2("3.0.2",Feature.SYNC_DELAY, Feature.STORAGE_ENGINE),
   @Deprecated
-  V3_0_4("3.0.4",Feature.SYNC_DELAY),
-  V3_0_5("3.0.5",Feature.SYNC_DELAY),
+  V3_0_4("3.0.4",Feature.SYNC_DELAY, Feature.STORAGE_ENGINE),
+  V3_0_5("3.0.5",Feature.SYNC_DELAY, Feature.STORAGE_ENGINE),
   /**
    * Latest 3.1 series development release
    */
   @Deprecated
-  V3_1_0("3.1.0",Feature.SYNC_DELAY),
+  V3_1_0("3.1.0",Feature.SYNC_DELAY, Feature.STORAGE_ENGINE),
   @Deprecated
-  V3_1_5("3.1.5",Feature.SYNC_DELAY),
-  V3_1_6("3.1.6",Feature.SYNC_DELAY),
+  V3_1_5("3.1.5",Feature.SYNC_DELAY, Feature.STORAGE_ENGINE),
+  V3_1_6("3.1.6",Feature.SYNC_DELAY, Feature.STORAGE_ENGINE),
 
   ;
 
