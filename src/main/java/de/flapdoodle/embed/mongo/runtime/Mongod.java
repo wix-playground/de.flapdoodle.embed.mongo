@@ -135,10 +135,10 @@ public class Mongod extends AbstractMongo {
 			}
 		}
 		if (config.args() != null && !config.args().isEmpty()) {
-			for (Object key : config.args().keySet()) {
+			for (String key : config.args().keySet()) {
 				ret.add((String) key);
 				String val = (String) config.args().get(key);
-				if ( val != null) {
+				if (val != null && !val.isEmpty()) {
 					ret.add(val);
 				}
 			}

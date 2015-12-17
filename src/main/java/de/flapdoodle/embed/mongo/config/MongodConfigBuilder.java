@@ -22,7 +22,9 @@ package de.flapdoodle.embed.mongo.config;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import de.flapdoodle.embed.mongo.Command;
@@ -34,10 +36,10 @@ import de.flapdoodle.embed.process.builder.TypedProperty;
 public class MongodConfigBuilder extends AbstractMongoConfigBuilder<IMongodConfig> {
 
 	protected static final TypedProperty<Storage> REPLICATION = TypedProperty.with("Replication", Storage.class);
-	protected static final TypedProperty<Map> PARAMS = TypedProperty.with("Params", Map.class);
-	protected static final TypedProperty<Map> ARGS = TypedProperty.with("Args", Map.class);
 	protected static final TypedProperty<Boolean> CONFIG_SERVER = TypedProperty.with("ConfigServer", Boolean.class);
 	protected static final TypedProperty<IMongoProcessListener> PROCESS_LISTENER = TypedProperty.with("ProcessListener", IMongoProcessListener.class);
+	protected Map<String,String> params=new LinkedHashMap<String, String>();
+	protected Map<String,String> args=new LinkedHashMap<String, String>();
 
 	public MongodConfigBuilder() throws UnknownHostException, IOException {
 		super();
@@ -45,8 +47,6 @@ public class MongodConfigBuilder extends AbstractMongoConfigBuilder<IMongodConfi
 		property(CONFIG_SERVER).setDefault(false);
 		property(PROCESS_LISTENER).setDefault(new NoopProcessListener());
 		property(PID_FILE).setDefault("mongod.pid");
-		property(PARAMS).setDefault(new HashMap());
-		property(ARGS).setDefault(new HashMap());
 	}
 
 	public MongodConfigBuilder version(IFeatureAwareVersion version) {
@@ -70,17 +70,17 @@ public class MongodConfigBuilder extends AbstractMongoConfigBuilder<IMongodConfi
 	}
 
 	public MongodConfigBuilder setParameter(String name, String value) {
-		get(PARAMS).put(name, value);
+		params.put(name, value);
 		return this;
 	}
 
 	public MongodConfigBuilder withLaunchArgument(String name) {
-		get(ARGS).put(name, null);
+		args.put(name, null);
 		return this;
 	}
 	
 	public MongodConfigBuilder withLaunchArgument(String name, String value) {
-		get(ARGS).put(name, value);
+		args.put(name, value);
 		return this;
 	}
 
@@ -114,8 +114,6 @@ public class MongodConfigBuilder extends AbstractMongoConfigBuilder<IMongodConfi
 		IMongoCmdOptions cmdOptions=get(CMD_OPTIONS);
 		IMongoProcessListener processListener=get(PROCESS_LISTENER);
 		String pidFile=get(PID_FILE);
-		Map params = get(PARAMS);
-		Map args = get(ARGS);
 
 		return new ImmutableMongodConfig(version, net, timeout, cmdOptions, pidFile, replication, configServer, processListener, params, args);
 	}
@@ -125,18 +123,18 @@ public class MongodConfigBuilder extends AbstractMongoConfigBuilder<IMongodConfi
 		private final Storage _replication;
 		private final boolean _configServer;
 		private final IMongoProcessListener _processListener;
-		private final Map _params;
-		private final Map _args;
+		private final Map<String, String> _params;
+		private final Map<String, String> _args;
 
 		public ImmutableMongodConfig(IFeatureAwareVersion version, Net net, Timeout timeout, IMongoCmdOptions cmdOptions,
 										String pidFile, Storage replication, boolean configServer,
-										IMongoProcessListener processListener, Map params, Map args) {
+										IMongoProcessListener processListener, Map<String, String> params, Map<String, String> args) {
 			super(new SupportConfig(Command.MongoD), version, net, null, null, timeout, cmdOptions, pidFile);
 			_replication = replication;
 			_configServer = configServer;
 			_processListener = processListener;
-			_params = params;
-			_args = args;
+			_params = new LinkedHashMap<String, String>(params);
+			_args = new LinkedHashMap<String, String>(args);
 		}
 
 		@Override
@@ -155,13 +153,13 @@ public class MongodConfigBuilder extends AbstractMongoConfigBuilder<IMongodConfi
 		}
 
 		@Override
-		public Map params() {
-			return _params;
+		public Map<String, String> params() {
+			return Collections.unmodifiableMap(_params);
 		}
 		
 		@Override
-		public Map args() {
-			return _args;
+		public Map<String, String> args() {
+			return Collections.unmodifiableMap(_args);
 		}
 	}
 }

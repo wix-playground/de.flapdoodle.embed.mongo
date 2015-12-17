@@ -32,7 +32,7 @@ public interface IMongodConfig extends IMongoConfig {
 
 	IMongoProcessListener processListener();
 
-	Map params();
+	Map<String, String> params();
 	
-	Map args();
+	Map<String, String> args();
 }
