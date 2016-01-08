@@ -148,7 +148,7 @@ public enum Version implements IFeatureAwareVersion {
   V2_7_1("2.7.1",Feature.SYNC_DELAY),
 
   /**
-   * Latest 3.0 series development release
+   * Latest 3.0 series production release
    */
   @Deprecated
   V3_0_0("3.0.0", Feature.SYNC_DELAY, Feature.STORAGE_ENGINE),
@@ -158,7 +158,15 @@ public enum Version implements IFeatureAwareVersion {
   V3_0_2("3.0.2",Feature.SYNC_DELAY, Feature.STORAGE_ENGINE),
   @Deprecated
   V3_0_4("3.0.4",Feature.SYNC_DELAY, Feature.STORAGE_ENGINE),
+  @Deprecated
   V3_0_5("3.0.5",Feature.SYNC_DELAY, Feature.STORAGE_ENGINE),
+  @Deprecated
+  V3_0_6("3.0.6",Feature.SYNC_DELAY, Feature.STORAGE_ENGINE),
+  @Deprecated
+  V3_0_7("3.0.7",Feature.SYNC_DELAY, Feature.STORAGE_ENGINE),
+  @Deprecated
+  V3_0_8("3.0.8",Feature.SYNC_DELAY, Feature.STORAGE_ENGINE),
+
   /**
    * Latest 3.1 series development release
    */
@@ -166,7 +174,18 @@ public enum Version implements IFeatureAwareVersion {
   V3_1_0("3.1.0",Feature.SYNC_DELAY, Feature.STORAGE_ENGINE),
   @Deprecated
   V3_1_5("3.1.5",Feature.SYNC_DELAY, Feature.STORAGE_ENGINE),
+  @Deprecated
   V3_1_6("3.1.6",Feature.SYNC_DELAY, Feature.STORAGE_ENGINE),
+
+  /**
+   * Latest 3.2 series production release
+   */
+  V3_2_0("3.2.0", Feature.SYNC_DELAY, Feature.STORAGE_ENGINE),
+  
+  /**
+   * Latest 3.2 series development release
+   */
+  V3_2_1_RC3("3.2.1-rc3", Feature.SYNC_DELAY, Feature.STORAGE_ENGINE),
 
   ;
 
@@ -215,16 +234,19 @@ public enum Version implements IFeatureAwareVersion {
 		/**
 		 * Latest production release
 		 */
-		V3_0(V3_0_5),
+		V3_2(V3_2_0),
 		/**
 		 * Latest development release
 		 */
 		V3_1(V3_1_6),
+		
+		// Older releases
+		V3_0(V3_0_8),
 
 		@Deprecated
 		LEGACY(V2_6),
-		PRODUCTION(V3_0),
-		DEVELOPMENT(V3_1), ;
+		PRODUCTION(V3_2),
+		DEVELOPMENT(V3_2_1_RC3), ;
 
 		private final IFeatureAwareVersion _latest;
 

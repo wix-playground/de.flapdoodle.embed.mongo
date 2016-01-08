@@ -90,7 +90,6 @@ public class StartConfigAndMongoDBServerTest {
 		IMongodConfig mongoConfigConfig = new MongodConfigBuilder()
 			.version(Version.Main.PRODUCTION)
 			.net(new Net(defaultConfigPort, Network.localhostIsIPv6()))
-			.configServer(true)
 			.build();
 
 		MongodExecutable mongodExecutable = MongodStarter.getDefaultInstance().prepare(mongoConfigConfig);
