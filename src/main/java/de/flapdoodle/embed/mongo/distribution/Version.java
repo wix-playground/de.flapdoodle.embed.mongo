@@ -174,12 +174,19 @@ public enum Version implements IFeatureAwareVersion {
   V3_1_0("3.1.0",Feature.SYNC_DELAY, Feature.STORAGE_ENGINE),
   @Deprecated
   V3_1_5("3.1.5",Feature.SYNC_DELAY, Feature.STORAGE_ENGINE),
+  @Deprecated
   V3_1_6("3.1.6",Feature.SYNC_DELAY, Feature.STORAGE_ENGINE),
 
   /**
    * Latest 3.2 series production release
    */
   V3_2_0("3.2.0", Feature.SYNC_DELAY, Feature.STORAGE_ENGINE),
+  
+  /**
+   * Latest 3.2 series development release
+   */
+  V3_2_1_RC3("3.2.1-rc3", Feature.SYNC_DELAY, Feature.STORAGE_ENGINE),
+
   ;
 
 	private final String specificVersion;
@@ -239,7 +246,7 @@ public enum Version implements IFeatureAwareVersion {
 		@Deprecated
 		LEGACY(V2_6),
 		PRODUCTION(V3_2),
-		DEVELOPMENT(V3_1), ;
+		DEVELOPMENT(V3_2_1_RC3), ;
 
 		private final IFeatureAwareVersion _latest;
 
