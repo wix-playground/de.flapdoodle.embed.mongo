@@ -16,3 +16,7 @@ notifications:
   email:
     - michael@mosmann.de
     - m.joehren@gmail.com
+
+cache:
+  directories:
+    - $HOME/.m2/repository
