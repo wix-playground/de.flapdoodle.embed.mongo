@@ -232,6 +232,9 @@ public enum Version implements IFeatureAwareVersion {
 		 * Latest development release
 		 */
 		V3_1(V3_1_6),
+		
+		// Older releases
+		V3_0(V3_0_8),
 
 		@Deprecated
 		LEGACY(V2_6),
