@@ -13,6 +13,10 @@ Embedded MongoDB will provide a platform neutral way for running mongodb in unit
 - its easy, much easier as installing right version by hand
 - you can change version per test
 
+## We need your help?
+
+Poll: [Which MongoDB version should stay supported?](https://docs.google.com/forms/d/1Iu8Gy4W0dPfwsE2czoPJAGtYijjmfcZISgb7pU-dZ9U/viewform?usp=send_form)
+
 ## Dependencies
 
 ### Build on top of
