@@ -176,16 +176,24 @@ public enum Version implements IFeatureAwareVersion {
   V3_1_5("3.1.5",Feature.SYNC_DELAY, Feature.STORAGE_ENGINE),
   @Deprecated
   V3_1_6("3.1.6",Feature.SYNC_DELAY, Feature.STORAGE_ENGINE),
-
-  /**
-   * Latest 3.2 series production release
-   */
+  @Deprecated
   V3_2_0("3.2.0", Feature.SYNC_DELAY, Feature.STORAGE_ENGINE),
   
   /**
    * Latest 3.2 series development release
    */
+  @Deprecated
   V3_2_1_RC3("3.2.1-rc3", Feature.SYNC_DELAY, Feature.STORAGE_ENGINE),
+
+  /**
+   * Latest 3.2 series production release
+   */
+  V3_2_1("3.2.1", Feature.SYNC_DELAY, Feature.STORAGE_ENGINE),
+
+  /**
+   * Latest 3.3 series development release
+   */
+  V3_3_1("3.3.1", Feature.SYNC_DELAY, Feature.STORAGE_ENGINE),
 
   ;
 
@@ -203,9 +211,9 @@ public enum Version implements IFeatureAwareVersion {
 	}
 
 	@Override
-		public boolean enabled(Feature feature) {
-			return features.contains(feature);
-		}
+	public boolean enabled(Feature feature) {
+		return features.contains(feature);
+	}
 
 	@Override
 	public String toString() {
@@ -234,19 +242,21 @@ public enum Version implements IFeatureAwareVersion {
 		/**
 		 * Latest production release
 		 */
-		V3_2(V3_2_0),
+		V3_2(V3_2_1),
+
 		/**
 		 * Latest development release
 		 */
-		V3_1(V3_1_6),
-		
+		V3_3(V3_3_1),
+        
 		// Older releases
 		V3_0(V3_0_8),
+		V3_1(V3_1_6),
 
 		@Deprecated
 		LEGACY(V2_6),
 		PRODUCTION(V3_2),
-		DEVELOPMENT(V3_2_1_RC3), ;
+		DEVELOPMENT(V3_3), ;
 
 		private final IFeatureAwareVersion _latest;
 
