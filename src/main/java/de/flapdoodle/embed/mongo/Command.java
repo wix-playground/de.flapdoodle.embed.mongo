@@ -22,7 +22,7 @@ package de.flapdoodle.embed.mongo;
 
 
 public enum Command {
-	MongoD("mongod"),MongoS("mongos"),Mongo("mongo"),MongoImport("mongoimport");
+	MongoD("mongod"),MongoS("mongos"),Mongo("mongo"),MongoImport("mongoimport"),MongoRestore("mongorestore");
 	
 	private final String commandName;
 
