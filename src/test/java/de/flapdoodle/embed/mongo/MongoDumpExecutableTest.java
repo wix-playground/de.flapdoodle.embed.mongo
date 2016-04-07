@@ -30,14 +30,15 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.IOException;
 
-public class MongoRestoreExecutableTest extends TestCase {
+public class MongoDumpExecutableTest extends TestCase {
 
-   private static final Logger _logger = LoggerFactory.getLogger(MongoRestoreExecutableTest.class.getName());
+   private static final Logger _logger = LoggerFactory.getLogger(MongoDumpExecutableTest.class.getName());
 
    @Test
-   public void testStartMongoRestore() throws IOException, InterruptedException {
+   public void testStartMongoDump() throws IOException, InterruptedException {
 
       int serverPort = Network.getFreeServerPort();
 
@@ -49,19 +50,15 @@ public class MongoRestoreExecutableTest extends TestCase {
       MongodProcess mongod = mongodExe.start();
 
       String jsonFile = Thread.currentThread().getContextClassLoader().getResource("dump").getFile();
-      MongoRestoreExecutable mongoRestoreExecutable = mongoRestoreExecutable(serverPort, jsonFile, true);
-      MongoRestoreProcess mongoRestoreProcess = null;
-      Boolean dataRestored = false;
       try {
-         mongoRestoreProcess = mongoRestoreExecutable.start();
-         dataRestored = true;
-
+         mongoRestoreExecutable(serverPort, jsonFile, true).start();
+         File tempDirectory = File.createTempFile("mongo", "dump");
+         tempDirectory.delete();
+         tempDirectory.mkdir();
+         mongoDumpExecutable(serverPort, tempDirectory.getAbsolutePath()).start();
       } catch (Exception e) {
-         _logger.info("MongoRestore exception: {}", e.getStackTrace());
-         dataRestored = false;
-      } finally {
-         Assert.assertTrue("mongoDB restore data in json format", dataRestored);
-         mongoRestoreProcess.stop();
+         _logger.info("MongoDump exception: {}", e.getStackTrace());
+         Assert.fail("mongoDB did not Dump data in json format");
       }
 
       mongod.stop();
@@ -77,5 +74,15 @@ public class MongoRestoreExecutableTest extends TestCase {
          .build();
 
       return MongoRestoreStarter.getDefaultInstance().prepare(mongoRestoreConfig);
+   }
+
+   private MongoDumpExecutable mongoDumpExecutable(int port, String dumpLocation) throws IOException {
+      IMongoDumpConfig mongoDumpConfig = new MongoDumpConfigBuilder()
+         .version(Version.Main.PRODUCTION)
+         .net(new Net(port, Network.localhostIsIPv6()))
+         .out(dumpLocation)
+         .build();
+
+      return MongoDumpStarter.getDefaultInstance().prepare(mongoDumpConfig);
    }
 }

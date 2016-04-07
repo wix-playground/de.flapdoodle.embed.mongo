@@ -21,34 +21,23 @@
  */
 package de.flapdoodle.embed.mongo;
 
-import de.flapdoodle.embed.mongo.config.IMongoRestoreConfig;
-import de.flapdoodle.embed.mongo.runtime.MongoRestore;
+import de.flapdoodle.embed.mongo.config.IMongoDumpConfig;
 import de.flapdoodle.embed.process.config.IRuntimeConfig;
 import de.flapdoodle.embed.process.distribution.Distribution;
 import de.flapdoodle.embed.process.extract.IExtractedFileSet;
+import de.flapdoodle.embed.process.runtime.Executable;
 
 import java.io.IOException;
-import java.util.List;
 
-public class MongoRestoreProcess extends AbstractMongoProcess<IMongoRestoreConfig, MongoRestoreExecutable, MongoRestoreProcess> {
-
-    public MongoRestoreProcess(Distribution distribution, IMongoRestoreConfig config, IRuntimeConfig runtimeConfig,
-                               MongoRestoreExecutable mongosExecutable) throws IOException {
-        super(distribution, config, runtimeConfig, mongosExecutable);
+public class MongoDumpExecutable extends Executable<IMongoDumpConfig, MongoDumpProcess> {
+    public MongoDumpExecutable(Distribution distribution, IMongoDumpConfig mongodConfig, IRuntimeConfig runtimeConfig,
+                               IExtractedFileSet files) {
+        super(distribution, mongodConfig, runtimeConfig, files);
     }
 
     @Override
-    protected List<String> getCommandLine(Distribution distribution, IMongoRestoreConfig config, IExtractedFileSet files)
+    protected MongoDumpProcess start(Distribution distribution, IMongoDumpConfig config, IRuntimeConfig runtime)
             throws IOException {
-        return MongoRestore.getCommandLine(getConfig(), files);
-    }
-    @Override
-    protected String successMessage() {
-        return "restored";
-    }
-
-    @Override public void stopInternal() {
-        // Nothing to stop since we are just running mongo restore and don't want to kill the mongo instance
+        return new MongoDumpProcess(distribution, config, runtime, this);
     }
 }
-

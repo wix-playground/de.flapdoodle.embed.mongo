@@ -21,8 +21,8 @@
  */
 package de.flapdoodle.embed.mongo;
 
-import de.flapdoodle.embed.mongo.config.IMongoRestoreConfig;
-import de.flapdoodle.embed.mongo.runtime.MongoRestore;
+import de.flapdoodle.embed.mongo.config.IMongoDumpConfig;
+import de.flapdoodle.embed.mongo.runtime.MongoDump;
 import de.flapdoodle.embed.process.config.IRuntimeConfig;
 import de.flapdoodle.embed.process.distribution.Distribution;
 import de.flapdoodle.embed.process.extract.IExtractedFileSet;
@@ -30,21 +30,21 @@ import de.flapdoodle.embed.process.extract.IExtractedFileSet;
 import java.io.IOException;
 import java.util.List;
 
-public class MongoRestoreProcess extends AbstractMongoProcess<IMongoRestoreConfig, MongoRestoreExecutable, MongoRestoreProcess> {
+public class MongoDumpProcess extends AbstractMongoProcess<IMongoDumpConfig, MongoDumpExecutable, MongoDumpProcess> {
 
-    public MongoRestoreProcess(Distribution distribution, IMongoRestoreConfig config, IRuntimeConfig runtimeConfig,
-                               MongoRestoreExecutable mongosExecutable) throws IOException {
+    public MongoDumpProcess(Distribution distribution, IMongoDumpConfig config, IRuntimeConfig runtimeConfig,
+                            MongoDumpExecutable mongosExecutable) throws IOException {
         super(distribution, config, runtimeConfig, mongosExecutable);
     }
 
     @Override
-    protected List<String> getCommandLine(Distribution distribution, IMongoRestoreConfig config, IExtractedFileSet files)
+    protected List<String> getCommandLine(Distribution distribution, IMongoDumpConfig config, IExtractedFileSet files)
             throws IOException {
-        return MongoRestore.getCommandLine(getConfig(), files);
+        return MongoDump.getCommandLine(getConfig(), files);
     }
     @Override
     protected String successMessage() {
-        return "restored";
+        return "dumped";
     }
 
     @Override public void stopInternal() {
