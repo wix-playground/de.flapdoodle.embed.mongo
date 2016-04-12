@@ -18,19 +18,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.embed.mongo;
+package de.flapdoodle.embed.mongo.config;
 
+public interface IMongoDumpConfig extends IMongoConfig {
+   public boolean isVerbose();
+   public String getDatabaseName();
+   public String getCollectionName();
 
-public enum Command {
-	MongoD("mongod"),MongoS("mongos"),Mongo("mongo"),MongoImport("mongoimport"),MongoRestore("mongorestore"),MongoDump("mongodump");
-	
-	private final String commandName;
+   public String getQuery();
+   public String getQueryFile();
+   public String getReadPreference();
+   public boolean isForceTableScan();
 
-	Command(String commandName) {
-		this.commandName = commandName;
-	}
-	
-	public String commandName() {
-		return commandName;
-	}
+   public String getArchive();
+   public boolean isDumpDbUsersAndRoles();
+   public boolean isGzip();
+   public boolean isRepair();
+   public String getOut();
+   public boolean isOplog();
+   public String getExcludeCollection();
+   public String getExcludeCollectionWithPrefix();
+   public Integer getNumberOfParallelCollections();
 }
