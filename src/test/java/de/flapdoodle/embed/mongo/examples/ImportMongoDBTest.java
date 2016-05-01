@@ -52,8 +52,7 @@ public class ImportMongoDBTest extends TestCase {
     @Test
     public void testStartAndStopMongoImportAndMongod() throws UnknownHostException, IOException {
         // ->
-        int port = 12121;
-        int defaultConfigPort = 12345;
+        int defaultConfigPort = Network.getFreeServerPort();
         String defaultHost = "localhost";
         String database = "importTestDB";
         String collection = "importedCollection";
