@@ -22,6 +22,9 @@ package de.flapdoodle.embed.mongo.config;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import de.flapdoodle.embed.mongo.distribution.IFeatureAwareVersion;
 import de.flapdoodle.embed.process.builder.TypedProperty;
@@ -29,6 +32,7 @@ import de.flapdoodle.embed.process.builder.TypedProperty;
 public class MongosConfigBuilder extends AbstractMongoConfigBuilder<IMongosConfig> {
 
 	protected static final TypedProperty<String> CONFIG_DB = TypedProperty.with("ConfigDB", String.class);
+	protected Map<String,String> args=new LinkedHashMap<String, String>();
 
 	public MongosConfigBuilder() throws UnknownHostException, IOException {
 		super();
@@ -47,6 +51,11 @@ public class MongosConfigBuilder extends AbstractMongoConfigBuilder<IMongosConfi
 
 	public MongosConfigBuilder net(Net net) {
 		net().set(net);
+		return this;
+	}
+
+	public MongosConfigBuilder withLaunchArgument(String name, String value) {
+		args.put(name, value);
 		return this;
 	}
 
@@ -69,17 +78,19 @@ public class MongosConfigBuilder extends AbstractMongoConfigBuilder<IMongosConfi
 		IMongoCmdOptions cmdOptions=get(CMD_OPTIONS);
 		String pidFile = get(PID_FILE);
 
-		return new ImmutableMongosConfig(version, net, timeout, cmdOptions, pidFile, configDB);
+		return new ImmutableMongosConfig(version, net, timeout, cmdOptions, pidFile, configDB, args);
 	}
 
 	static class ImmutableMongosConfig extends ImmutableMongoConfig implements IMongosConfig {
 
 		private final String _configDB;
+		private final Map<String, String> _args;
 
 		public ImmutableMongosConfig(IFeatureAwareVersion version, Net net, Timeout timeout, IMongoCmdOptions cmdOptions,
-										String pidFile, String configDB) {
+										String pidFile, String configDB, Map<String, String> args) {
 			super(MongosSupportConfig.getInstance(), version, net, null, null, timeout, cmdOptions, pidFile);
 			_configDB = configDB;
+			_args = new LinkedHashMap<String, String>(args);
 		}
 
 		@Override
@@ -87,5 +98,9 @@ public class MongosConfigBuilder extends AbstractMongoConfigBuilder<IMongosConfi
 			return _configDB;
 		}
 
+		@Override
+		public Map<String, String> args() {
+			return Collections.unmodifiableMap(_args);
+		}
 	}
 }
