@@ -59,8 +59,7 @@ public class MongoRestore extends AbstractMongo {
          ret.add(config.getOplogLimit().toString());
       }
       if (config.getArchive() != null) {
-         ret.add("--archive");
-         ret.add(config.getArchive());
+         ret.add(String.format("--archive=%s", config.getArchive()));
       }
       if (config.isRestoreDbUsersAndRoles()) {
          ret.add("--restoreDbUsersAndRoles");

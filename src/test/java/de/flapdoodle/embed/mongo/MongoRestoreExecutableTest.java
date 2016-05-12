@@ -35,25 +35,31 @@ import java.io.IOException;
 public class MongoRestoreExecutableTest extends TestCase {
 
    private static final Logger _logger = LoggerFactory.getLogger(MongoRestoreExecutableTest.class.getName());
+   private static final String _archiveFileCompressed = "foo.archive.gz";
 
    @Test
    public void testStartMongoRestore() throws IOException, InterruptedException {
 
-      int serverPort = Network.getFreeServerPort();
+      final int serverPort = Network.getFreeServerPort();
+      final String dumpLocation = Thread.currentThread().getContextClassLoader().getResource("dump").getFile();
 
-      IMongodConfig mongodConfig = new MongodConfigBuilder().version(Version.Main.PRODUCTION).net(new Net(serverPort, Network.localhostIsIPv6())).build();
+      final IMongodConfig mongodConfig = new MongodConfigBuilder().version(Version.Main.PRODUCTION).net(new Net(serverPort, Network.localhostIsIPv6())).build();
+      final IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder().defaults(Command.MongoD).build();
 
-      IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder().defaults(Command.MongoD).build();
+      final MongodExecutable mongodExe = MongodStarter.getInstance(runtimeConfig).prepare(mongodConfig);
+      final MongodProcess mongod = mongodExe.start();
 
-      MongodExecutable mongodExe = MongodStarter.getInstance(runtimeConfig).prepare(mongodConfig);
-      MongodProcess mongod = mongodExe.start();
+      final MongoRestoreExecutable mongoRestoreExecutable = mongoRestoreExecutable(serverPort, dumpLocation, true);
+      final MongoRestoreExecutable mongoRestoreExecutableArchive = mongoRestoreExecutableWithArchiveCompressed(serverPort, dumpLocation, true);
 
-      String jsonFile = Thread.currentThread().getContextClassLoader().getResource("dump").getFile();
-      MongoRestoreExecutable mongoRestoreExecutable = mongoRestoreExecutable(serverPort, jsonFile, true);
       MongoRestoreProcess mongoRestoreProcess = null;
+      MongoRestoreProcess mongoRestoreArchiveProcess = null;
+
       Boolean dataRestored = false;
       try {
          mongoRestoreProcess = mongoRestoreExecutable.start();
+         mongoRestoreArchiveProcess = mongoRestoreExecutableArchive.start();
+
          dataRestored = true;
 
       } catch (Exception e) {
@@ -62,18 +68,37 @@ public class MongoRestoreExecutableTest extends TestCase {
       } finally {
          Assert.assertTrue("mongoDB restore data in json format", dataRestored);
          mongoRestoreProcess.stop();
+         mongoRestoreArchiveProcess.stop();
       }
 
       mongod.stop();
       mongodExe.stop();
    }
 
-   private MongoRestoreExecutable mongoRestoreExecutable(int port, String dumpLocation, Boolean drop) throws IOException {
+   private MongoRestoreExecutable mongoRestoreExecutable(final int port,
+                                                         final String dumpLocation,
+                                                         final Boolean drop) throws IOException {
+
       IMongoRestoreConfig mongoRestoreConfig = new MongoRestoreConfigBuilder()
          .version(Version.Main.PRODUCTION)
          .net(new Net(port, Network.localhostIsIPv6()))
          .dropCollection(drop)
          .dir(dumpLocation)
+         .build();
+
+      return MongoRestoreStarter.getDefaultInstance().prepare(mongoRestoreConfig);
+   }
+
+   private MongoRestoreExecutable mongoRestoreExecutableWithArchiveCompressed(final int port,
+                                                                              final String dumpLocation,
+                                                                              final Boolean drop) throws IOException {
+
+      IMongoRestoreConfig mongoRestoreConfig = new MongoRestoreConfigBuilder()
+         .version(Version.Main.PRODUCTION)
+         .archive(String.format("%s/%s", dumpLocation, _archiveFileCompressed))
+         .gzip(true)
+         .net(new Net(port, Network.localhostIsIPv6()))
+         .dropCollection(drop)
          .build();
 
       return MongoRestoreStarter.getDefaultInstance().prepare(mongoRestoreConfig);
