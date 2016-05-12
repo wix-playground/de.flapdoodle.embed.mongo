@@ -21,8 +21,11 @@
 package de.flapdoodle.embed.mongo.config;
 
 
+import java.util.Map;
+
 public interface IMongosConfig extends IMongoConfig {
 
 	String getConfigDB();
 
+	Map<String, String> args();
 }
