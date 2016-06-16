@@ -52,8 +52,8 @@ public class StartConfigAndMongoDBServerTest {
 	@Test
 	public void startAndStopMongosAndMongod() throws UnknownHostException, IOException {
 			// ->
-		int port = 12121;
-		int defaultConfigPort = 12345;
+		int port = Network.getFreeServerPort();
+		int defaultConfigPort = Network.getFreeServerPort();
 		String defaultHost = "localhost";
 
 		MongodProcess mongod = startMongod(defaultConfigPort);

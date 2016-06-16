@@ -40,6 +40,7 @@ import de.flapdoodle.embed.process.runtime.Network;
 // ->
 public abstract class AbstractMongoDBTest extends TestCase {
 
+
 	/**
 	 * please store Starter or RuntimeConfig in a static final field
 	 * if you want to use artifact store caching (or else disable caching) 
@@ -50,15 +51,21 @@ public abstract class AbstractMongoDBTest extends TestCase {
 	private MongodProcess _mongod;
 
 	private MongoClient _mongo;
+	private int port;
+	
 	@Override
 	protected void setUp() throws Exception {
-
+		port = Network.getFreeServerPort();
 		_mongodExe = starter.prepare(createMongodConfig());
 		_mongod = _mongodExe.start();
 
 		super.setUp();
 
-		_mongo = new MongoClient("localhost", 12345);
+		_mongo = new MongoClient("localhost", port);
+	}
+	
+	public int port() {
+		return port;
 	}
 
 	protected IMongodConfig createMongodConfig() throws UnknownHostException, IOException {
@@ -68,7 +75,7 @@ public abstract class AbstractMongoDBTest extends TestCase {
 	protected MongodConfigBuilder createMongodConfigBuilder() throws UnknownHostException, IOException {
 		return new MongodConfigBuilder()
 			.version(Version.Main.PRODUCTION)
-			.net(new Net(12345, Network.localhostIsIPv6()));
+			.net(new Net(port, Network.localhostIsIPv6()));
 	}
 
 	@Override

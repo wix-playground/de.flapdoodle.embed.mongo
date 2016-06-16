@@ -81,7 +81,7 @@ public class TestExampleReadMeCode extends TestCase {
 		// ->
 		MongodStarter starter = MongodStarter.getDefaultInstance();
 
-		int port = 12345;
+		int port = Network.getFreeServerPort();
 		IMongodConfig mongodConfig = new MongodConfigBuilder()
 				.version(Version.Main.PRODUCTION)
 				.net(new Net(port, Network.localhostIsIPv6()))
@@ -123,7 +123,7 @@ public class TestExampleReadMeCode extends TestCase {
 	 */
 	public void testCustomMongodFilename() throws UnknownHostException, IOException {
 		// ->		
-		int port = 12345;
+		int port = Network.getFreeServerPort();
 
 		Command command = Command.MongoD;
 
@@ -228,7 +228,7 @@ public class TestExampleReadMeCode extends TestCase {
 
 		IMongodConfig mongodConfig = new MongodConfigBuilder()
 				.version(Version.Main.PRODUCTION)
-				.net(new Net(12345, Network.localhostIsIPv6()))
+				.net(new Net(Network.getFreeServerPort(), Network.localhostIsIPv6()))
 				.build();
 
 		// ->

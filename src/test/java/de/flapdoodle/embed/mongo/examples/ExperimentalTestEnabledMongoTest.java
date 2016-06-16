@@ -43,7 +43,7 @@ public class ExperimentalTestEnabledMongoTest extends AbstractMongoDBTest {
     @Override
     protected MongodConfigBuilder createMongodConfigBuilder() throws IOException {
         return new MongodConfigBuilder()
-                .net(new Net(12345, Network.localhostIsIPv6()))
+                .net(new Net(port(), Network.localhostIsIPv6()))
                 .version(Version.Main.V2_4)
                 // the test fails without this line
                 .cmdOptions(new MongoCmdOptionsBuilder().enableTextSearch(true).build());
