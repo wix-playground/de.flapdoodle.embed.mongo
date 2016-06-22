@@ -87,8 +87,9 @@ public class MongoExecutableTest extends TestCase {
 
 	@Test
 	public void testStartMongodOnNonFreePort() throws IOException, InterruptedException {
-
-		IMongodConfig mongodConfig = new MongodConfigBuilder().version(Version.Main.PRODUCTION).net(new Net(12346, Network.localhostIsIPv6())).build();
+		int port = Network.getFreeServerPort();
+		
+		IMongodConfig mongodConfig = new MongodConfigBuilder().version(Version.Main.PRODUCTION).net(new Net(port, Network.localhostIsIPv6())).build();
 
 		IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder().defaults(Command.MongoD).build();
 

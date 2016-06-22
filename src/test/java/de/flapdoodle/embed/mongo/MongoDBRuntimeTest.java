@@ -132,7 +132,7 @@ public class MongoDBRuntimeTest extends TestCase {
 
 		Timer timer = new Timer();
 
-		int port = 12345;
+		int port = Network.getFreeServerPort();
 		MongodProcess mongodProcess = null;
 		MongodExecutable mongod = null;
 		
