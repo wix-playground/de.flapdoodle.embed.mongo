@@ -27,6 +27,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import de.flapdoodle.embed.mongo.config.IMongoImportConfig;
+import de.flapdoodle.embed.mongo.config.Net;
 import de.flapdoodle.embed.process.extract.IExtractedFileSet;
 
 /**
@@ -41,7 +42,16 @@ public class MongoImport extends AbstractMongo {
         if (config.cmdOptions().isVerbose()) {
             ret.add("-v");
         }
-        applyNet(config.net(),ret);
+        Net net = config.net();
+        ret.add("--port");
+        ret.add("" + net.getPort());
+        if (net.isIpv6()) {
+            ret.add("--ipv6");
+        }
+        if (net.getBindIp()!=null) {
+            ret.add("--host");
+            ret.add(net.getBindIp());
+        }
 
         if (config.getDatabaseName()!=null) {
             ret.add("--db");
