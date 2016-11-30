@@ -26,10 +26,24 @@ import de.flapdoodle.embed.process.config.store.IDownloadPath;
 import de.flapdoodle.embed.process.distribution.Distribution;
 import de.flapdoodle.embed.process.distribution.Platform;
 import de.flapdoodle.embed.process.extract.UUIDTempNaming;
+import de.flapdoodle.embed.process.io.directories.FixedPath;
+import de.flapdoodle.embed.process.io.directories.IDirectory;
 import de.flapdoodle.embed.process.io.directories.UserHome;
 import de.flapdoodle.embed.process.io.progress.StandardConsoleProgressListener;
 
+import java.util.Map;
+
 public class DownloadConfigBuilder extends de.flapdoodle.embed.process.config.store.DownloadConfigBuilder {
+
+	private Map<String, String> environmentVariables;
+
+	public DownloadConfigBuilder() {
+		this(System.getenv());
+	}
+	
+	protected DownloadConfigBuilder(Map<String, String> environmentVariables) {
+		this.environmentVariables = environmentVariables;
+	}
 
 	public DownloadConfigBuilder packageResolverForCommand(Command command) {
 		packageResolver(new Paths(command));
@@ -44,10 +58,20 @@ public class DownloadConfigBuilder extends de.flapdoodle.embed.process.config.st
 		fileNaming().setDefault(new UUIDTempNaming());
 		downloadPath().setDefault(new PlattformDependendDownloadPath());
 		progressListener().setDefault(new StandardConsoleProgressListener());
-		artifactStorePath().setDefault(new UserHome(".embedmongo"));
+		artifactStorePath().setDefault(defaultArtifactDownloadLocation());
 		downloadPrefix().setDefault(new DownloadPrefix("embedmongo-download"));
 		userAgent().setDefault(new UserAgent("Mozilla/5.0 (compatible; Embedded MongoDB; +https://github.com/flapdoodle-oss/embedmongo.flapdoodle.de)"));
 		return this;
+	}
+
+	private IDirectory defaultArtifactDownloadLocation() {
+		String artifactDownloadLocationEnvironmentVariable = environmentVariables.get("EMBEDDED_MONGO_ARTIFACTS");
+		if (artifactDownloadLocationEnvironmentVariable == null) {
+			return new UserHome(".embedmongo");
+		}
+		else {
+			return new FixedPath(artifactDownloadLocationEnvironmentVariable);
+		}
 	}
 
 	private static class PlattformDependendDownloadPath implements IDownloadPath {
