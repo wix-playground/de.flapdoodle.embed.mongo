@@ -2,6 +2,7 @@
 [![Build Status](https://travis-ci.org/flapdoodle-oss/de.flapdoodle.embed.mongo.svg?branch=master)](https://travis-ci.org/flapdoodle-oss/de.flapdoodle.embed.mongo)
 
 We are now a github organization. You are invited to participate. :)
+Staring with version 2 we are going to support only java 8 or higher. If you are looking for the older version you can find it in the 1.7 branch.
 
 # Embedded MongoDB
 
@@ -80,14 +81,6 @@ Make sure you have mavenCentral() in your repositories or that your enterprise/l
 When you fork or clone our branch you should always be able to build the library by running
 
 	mvn package
-
-There is also a build.gradle file available which might sometimes be outdated but we try to keep it working. So the gradle command is
-
-	gradle build
-
-Or if you want to use the gradle wrapper:
-
-	./gradlew build
 
 ### Changelog
 

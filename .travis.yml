@@ -8,14 +8,11 @@ before_install:
   - cat /etc/hosts # optionally check the content *after*
 script: $TARGET
 jdk:
-- openjdk7
-- oraclejdk7
 - oraclejdk8
 
 env:
   matrix:
     - TARGET='mvn test'
-    - TARGET='./gradlew test -s'
 
 notifications:
   email:
