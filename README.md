@@ -2,7 +2,7 @@
 [![Build Status](https://travis-ci.org/flapdoodle-oss/de.flapdoodle.embed.mongo.svg?branch=master)](https://travis-ci.org/flapdoodle-oss/de.flapdoodle.embed.mongo)
 
 We are now a github organization. You are invited to participate. 
-Staring with version 2 we are going to support only java 8 or higher. If you are looking for the older version you can find it in the 1.7 branch.
+Starting with version 2 we are going to support only java 8 or higher. If you are looking for the older version you can find it in the 1.7 branch.
 
 # Embedded MongoDB
 
