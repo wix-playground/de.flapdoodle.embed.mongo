@@ -90,10 +90,11 @@ Support for Linux, Windows and MacOSX.
 	...
 	MongodStarter starter = MongodStarter.getDefaultInstance();
 
+	String bindIp = "localhost";
 	int port = 12345;
 	IMongodConfig mongodConfig = new MongodConfigBuilder()
 		.version(Version.Main.PRODUCTION)
-		.net(new Net(port, Network.localhostIsIPv6()))
+		.net(new Net(bindIp, port, Network.localhostIsIPv6()))
 		.build();
 
 	MongodExecutable mongodExecutable = null;
@@ -101,7 +102,7 @@ Support for Linux, Windows and MacOSX.
 		mongodExecutable = starter.prepare(mongodConfig);
 		MongodProcess mongod = mongodExecutable.start();
 
-		MongoClient mongo = new MongoClient("localhost", port);
+		MongoClient mongo = new MongoClient(bindIp, port);
 		DB db = mongo.getDB("test");
 		DBCollection col = db.createCollection("testCol", new BasicDBObject());
 		col.save(new BasicDBObject("testDoc", new Date()));
@@ -121,8 +122,9 @@ ArtifactStores an multiple caches with much less cache hits:)
 
 ### Usage - custom mongod filename
 
-To avoid windows firewall dialog popups you can chose a stable executable name with UserTempNaming.
-This way the firewall dialog only popup once any your done. See [Executable Collision](#executable-collision)
+If you do not restrict `bindId` to `localhost` you get windows firewall dialog popups.
+To avoid them you can choose a stable executable name with UserTempNaming.
+This way the firewall dialog only popups once. See [Executable Collision](#executable-collision)
 ```java
 	import de.flapdoodle.embed.mongo.config.ExtractedArtifactStoreBuilder;
 
@@ -183,7 +185,7 @@ This way the firewall dialog only popup once any your done. See [Executable Coll
 
 			_mongodExe = starter.prepare(new MongodConfigBuilder()
 				.version(Version.Main.PRODUCTION)
-				.net(new Net(12345, Network.localhostIsIPv6()))
+				.net(new Net("localhost", 12345, Network.localhostIsIPv6()))
 				.build());
 			_mongod = _mongodExe.start();
 
@@ -596,7 +598,7 @@ this is an very easy example to use mongos and mongod
         MongodProcess mongod = startMongod(defaultConfigPort);
 
         try {
-            MongoImportProcess mongoImport = startMongoImport(defaultConfigPort, database,collection,jsonFile,true,true,true);
+            MongoImportProcess mongoImport = startMongoImport(defaultHost, defaultConfigPort, database,collection,jsonFile,true,true,true);
             try {
                 MongoClient mongoClient = new MongoClient(defaultHost, defaultConfigPort);
                 System.out.println("DB Names: " + mongoClient.getDatabaseNames());
@@ -608,11 +610,11 @@ this is an very easy example to use mongos and mongod
         }
     }
 
-    private MongoImportProcess startMongoImport(int port, String dbName, String collection, String jsonFile, Boolean jsonArray,Boolean upsert, Boolean drop) throws UnknownHostException,
-            IOException {
+    private MongoImportProcess startMongoImport(String bindIp, int port, String dbName, String collection, String jsonFile, Boolean jsonArray,Boolean upsert, Boolean drop)
+            throws UnknownHostException, IOException {
         IMongoImportConfig mongoImportConfig = new MongoImportConfigBuilder()
                 .version(Version.Main.PRODUCTION)
-                .net(new Net(port, Network.localhostIsIPv6()))
+                .net(new Net(bindIp, port, Network.localhostIsIPv6()))
                 .db(dbName)
                 .collection(collection)
                 .upsert(upsert)
