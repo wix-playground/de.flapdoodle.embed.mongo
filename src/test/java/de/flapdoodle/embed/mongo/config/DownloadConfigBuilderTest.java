@@ -18,14 +18,14 @@ public class DownloadConfigBuilderTest extends DownloadConfigBuilder {
 	public static Collection<Object[]> data() {
 		String defaultArtifactDownloadLocation = new UserHome(".embedmongo").asFile().getAbsolutePath();
 		return Arrays.asList(new Object[][] {
-				{ "Use home directory when environment variable not present", noEnvironmentVariable(), defaultArtifactDownloadLocation},
-				{ "Environment variable overrides default when supplied", environmentVariableSetTo("/some/explicit/directory"), "/some/explicit/directory" },
-				{ "Environment variable overrides default when supplied", environmentVariableSetTo("/another/explicit/directory"), "/another/explicit/directory" },
+				{ "Use home directory when environment variable not present", defaultArtifactDownloadLocation, Optional.empty()},
+				{ "Environment variable overrides default when supplied", "/some/explicit/directory", Optional.of("/some/explicit/directory") },
+				{ "Environment variable overrides default when supplied", "/another/explicit/directory", Optional.of("/another/explicit/directory") },
 		});
 	}
 
-	public DownloadConfigBuilderTest(String description, Map<String, String> environment, String expectedDirectory) {
-		super(environment);
+	public DownloadConfigBuilderTest(String description, String expectedDirectory, Optional<String> artifactDownloadLocationEnvironmentVariable) {
+		super(artifactDownloadLocationEnvironmentVariable);
 		this.description = description;
 		this.expectedDirectory = expectedDirectory;
 	}
@@ -34,12 +34,5 @@ public class DownloadConfigBuilderTest extends DownloadConfigBuilder {
 	public void artifactStorePathChosenProperly() {
 		defaults();
 		Assert.assertEquals(description, expectedDirectory, this.artifactStorePath().get().asFile().getAbsolutePath());
-	}
-
-	private static ImmutableMap<Object, Object> noEnvironmentVariable() {
-		return ImmutableMap.of();
-	}
-	private static ImmutableMap<String, String> environmentVariableSetTo(String v1) {
-		return ImmutableMap.of("EMBEDDED_MONGO_ARTIFACTS", v1);
 	}
 }

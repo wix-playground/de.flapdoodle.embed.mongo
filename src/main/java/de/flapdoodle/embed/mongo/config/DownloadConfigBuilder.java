@@ -31,18 +31,18 @@ import de.flapdoodle.embed.process.io.directories.IDirectory;
 import de.flapdoodle.embed.process.io.directories.UserHome;
 import de.flapdoodle.embed.process.io.progress.StandardConsoleProgressListener;
 
-import java.util.Map;
+import java.util.Optional;
 
 public class DownloadConfigBuilder extends de.flapdoodle.embed.process.config.store.DownloadConfigBuilder {
 
-	private Map<String, String> environmentVariables;
+	private Optional<String> artifactDownloadLocationEnvironmentVariable;
 
 	public DownloadConfigBuilder() {
-		this(System.getenv());
+		this(Optional.ofNullable(System.getenv().get("EMBEDDED_MONGO_ARTIFACTS")));
 	}
 	
-	protected DownloadConfigBuilder(Map<String, String> environmentVariables) {
-		this.environmentVariables = environmentVariables;
+	protected DownloadConfigBuilder(Optional<String> artifactDownloadLocationEnvironmentVariable) {
+		this.artifactDownloadLocationEnvironmentVariable = artifactDownloadLocationEnvironmentVariable;
 	}
 
 	public DownloadConfigBuilder packageResolverForCommand(Command command) {
@@ -65,12 +65,11 @@ public class DownloadConfigBuilder extends de.flapdoodle.embed.process.config.st
 	}
 
 	private IDirectory defaultArtifactDownloadLocation() {
-		String artifactDownloadLocationEnvironmentVariable = environmentVariables.get("EMBEDDED_MONGO_ARTIFACTS");
-		if (artifactDownloadLocationEnvironmentVariable == null) {
-			return new UserHome(".embedmongo");
+		if (artifactDownloadLocationEnvironmentVariable.isPresent()) {
+			return new FixedPath(artifactDownloadLocationEnvironmentVariable.get());
 		}
 		else {
-			return new FixedPath(artifactDownloadLocationEnvironmentVariable);
+			return new UserHome(".embedmongo");
 		}
 	}
 
