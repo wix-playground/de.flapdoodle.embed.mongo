@@ -45,6 +45,9 @@ import de.flapdoodle.embed.process.runtime.Network;
 
 public class StartConfigAndMongoDBServerTest {
 
+	public static void main(String[] args) throws UnknownHostException, IOException {
+		new StartConfigAndMongoDBServerTest().startAndStopMongosAndMongod();
+	}
 	/*
 	 // ->
 	 this is an very easy example to use mongos and mongod
@@ -84,7 +87,7 @@ public class StartConfigAndMongoDBServerTest {
 		IMongosConfig mongosConfig = new MongosConfigBuilder()
 			.version(Version.Main.PRODUCTION)
 			.net(new Net(port, Network.localhostIsIPv6()))
-			.configDB(host1 + ":" + port1)
+			.configDB(host1 + ":" + port1+","+host2 + ":" + port2)
 			.replicaSet("testRepSet")
 			.build();
 
@@ -97,7 +100,9 @@ public class StartConfigAndMongoDBServerTest {
 		IMongodConfig mongoConfigConfig = new MongodConfigBuilder()
 			.version(Version.Main.PRODUCTION)
 			.net(new Net(port, Network.localhostIsIPv6()))
-//			.replication(new Storage(null, "testRepSet", 0))
+			//.configServer(true)
+			//.shardServer(true)
+			//.replication(new Storage(null, "testRepSet", 0))
 			.build();
 
 		MongodExecutable mongodExecutable = MongodStarter.getDefaultInstance().prepare(mongoConfigConfig);

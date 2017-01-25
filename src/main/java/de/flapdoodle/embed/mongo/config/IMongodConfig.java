@@ -30,6 +30,8 @@ public interface IMongodConfig extends IMongoConfig {
 
 	boolean isConfigServer();
 
+	boolean isShardServer();
+
 	IMongoProcessListener processListener();
 
 	Map<String, String> params();

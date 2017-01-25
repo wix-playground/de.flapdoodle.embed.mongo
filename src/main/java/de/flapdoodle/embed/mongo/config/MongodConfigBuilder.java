@@ -23,7 +23,6 @@ package de.flapdoodle.embed.mongo.config;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -37,6 +36,7 @@ public class MongodConfigBuilder extends AbstractMongoConfigBuilder<IMongodConfi
 
 	protected static final TypedProperty<Storage> REPLICATION = TypedProperty.with("Replication", Storage.class);
 	protected static final TypedProperty<Boolean> CONFIG_SERVER = TypedProperty.with("ConfigServer", Boolean.class);
+	protected static final TypedProperty<Boolean> SHARD_SERVER = TypedProperty.with("ShardServer", Boolean.class);
 	protected static final TypedProperty<IMongoProcessListener> PROCESS_LISTENER = TypedProperty.with("ProcessListener", IMongoProcessListener.class);
 	protected Map<String,String> params=new LinkedHashMap<String, String>();
 	protected Map<String,String> args=new LinkedHashMap<String, String>();
@@ -45,6 +45,7 @@ public class MongodConfigBuilder extends AbstractMongoConfigBuilder<IMongodConfi
 		super();
 		property(REPLICATION).setDefault(new Storage());
 		property(CONFIG_SERVER).setDefault(false);
+		property(SHARD_SERVER).setDefault(false);
 		property(PROCESS_LISTENER).setDefault(new NoopProcessListener());
 		property(PID_FILE).setDefault("mongod.pid");
 	}
@@ -94,6 +95,11 @@ public class MongodConfigBuilder extends AbstractMongoConfigBuilder<IMongodConfi
 		return this;
 	}
 
+	public MongodConfigBuilder shardServer(boolean shardServer) {
+		set(SHARD_SERVER,shardServer);
+		return this;
+	}
+
 	public MongodConfigBuilder processListener(IMongoProcessListener processListener) {
 		set(PROCESS_LISTENER,processListener);
 		return this;
@@ -111,27 +117,30 @@ public class MongodConfigBuilder extends AbstractMongoConfigBuilder<IMongodConfi
 		Timeout timeout=timeout().get();
 		Storage replication=get(REPLICATION);
 		boolean configServer=get(CONFIG_SERVER);
+		boolean shardServer=get(SHARD_SERVER);
 		IMongoCmdOptions cmdOptions=get(CMD_OPTIONS);
 		IMongoProcessListener processListener=get(PROCESS_LISTENER);
 		String pidFile=get(PID_FILE);
 
-		return new ImmutableMongodConfig(version, net, timeout, cmdOptions, pidFile, replication, configServer, processListener, params, args);
+		return new ImmutableMongodConfig(version, net, timeout, cmdOptions, pidFile, replication, configServer, shardServer, processListener, params, args);
 	}
 
 	static class ImmutableMongodConfig extends ImmutableMongoConfig implements IMongodConfig {
 
 		private final Storage _replication;
 		private final boolean _configServer;
+		private final boolean _shardServer;
 		private final IMongoProcessListener _processListener;
 		private final Map<String, String> _params;
 		private final Map<String, String> _args;
 
 		public ImmutableMongodConfig(IFeatureAwareVersion version, Net net, Timeout timeout, IMongoCmdOptions cmdOptions,
-										String pidFile, Storage replication, boolean configServer,
+										String pidFile, Storage replication, boolean configServer,boolean shardServer,
 										IMongoProcessListener processListener, Map<String, String> params, Map<String, String> args) {
 			super(new SupportConfig(Command.MongoD), version, net, null, null, timeout, cmdOptions, pidFile);
 			_replication = replication;
 			_configServer = configServer;
+			_shardServer = shardServer;
 			_processListener = processListener;
 			_params = new LinkedHashMap<String, String>(params);
 			_args = new LinkedHashMap<String, String>(args);
@@ -145,6 +154,11 @@ public class MongodConfigBuilder extends AbstractMongoConfigBuilder<IMongodConfi
 		@Override
 		public boolean isConfigServer() {
 			return _configServer;
+		}
+		
+		@Override
+		public boolean isShardServer() {
+			return _shardServer;
 		}
 
 		@Override

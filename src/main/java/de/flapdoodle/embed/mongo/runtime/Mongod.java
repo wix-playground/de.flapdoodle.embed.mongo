@@ -155,7 +155,7 @@ public class Mongod extends AbstractMongo {
 		if (config.cmdOptions().useSmallFiles()) {
 			ret.add("--smallfiles");
 		}
-		if (config.cmdOptions().useNoJournal()) {
+		if (config.cmdOptions().useNoJournal() && !config.isConfigServer()) {
 			ret.add("--nojournal");
 		}
 		if (config.cmdOptions().master()) {
