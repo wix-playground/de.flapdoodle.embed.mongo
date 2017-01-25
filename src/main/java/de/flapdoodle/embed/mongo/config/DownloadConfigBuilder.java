@@ -56,7 +56,7 @@ public class DownloadConfigBuilder extends de.flapdoodle.embed.process.config.st
 
 	public DownloadConfigBuilder defaults() {
 		fileNaming().setDefault(new UUIDTempNaming());
-    downloadPath().setDefault(new PlatformDependentDownloadPath());
+		downloadPath().setDefault(new PlatformDependentDownloadPath());
 		progressListener().setDefault(new StandardConsoleProgressListener());
 		artifactStorePath().setDefault(defaultArtifactDownloadLocation());
 		downloadPrefix().setDefault(new DownloadPrefix("embedmongo-download"));
@@ -73,7 +73,7 @@ public class DownloadConfigBuilder extends de.flapdoodle.embed.process.config.st
 		}
 	}
 
-	private static class PlatformDependendDownloadPath implements IDownloadPath {
+	private static class PlatformDependentDownloadPath implements IDownloadPath {
 
 		@Override
 		public String getPath(Distribution distribution) {
