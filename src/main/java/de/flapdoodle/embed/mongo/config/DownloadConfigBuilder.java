@@ -20,6 +20,8 @@
  */
 package de.flapdoodle.embed.mongo.config;
 
+import java.util.Optional;
+
 import de.flapdoodle.embed.mongo.Command;
 import de.flapdoodle.embed.mongo.Paths;
 import de.flapdoodle.embed.process.config.store.IDownloadPath;
@@ -31,11 +33,9 @@ import de.flapdoodle.embed.process.io.directories.IDirectory;
 import de.flapdoodle.embed.process.io.directories.UserHome;
 import de.flapdoodle.embed.process.io.progress.StandardConsoleProgressListener;
 
-import java.util.Optional;
-
 public class DownloadConfigBuilder extends de.flapdoodle.embed.process.config.store.DownloadConfigBuilder {
 
-	private Optional<String> artifactDownloadLocationEnvironmentVariable;
+	private final Optional<String> artifactDownloadLocationEnvironmentVariable;
 
 	public DownloadConfigBuilder() {
 		this(Optional.ofNullable(System.getenv().get("EMBEDDED_MONGO_ARTIFACTS")));
@@ -56,7 +56,7 @@ public class DownloadConfigBuilder extends de.flapdoodle.embed.process.config.st
 
 	public DownloadConfigBuilder defaults() {
 		fileNaming().setDefault(new UUIDTempNaming());
-		downloadPath().setDefault(new PlattformDependendDownloadPath());
+		downloadPath().setDefault(new PlatformDependendDownloadPath());
 		progressListener().setDefault(new StandardConsoleProgressListener());
 		artifactStorePath().setDefault(defaultArtifactDownloadLocation());
 		downloadPrefix().setDefault(new DownloadPrefix("embedmongo-download"));
@@ -73,14 +73,14 @@ public class DownloadConfigBuilder extends de.flapdoodle.embed.process.config.st
 		}
 	}
 
-	private static class PlattformDependendDownloadPath implements IDownloadPath {
+	private static class PlatformDependendDownloadPath implements IDownloadPath {
 
 		@Override
 		public String getPath(Distribution distribution) {
 			if (distribution.getPlatform()==Platform.Windows) {
-				return "http://downloads.mongodb.org/";
+				return "https://downloads.mongodb.org/";
 			}
-			return "http://fastdl.mongodb.org/";
+			return "https://fastdl.mongodb.org/";
 		}
 		
 	}
