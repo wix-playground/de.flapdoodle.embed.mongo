@@ -21,62 +21,44 @@
  */
 package de.flapdoodle.embed.mongo;
 
-import java.io.IOException;
-import java.net.UnknownHostException;
-
-import junit.framework.TestCase;
-
-import org.junit.Assert;
-import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import de.flapdoodle.embed.mongo.config.IMongoImportConfig;
-import de.flapdoodle.embed.mongo.config.IMongodConfig;
-import de.flapdoodle.embed.mongo.config.MongoImportConfigBuilder;
-import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
-import de.flapdoodle.embed.mongo.config.Net;
-import de.flapdoodle.embed.mongo.config.RuntimeConfigBuilder;
+import com.mongodb.MongoClient;
+import de.flapdoodle.embed.mongo.config.*;
 import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.process.config.IRuntimeConfig;
 import de.flapdoodle.embed.process.runtime.Network;
+import junit.framework.TestCase;
+import org.junit.Assert;
+import org.junit.Test;
+
 import java.io.File;
+import java.io.IOException;
 
 /**
  * Created by canyaman on 10/04/14.
  */
-public class MongoImportExecutableTest  extends TestCase {
-
-    private static final Logger _logger = LoggerFactory.getLogger(MongoImportExecutableTest.class.getName());
+public class MongoImportExecutableTest extends TestCase {
 
     @Test
     public void testStartMongoImport() throws IOException, InterruptedException {
 
-        int serverPort = Network.getFreeServerPort();
-        
-		IMongodConfig mongodConfig = new MongodConfigBuilder().version(Version.Main.PRODUCTION).net(new Net(serverPort, Network.localhostIsIPv6())).build();
+        Net net = new Net(Network.getFreeServerPort(), Network.localhostIsIPv6());
+        IMongodConfig mongodConfig = new MongodConfigBuilder().version(Version.Main.PRODUCTION).net(net).build();
 
         IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder().defaults(Command.MongoD).build();
 
         MongodExecutable mongodExe = MongodStarter.getInstance(runtimeConfig).prepare(mongodConfig);
         MongodProcess mongod = mongodExe.start();
 
-        String jsonFile=Thread.currentThread().getContextClassLoader().getResource("sample.json").toString();
-        jsonFile=jsonFile.replaceFirst("file:","");
-        jsonFile = new File(jsonFile).getAbsolutePath();
-        MongoImportExecutable mongoImportExecutable=mongoImportExecutable(serverPort,"importDatabase","importCollection",jsonFile,true,true,true);
-        MongoImportProcess mongoImportProcess=null;
-        Boolean dataImported=false;
-        try {
-            mongoImportProcess=mongoImportExecutable.start();
-            dataImported=true;
-        }catch (Exception e){
-            _logger.info("MongoImport exception: {}", e.getStackTrace());
-            dataImported=false;
-        }finally {
-           Assert.assertTrue("mongoDB import data in json format", dataImported);
-           mongoImportProcess.stop();
-        }
+        File jsonFile = new File(Thread.currentThread().getContextClassLoader().getResource("primer-dataset.json").getFile());
+        String importDatabase = "importDatabase";
+        String importCollection = "importCollection";
+        MongoImportExecutable mongoImportExecutable = mongoImportExecutable(net.getPort(), importDatabase,
+                importCollection, jsonFile.getAbsolutePath(), true, true, true);
+        MongoClient mongoClient = new MongoClient(net.getServerAddress().getHostName(), net.getPort());
+        MongoImportProcess mongoImportProcess = mongoImportExecutable.start();
+        //            everything imported?
+        assertEquals(5000, mongoClient.getDatabase(importDatabase).getCollection(importCollection).count());
+        mongoImportProcess.stop();
 
         mongod.stop();
         mongodExe.stop();
@@ -92,14 +74,14 @@ public class MongoImportExecutableTest  extends TestCase {
         MongodExecutable mongodExe = MongodStarter.getInstance(runtimeConfig).prepare(mongodConfig);
         MongodProcess mongod = mongodExe.start();
 
-        String jsonFile = Thread.currentThread().getContextClassLoader().getResource("sample.json").toString();
-        jsonFile = jsonFile.replaceFirst("file:","");
+        File jsonFile = new File(Thread.currentThread().getContextClassLoader().getResource("sample.json").getFile());
 
-        MongoImportExecutable mongoImportExecutable=mongoImportExecutable(12346,"importDatabase","importCollection",jsonFile,true,true,true);
-        MongoImportProcess mongoImportProcess=null;
+        MongoImportExecutable mongoImportExecutable = mongoImportExecutable(12346, "importDatabase", "importCollection",
+                jsonFile.getAbsolutePath(), true, true, true);
+        MongoImportProcess mongoImportProcess = null;
 
         try {
-            mongoImportProcess=mongoImportExecutable.start();
+            mongoImportProcess = mongoImportExecutable.start();
             mongoImportProcess.stop();
         } finally {
             Assert.assertTrue("mongoDB process should still be running", mongod.isProcessRunning());
@@ -109,7 +91,7 @@ public class MongoImportExecutableTest  extends TestCase {
         mongodExe.stop();
     }
 
-    private MongoImportExecutable mongoImportExecutable(int port, String dbName, String collection, String jsonFile, Boolean jsonArray,Boolean upsert, Boolean drop) throws UnknownHostException,
+    private MongoImportExecutable mongoImportExecutable(int port, String dbName, String collection, String jsonFile, Boolean jsonArray, Boolean upsert, Boolean drop) throws
             IOException {
         IMongoImportConfig mongoImportConfig = new MongoImportConfigBuilder()
                 .version(Version.Main.PRODUCTION)
@@ -122,8 +104,7 @@ public class MongoImportExecutableTest  extends TestCase {
                 .importFile(jsonFile)
                 .build();
 
-        MongoImportExecutable mongoImportExecutable = MongoImportStarter.getDefaultInstance().prepare(mongoImportConfig);
-        return mongoImportExecutable;
+        return MongoImportStarter.getDefaultInstance().prepare(mongoImportConfig);
     }
 
 }
