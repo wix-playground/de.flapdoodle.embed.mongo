@@ -1,11 +1,14 @@
 ---
 language: java
 install: true
-before_install:
-  - cat /etc/hosts # optionally check the content *before*
-  - sudo hostname "$(hostname | cut -c1-63)"
-  - sed -e "s/^\\(127\\.0\\.0\\.1.*\\)/\\1 $(hostname | cut -c1-63)/" /etc/hosts | sudo tee /etc/hosts
-  - cat /etc/hosts # optionally check the content *after*
+# To solve BufferOverflow on OpenJDK7 we setup short hostname (<64characters)
+# See:
+#   - ISSUE-5227: https://github.com/travis-ci/travis-ci/issues/5227
+#   - https://docs.travis-ci.com/user/hostname
+addons:
+  hosts:
+    - mongo-test-host
+  hostname: mongo-test-host
 script: $TARGET
 jdk:
 - oraclejdk8
