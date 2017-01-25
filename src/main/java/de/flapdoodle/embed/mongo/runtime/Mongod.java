@@ -42,6 +42,7 @@ import org.slf4j.LoggerFactory;
 import de.flapdoodle.embed.mongo.Command;
 import de.flapdoodle.embed.mongo.config.IMongoCmdOptions;
 import de.flapdoodle.embed.mongo.config.IMongodConfig;
+import de.flapdoodle.embed.mongo.config.Storage;
 import de.flapdoodle.embed.mongo.config.SupportConfig;
 import de.flapdoodle.embed.mongo.distribution.Feature;
 import de.flapdoodle.embed.process.distribution.Distribution;
@@ -136,8 +137,8 @@ public class Mongod extends AbstractMongo {
 		}
 		if (config.args() != null && !config.args().isEmpty()) {
 			for (String key : config.args().keySet()) {
-				ret.add((String) key);
-				String val = (String) config.args().get(key);
+				ret.add(key);
+				String val = config.args().get(key);
 				if (val != null && !val.isEmpty()) {
 					ret.add(val);
 				}
@@ -175,13 +176,15 @@ public class Mongod extends AbstractMongo {
 		applyDefaultOptions(config, ret);
 		applyNet(config.net(), ret);
 
-		if (config.replication().getReplSetName() != null) {
+		Storage replication = config.replication();
+		
+		if (replication.getReplSetName() != null) {
 			ret.add("--replSet");
-			ret.add(config.replication().getReplSetName());
+			ret.add(replication.getReplSetName());
 		}
-		if (config.replication().getOplogSize() != 0) {
+		if (replication.getOplogSize() != 0) {
 			ret.add("--oplogSize");
-			ret.add(String.valueOf(config.replication().getOplogSize()));
+			ret.add(String.valueOf(replication.getOplogSize()));
 		}
 		if (config.isConfigServer()) {
 			ret.add("--configsvr");

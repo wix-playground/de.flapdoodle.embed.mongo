@@ -25,8 +25,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import junit.framework.TestCase;
-
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
@@ -38,14 +36,16 @@ import de.flapdoodle.embed.mongo.config.ExtractedArtifactStoreBuilder;
 import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
 import de.flapdoodle.embed.mongo.config.Net;
 import de.flapdoodle.embed.mongo.config.RuntimeConfigBuilder;
+import de.flapdoodle.embed.mongo.distribution.Feature;
+import de.flapdoodle.embed.mongo.distribution.IFeatureAwareVersion;
 import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.process.config.IRuntimeConfig;
 import de.flapdoodle.embed.process.distribution.BitSize;
 import de.flapdoodle.embed.process.distribution.Distribution;
-import de.flapdoodle.embed.process.distribution.IVersion;
 import de.flapdoodle.embed.process.distribution.Platform;
 import de.flapdoodle.embed.process.extract.IExtractedFileSet;
 import de.flapdoodle.embed.process.runtime.Network;
+import junit.framework.TestCase;
 
 // CHECKSTYLE:OFF
 public class MongoDBRuntimeTest extends TestCase {
@@ -71,11 +71,11 @@ public class MongoDBRuntimeTest extends TestCase {
 		IRuntimeConfig config = defaultBuilder.build();
 
 		for (Platform platform : Platform.values()) {
-			for (IVersion version : Versions.testableVersions(Version.Main.class)) {
+			for (IFeatureAwareVersion version : Versions.testableVersions(Version.Main.class)) {
 				for (BitSize bitsize : BitSize.values()) {
 					// there is no osx 32bit version for v2.2.1
-					// there is no solare 32bit version
-					if (!shipThisVersion(platform, version, bitsize)) {
+					// there is no solaris 32bit version
+					if (!skipThisVersion(platform, version, bitsize)) {
 						check(config, new Distribution(version, platform, bitsize));
 					}
 				}
@@ -95,7 +95,7 @@ public class MongoDBRuntimeTest extends TestCase {
 		
 		Platform platform = Platform.Windows;
 		BitSize bitsize = BitSize.B64;
-		for (IVersion version : Versions.testableVersions(Version.Main.class)) {
+		for (IFeatureAwareVersion version : Versions.testableVersions(Version.Main.class)) {
 			// there is no windows 2008 version for 1.8.5 
 			boolean skip = ((version.asInDownloadPath().equals(Version.V1_8_5.asInDownloadPath()))
 					&& (platform == Platform.Windows) && (bitsize == BitSize.B64));
@@ -105,7 +105,11 @@ public class MongoDBRuntimeTest extends TestCase {
 
 	}
 
-	private boolean shipThisVersion(Platform platform, IVersion version, BitSize bitsize) {
+	private boolean skipThisVersion(Platform platform, IFeatureAwareVersion version, BitSize bitsize) {
+		if (version.enabled(Feature.ONLY_64BIT) && bitsize==BitSize.B32) {
+			return true;
+		}
+		
 		String currentVersion = version.asInDownloadPath();
 		if ((platform == Platform.OS_X) && (bitsize == BitSize.B32)) {
 			// there is no osx 32bit version for v2.2.1 and above, so we dont check

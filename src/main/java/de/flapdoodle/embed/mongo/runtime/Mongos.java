@@ -22,10 +22,10 @@ package de.flapdoodle.embed.mongo.runtime;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import de.flapdoodle.embed.mongo.config.IMongosConfig;
+import de.flapdoodle.embed.mongo.distribution.Feature;
 import de.flapdoodle.embed.process.extract.IExtractedFileSet;
 
 /**
@@ -37,8 +37,12 @@ public class Mongos extends AbstractMongo {
 			throws UnknownHostException {
 		List<String> ret = new ArrayList<String>();
 
-		ret.addAll(Arrays.asList(files.executable().getAbsolutePath(), 
-				"--chunkSize", "1"));
+		ret.add(files.executable().getAbsolutePath());
+		if (!config.version().enabled(Feature.NO_CHUNKSIZE_ARG)) {
+			ret.add("--chunkSize");
+			ret.add("1");
+		}
+		
 		if (config.cmdOptions().isVerbose()) {
 			ret.add("-v");
 		}
@@ -47,7 +51,14 @@ public class Mongos extends AbstractMongo {
 		
 		if (config.getConfigDB()!=null) {
 			ret.add("--configdb");
-			ret.add(config.getConfigDB());
+			if (config.version().enabled(Feature.MONGOS_CONFIGDB_SET_STYLE)) {
+				if (config.replicaSet().isEmpty()) {
+					throw new IllegalArgumentException("you must define a replicaSet");
+				}
+				ret.add(config.replicaSet()+"/"+config.getConfigDB());
+			} else {
+				ret.add(config.getConfigDB());
+			}
 		}
 
 		if (config.args() != null && !config.args().isEmpty()) {

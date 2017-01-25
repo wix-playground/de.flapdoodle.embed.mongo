@@ -20,6 +20,8 @@
  */
 package de.flapdoodle.embed.mongo;
 
+import de.flapdoodle.embed.mongo.distribution.Feature;
+import de.flapdoodle.embed.mongo.distribution.IFeatureAwareVersion;
 import de.flapdoodle.embed.process.config.store.FileSet;
 import de.flapdoodle.embed.process.config.store.FileType;
 import de.flapdoodle.embed.process.config.store.IPackageResolver;
@@ -120,6 +122,13 @@ public class Paths implements IPackageResolver {
 		String sbitSize;
 		switch (distribution.getBitsize()) {
 			case B32:
+				if (distribution.getVersion() instanceof IFeatureAwareVersion) {
+					IFeatureAwareVersion featuredVersion = (IFeatureAwareVersion) distribution.getVersion();
+					if (featuredVersion.enabled(Feature.ONLY_64BIT)) {
+						throw new IllegalArgumentException("this version does not support 32Bit: "+distribution);
+					}
+				}
+				
 				switch (distribution.getPlatform()) {
 					case Linux:
 						sbitSize = "i686";

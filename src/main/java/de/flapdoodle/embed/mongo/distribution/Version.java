@@ -86,6 +86,7 @@ public enum Version implements IFeatureAwareVersion {
 	V2_2_5("2.2.5"),
 	@Deprecated
   V2_2_6("2.2.6"),
+	@Deprecated
   V2_2_7("2.2.7"),
 
 	@Deprecated
@@ -110,7 +111,8 @@ public enum Version implements IFeatureAwareVersion {
 	@Deprecated
 	V2_4_8("2.4.8",Feature.SYNC_DELAY, Feature.TEXT_SEARCH),
   @Deprecated
-	V2_4_9("2.4.9",Feature.SYNC_DELAY, Feature.TEXT_SEARCH),
+  V2_4_9("2.4.9",Feature.SYNC_DELAY, Feature.TEXT_SEARCH),
+  @Deprecated
   V2_4_10("2.4.10",Feature.SYNC_DELAY, Feature.TEXT_SEARCH),
 
   @Deprecated
@@ -137,6 +139,7 @@ public enum Version implements IFeatureAwareVersion {
   /**
    * Latest 2.6 production release
    */
+  @Deprecated
   V2_6_11("2.6.11",Feature.SYNC_DELAY),
 
   /**
@@ -188,12 +191,18 @@ public enum Version implements IFeatureAwareVersion {
   /**
    * Latest 3.2 series production release
    */
+  @Deprecated
   V3_2_1("3.2.1", Feature.SYNC_DELAY, Feature.STORAGE_ENGINE),
 
   /**
-   * Latest 3.3 series development release
+   * Latest 3 series production release
    */
   V3_3_1("3.3.1", Feature.SYNC_DELAY, Feature.STORAGE_ENGINE),
+  V3_4_1("3.4.1", Feature.SYNC_DELAY, Feature.STORAGE_ENGINE, Feature.ONLY_64BIT, Feature.NO_CHUNKSIZE_ARG, Feature.MONGOS_CONFIGDB_SET_STYLE),
+  /**
+   * Latest 3 development release
+   */
+  V3_5_1("3.5.1", Feature.SYNC_DELAY, Feature.STORAGE_ENGINE, Feature.ONLY_64BIT, Feature.NO_CHUNKSIZE_ARG, Feature.MONGOS_CONFIGDB_SET_STYLE),
 
   ;
 
@@ -228,9 +237,11 @@ public enum Version implements IFeatureAwareVersion {
 		V2_0(V2_0_9),
 		@Deprecated
 		V2_1(V2_1_2),
+		@Deprecated
 		V2_2(V2_2_7),
 		@Deprecated
 		V2_3(V2_3_0),
+		@Deprecated
 		V2_4(V2_4_10),
         @Deprecated
 		V2_5(V2_5_4),
@@ -239,24 +250,22 @@ public enum Version implements IFeatureAwareVersion {
         @Deprecated
         V2_7(V2_7_1),
 
-		/**
-		 * Latest production release
-		 */
-		V3_2(V3_2_1),
-
-		/**
-		 * Latest development release
-		 */
-		V3_3(V3_3_1),
-        
 		// Older releases
+		@Deprecated
 		V3_0(V3_0_8),
+		@Deprecated
 		V3_1(V3_1_6),
 
 		@Deprecated
+		V3_2(V3_2_1),
+		V3_3(V3_3_1),
+		V3_4(V3_4_1),
+		V3_5(V3_5_1),
+        
+		@Deprecated
 		LEGACY(V2_6),
-		PRODUCTION(V3_2),
-		DEVELOPMENT(V3_3), ;
+		PRODUCTION(V3_4),
+		DEVELOPMENT(V3_5), ;
 
 		private final IFeatureAwareVersion _latest;
 

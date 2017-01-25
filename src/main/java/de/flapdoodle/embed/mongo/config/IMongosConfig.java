@@ -26,6 +26,8 @@ import java.util.Map;
 public interface IMongosConfig extends IMongoConfig {
 
 	String getConfigDB();
+	
+	String replicaSet();
 
 	Map<String, String> args();
 }
