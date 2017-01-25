@@ -29,12 +29,11 @@ import de.flapdoodle.embed.mongo.runtime.MongoImport;
 import de.flapdoodle.embed.process.config.IRuntimeConfig;
 import de.flapdoodle.embed.process.distribution.Distribution;
 import de.flapdoodle.embed.process.extract.IExtractedFileSet;
-import de.flapdoodle.embed.process.runtime.AbstractProcess;
 
 /**
  * Created by canyaman on 10/04/14.
  */
-public class MongoImportProcess  extends AbstractProcess<IMongoImportConfig, MongoImportExecutable, MongoImportProcess> {
+public class MongoImportProcess  extends AbstractMongoProcess<IMongoImportConfig, MongoImportExecutable, MongoImportProcess> {
 
     public MongoImportProcess(Distribution distribution, IMongoImportConfig config, IRuntimeConfig runtimeConfig,
                          MongoImportExecutable mongosExecutable) throws IOException {
@@ -48,7 +47,8 @@ public class MongoImportProcess  extends AbstractProcess<IMongoImportConfig, Mon
     }
 
     @Override
-    protected void stopInternal() {
+    public void stopInternal() {
+        // Nothing to stop since we are just running mongo restore and don't want to kill the mongo instance
     }
 
     @Override
