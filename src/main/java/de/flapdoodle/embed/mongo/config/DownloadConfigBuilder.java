@@ -42,7 +42,7 @@ public class DownloadConfigBuilder extends de.flapdoodle.embed.process.config.st
 
 	public DownloadConfigBuilder defaults() {
 		fileNaming().setDefault(new UUIDTempNaming());
-		downloadPath().setDefault(new PlattformDependendDownloadPath());
+		downloadPath().setDefault(new PlatformDependentDownloadPath());
 		progressListener().setDefault(new StandardConsoleProgressListener());
 		artifactStorePath().setDefault(new UserHome(".embedmongo"));
 		downloadPrefix().setDefault(new DownloadPrefix("embedmongo-download"));
@@ -50,14 +50,14 @@ public class DownloadConfigBuilder extends de.flapdoodle.embed.process.config.st
 		return this;
 	}
 
-	private static class PlattformDependendDownloadPath implements IDownloadPath {
+	private static class PlatformDependentDownloadPath implements IDownloadPath {
 
 		@Override
 		public String getPath(Distribution distribution) {
 			if (distribution.getPlatform()==Platform.Windows) {
-				return "http://downloads.mongodb.org/";
+				return "https://downloads.mongodb.org/";
 			}
-			return "http://fastdl.mongodb.org/";
+			return "https://fastdl.mongodb.org/";
 		}
 		
 	}
