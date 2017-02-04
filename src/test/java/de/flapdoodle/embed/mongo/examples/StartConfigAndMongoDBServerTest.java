@@ -20,94 +20,67 @@
  */
 package de.flapdoodle.embed.mongo.examples;
 
-import java.io.IOException;
-import java.net.UnknownHostException;
-
-import org.junit.Ignore;
-import org.junit.Test;
-
 import com.mongodb.MongoClient;
-
-import de.flapdoodle.embed.mongo.MongodExecutable;
-import de.flapdoodle.embed.mongo.MongodProcess;
-import de.flapdoodle.embed.mongo.MongodStarter;
-import de.flapdoodle.embed.mongo.MongosExecutable;
-import de.flapdoodle.embed.mongo.MongosProcess;
-import de.flapdoodle.embed.mongo.MongosStarter;
-import de.flapdoodle.embed.mongo.config.IMongodConfig;
-import de.flapdoodle.embed.mongo.config.IMongosConfig;
-import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
-import de.flapdoodle.embed.mongo.config.MongosConfigBuilder;
-import de.flapdoodle.embed.mongo.config.Net;
+import de.flapdoodle.embed.mongo.*;
+import de.flapdoodle.embed.mongo.config.*;
 import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.process.runtime.Network;
+import org.bson.Document;
+import org.junit.Test;
+
+import java.io.IOException;
 
 
 public class StartConfigAndMongoDBServerTest {
 
-	public static void main(String[] args) throws UnknownHostException, IOException {
-		new StartConfigAndMongoDBServerTest().startAndStopMongosAndMongod();
-	}
 	/*
-	 // ->
 	 this is an very easy example to use mongos and mongod
-	 // <- 
 	 */
 	@Test
-	@Ignore("does not work anymore")
-	public void startAndStopMongosAndMongod() throws UnknownHostException, IOException {
-			// ->
-		int port = Network.getFreeServerPort();
-		int mongodPort1 = port+1;
-		int mongodPort2 = port+2;
-		
+	public void startAndStopMongosAndMongod() throws IOException {
+		int mongosPort = Network.getFreeServerPort();
+		int mongodPort = Network.getFreeServerPort();
 		String defaultHost = "localhost";
 
-		MongodProcess mongod1 = startMongod(mongodPort1);
-		MongodProcess mongod2 = startMongod(mongodPort2);
+		MongodProcess mongod = startMongod(mongodPort);
 
 		try {
-			MongosProcess mongos = startMongos(port, defaultHost, mongodPort1, defaultHost, mongodPort2);
+			// init replica set, aka rs.initiate()
+			new MongoClient(defaultHost, mongodPort).getDatabase("admin").runCommand(new Document("replSetInitiate", new Document()));
+			MongosProcess mongos = startMongos(mongosPort, mongodPort, defaultHost);
 			try {
-				MongoClient mongoClient = new MongoClient(defaultHost, port);
+				MongoClient mongoClient = new MongoClient(defaultHost, mongodPort);
 				System.out.println("DB Names: " + mongoClient.getDatabaseNames());
 			} finally {
 				mongos.stop();
 			}
 		} finally {
-			mongod1.stop();
-			mongod2.stop();
+			mongod.stop();
 		}
-			// <-
 	}
-	
-	// ->
-	private MongosProcess startMongos(int port, String host1, int port1, String host2, int port2) throws UnknownHostException,
+
+	private MongosProcess startMongos(int port, int defaultConfigPort, String defaultHost) throws
 			IOException {
 		IMongosConfig mongosConfig = new MongosConfigBuilder()
-			.version(Version.Main.PRODUCTION)
-			.net(new Net(port, Network.localhostIsIPv6()))
-			.configDB(host1 + ":" + port1+","+host2 + ":" + port2)
-			.replicaSet("testRepSet")
-			.build();
+				.version(Version.Main.PRODUCTION)
+				.net(new Net(port, Network.localhostIsIPv6()))
+				.configDB(defaultHost + ":" + defaultConfigPort)
+				.replicaSet("testRepSet")
+				.build();
 
 		MongosExecutable mongosExecutable = MongosStarter.getDefaultInstance().prepare(mongosConfig);
-		MongosProcess mongos = mongosExecutable.start();
-		return mongos;
+		return mongosExecutable.start();
 	}
 
-	private MongodProcess startMongod(int port) throws UnknownHostException, IOException {
+	private MongodProcess startMongod(int defaultConfigPort) throws IOException {
 		IMongodConfig mongoConfigConfig = new MongodConfigBuilder()
-			.version(Version.Main.PRODUCTION)
-			.net(new Net(port, Network.localhostIsIPv6()))
-			//.configServer(true)
-			//.shardServer(true)
-			//.replication(new Storage(null, "testRepSet", 0))
-			.build();
+				.version(Version.Main.PRODUCTION)
+				.net(new Net(defaultConfigPort, Network.localhostIsIPv6()))
+				.replication(new Storage(null, "testRepSet", 5000))
+				.configServer(true)
+				.build();
 
 		MongodExecutable mongodExecutable = MongodStarter.getDefaultInstance().prepare(mongoConfigConfig);
-		MongodProcess mongod = mongodExecutable.start();
-		return mongod;
+		return mongodExecutable.start();
 	}
-	// <-
 }
