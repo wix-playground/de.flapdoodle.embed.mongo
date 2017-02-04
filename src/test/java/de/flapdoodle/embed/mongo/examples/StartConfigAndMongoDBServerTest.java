@@ -20,15 +20,28 @@
  */
 package de.flapdoodle.embed.mongo.examples;
 
-import com.mongodb.MongoClient;
-import de.flapdoodle.embed.mongo.*;
-import de.flapdoodle.embed.mongo.config.*;
-import de.flapdoodle.embed.mongo.distribution.Version;
-import de.flapdoodle.embed.process.runtime.Network;
+import java.io.IOException;
+
 import org.bson.Document;
+import org.junit.Ignore;
 import org.junit.Test;
 
-import java.io.IOException;
+import com.mongodb.MongoClient;
+
+import de.flapdoodle.embed.mongo.MongodExecutable;
+import de.flapdoodle.embed.mongo.MongodProcess;
+import de.flapdoodle.embed.mongo.MongodStarter;
+import de.flapdoodle.embed.mongo.MongosExecutable;
+import de.flapdoodle.embed.mongo.MongosProcess;
+import de.flapdoodle.embed.mongo.MongosStarter;
+import de.flapdoodle.embed.mongo.config.IMongodConfig;
+import de.flapdoodle.embed.mongo.config.IMongosConfig;
+import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
+import de.flapdoodle.embed.mongo.config.MongosConfigBuilder;
+import de.flapdoodle.embed.mongo.config.Net;
+import de.flapdoodle.embed.mongo.config.Storage;
+import de.flapdoodle.embed.mongo.distribution.Version;
+import de.flapdoodle.embed.process.runtime.Network;
 
 
 public class StartConfigAndMongoDBServerTest {
@@ -37,6 +50,7 @@ public class StartConfigAndMongoDBServerTest {
 	 this is an very easy example to use mongos and mongod
 	 */
 	@Test
+	@Ignore
 	public void startAndStopMongosAndMongod() throws IOException {
 		int mongosPort = Network.getFreeServerPort();
 		int mongodPort = Network.getFreeServerPort();
@@ -46,11 +60,16 @@ public class StartConfigAndMongoDBServerTest {
 
 		try {
 			// init replica set, aka rs.initiate()
-			new MongoClient(defaultHost, mongodPort).getDatabase("admin").runCommand(new Document("replSetInitiate", new Document()));
+			try (MongoClient client=new MongoClient(defaultHost, mongodPort)) {
+				client.getDatabase("admin").runCommand(new Document("replSetInitiate", new Document()));
+			}
+			
 			MongosProcess mongos = startMongos(mongosPort, mongodPort, defaultHost);
+			
 			try {
-				MongoClient mongoClient = new MongoClient(defaultHost, mongodPort);
-				System.out.println("DB Names: " + mongoClient.getDatabaseNames());
+				try (MongoClient mongoClient = new MongoClient(defaultHost, mongodPort)) {
+					System.out.println("DB Names: " + mongoClient.getDatabaseNames());
+				}
 			} finally {
 				mongos.stop();
 			}
