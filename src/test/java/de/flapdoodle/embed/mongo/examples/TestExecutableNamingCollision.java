@@ -23,8 +23,6 @@ package de.flapdoodle.embed.mongo.examples;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
-import junit.framework.TestCase;
-
 import org.junit.Test;
 
 import com.mongodb.Mongo;
@@ -43,6 +41,7 @@ import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.process.config.IRuntimeConfig;
 import de.flapdoodle.embed.process.extract.UserTempNaming;
 import de.flapdoodle.embed.process.runtime.Network;
+import junit.framework.TestCase;
 
 public class TestExecutableNamingCollision extends TestCase {
 

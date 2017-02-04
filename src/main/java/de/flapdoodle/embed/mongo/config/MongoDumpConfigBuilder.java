@@ -20,11 +20,11 @@
  */
 package de.flapdoodle.embed.mongo.config;
 
+import java.io.IOException;
+
 import de.flapdoodle.embed.mongo.Command;
 import de.flapdoodle.embed.mongo.distribution.IFeatureAwareVersion;
 import de.flapdoodle.embed.process.builder.TypedProperty;
-
-import java.io.IOException;
 
 public class MongoDumpConfigBuilder extends AbstractMongoConfigBuilder<IMongoDumpConfig> {
    protected static final TypedProperty<Boolean> VERBOSE = TypedProperty.with("verbose", Boolean.class);

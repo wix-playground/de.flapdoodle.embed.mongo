@@ -20,8 +20,8 @@
  */
 package de.flapdoodle.embed.mongo.output;
 
-import junit.framework.TestCase;
 import de.flapdoodle.embed.process.io.progress.ConsoleOneLineProgressListener;
+import junit.framework.TestCase;
 
 // CHECKSTYLE:OFF
 public class ConsoleOneLineProgressListenerTest extends TestCase {

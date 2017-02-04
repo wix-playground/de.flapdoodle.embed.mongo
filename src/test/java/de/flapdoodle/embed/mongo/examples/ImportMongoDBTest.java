@@ -24,8 +24,6 @@ package de.flapdoodle.embed.mongo.examples;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
-import junit.framework.TestCase;
-
 import org.junit.Test;
 
 import com.mongodb.MongoClient;
@@ -43,6 +41,7 @@ import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
 import de.flapdoodle.embed.mongo.config.Net;
 import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.process.runtime.Network;
+import junit.framework.TestCase;
 
 /**
  * Created by canyaman on 10/04/14.

@@ -20,8 +20,6 @@
  */
 package de.flapdoodle.embed.mongo.examples;
 
-import junit.framework.TestCase;
-
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.CommandResult;
@@ -36,6 +34,7 @@ import de.flapdoodle.embed.mongo.config.IMongodConfig;
 import de.flapdoodle.embed.mongo.config.MongoCmdOptionsBuilder;
 import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
 import de.flapdoodle.embed.mongo.distribution.Version;
+import junit.framework.TestCase;
 
 public class ConfigServerMongoDBTest extends TestCase {
 

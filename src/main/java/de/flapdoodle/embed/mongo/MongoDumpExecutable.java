@@ -21,13 +21,13 @@
  */
 package de.flapdoodle.embed.mongo;
 
+import java.io.IOException;
+
 import de.flapdoodle.embed.mongo.config.IMongoDumpConfig;
 import de.flapdoodle.embed.process.config.IRuntimeConfig;
 import de.flapdoodle.embed.process.distribution.Distribution;
 import de.flapdoodle.embed.process.extract.IExtractedFileSet;
 import de.flapdoodle.embed.process.runtime.Executable;
-
-import java.io.IOException;
 
 public class MongoDumpExecutable extends Executable<IMongoDumpConfig, MongoDumpProcess> {
     public MongoDumpExecutable(Distribution distribution, IMongoDumpConfig mongodConfig, IRuntimeConfig runtimeConfig,

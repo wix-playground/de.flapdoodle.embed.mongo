@@ -22,10 +22,10 @@ package de.flapdoodle.embed.mongo.io;
 
 import java.util.List;
 
-import junit.framework.TestCase;
 import de.flapdoodle.embed.process.collections.Collections;
 import de.flapdoodle.embed.process.io.IStreamProcessor;
 import de.flapdoodle.embed.process.io.StreamToLineProcessor;
+import junit.framework.TestCase;
 
 //CHECKSTYLE:OFF
 public class TestStreamToLineProcessor extends TestCase {

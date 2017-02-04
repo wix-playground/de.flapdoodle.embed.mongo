@@ -23,8 +23,6 @@ package de.flapdoodle.embed.mongo;
 import java.io.IOException;
 import java.util.Date;
 
-import junit.framework.TestCase;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -43,6 +41,7 @@ import de.flapdoodle.embed.mongo.config.RuntimeConfigBuilder;
 import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.process.config.IRuntimeConfig;
 import de.flapdoodle.embed.process.runtime.Network;
+import junit.framework.TestCase;
 
 /**
  * Integration test for starting and stopping MongodExecutable

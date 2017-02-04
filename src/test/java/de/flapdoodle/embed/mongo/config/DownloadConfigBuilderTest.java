@@ -20,14 +20,16 @@
  */
 package de.flapdoodle.embed.mongo.config;
 
-import com.google.common.collect.ImmutableMap;
-import de.flapdoodle.embed.process.io.directories.UserHome;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Optional;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import java.util.*;
+import de.flapdoodle.embed.process.io.directories.UserHome;
 
 @RunWith(Parameterized.class)
 public class DownloadConfigBuilderTest extends DownloadConfigBuilder {
