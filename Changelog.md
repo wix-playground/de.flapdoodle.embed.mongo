@@ -1,6 +1,10 @@
 ### Changelog
 
-#### 1.50.1 (SNAPSHOT)
+#### 2.0.1 (SNAPSHOT)
+
+#### 2.0.0
+
+- java8, immutables.org, bugfixes
 
 #### 1.50.0
 
