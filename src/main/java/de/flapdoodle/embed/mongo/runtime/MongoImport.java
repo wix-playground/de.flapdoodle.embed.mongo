@@ -37,7 +37,7 @@ public class MongoImport extends AbstractMongo {
 
     public static List<String> getCommandLine(IMongoImportConfig config, IExtractedFileSet files)
             throws UnknownHostException {
-        List<String> ret = new ArrayList<String>();
+        List<String> ret = new ArrayList<>();
         ret.addAll(Arrays.asList(files.executable().getAbsolutePath()));
         if (config.cmdOptions().isVerbose()) {
             ret.add("-v");

@@ -32,7 +32,7 @@ public class Net {
 	private final int port;
 	private final boolean ipv6;
 
-	public Net() throws UnknownHostException, IOException {
+	public Net() throws IOException {
 		this(null, Network.getFreeServerPort(), Network.localhostIsIPv6());
 	}
 

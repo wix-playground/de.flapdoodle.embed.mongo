@@ -38,14 +38,11 @@ public class MongoShell extends AbstractMongo {
 
 	public static List<String> getCommandLine(IMongoShellConfig config, IExtractedFileSet files)
 			throws UnknownHostException {
-		List<String> ret = new ArrayList<String>();
+		List<String> ret = new ArrayList<>();
 		ret.addAll(Arrays.asList(files.executable().getAbsolutePath()));
 
 		String hostname="localhost";
 		Net net = config.net();
-		if (net.isIpv6()) {
-			//ret.add("--ipv6");
-		}
 		if (net.getBindIp()!=null) {
 			hostname=net.getBindIp();
 		}

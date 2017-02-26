@@ -43,7 +43,7 @@ public class MongoImportConfigBuilder extends AbstractMongoConfigBuilder<IMongoI
     protected static final TypedProperty<Boolean> DROP = TypedProperty.with("drop", Boolean.class);
 
 
-    public MongoImportConfigBuilder() throws UnknownHostException, IOException {
+    public MongoImportConfigBuilder() throws IOException {
         super();
         property(PID_FILE).setDefault("mongoimport.pid");
 		property(TYPE).setDefault("json");

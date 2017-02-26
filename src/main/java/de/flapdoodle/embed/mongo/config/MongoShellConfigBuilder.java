@@ -36,7 +36,7 @@ public class MongoShellConfigBuilder extends AbstractMongoConfigBuilder<IMongoSh
 	protected static final TypedProperty<String> JS_SCRIPT = TypedProperty.with("scriptName", String.class);
 	protected static final TypedProperty<List> JS_SCRIPT_PARAMETERS = TypedProperty.with("parameters", List.class);
 
-	public MongoShellConfigBuilder() throws UnknownHostException, IOException {
+	public MongoShellConfigBuilder() throws IOException {
 		property(PID_FILE).setDefault("mongo.pid");
 	}
 
@@ -120,7 +120,7 @@ public class MongoShellConfigBuilder extends AbstractMongoConfigBuilder<IMongoSh
  			super(new SupportConfig(Command.Mongo), version, net, username, password, timeout, cmdOptions, pidFile);
  			this._dbname = dbName;
 			this._name = scriptName;
-			this._parameters = Collections.unmodifiableList(new ArrayList<String>(parameters));
+			this._parameters = Collections.unmodifiableList(new ArrayList<>(parameters));
 		}
 
 		@Override

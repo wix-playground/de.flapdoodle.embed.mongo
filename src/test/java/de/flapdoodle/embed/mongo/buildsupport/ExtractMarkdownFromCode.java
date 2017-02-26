@@ -28,9 +28,11 @@ import java.util.List;
 import com.google.common.base.Charsets;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
+import com.google.common.base.Strings;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
+import org.apache.commons.lang3.StringUtils;
 
 public class ExtractMarkdownFromCode {
 
@@ -70,13 +72,7 @@ public class ExtractMarkdownFromCode {
 				String basePath = sourceFileName.substring(0, sourceFileName.lastIndexOf('/') + 1);
 				String includeFilename = basePath + fileName;
 				List<String> includedLines = Files.readLines(new File(includeFilename), Charsets.UTF_8);
-				Collection<String> shiftedLines = Collections2.transform(includedLines, new Function<String, String>() {
-
-					@Override
-					public String apply(String input) {
-						return "\t\t" + input;
-					}
-				});
+				Collection<String> shiftedLines = Collections2.transform(includedLines, input -> "\t\t" + input);
 				ret.addAll(shiftedLines);
 			} else {
 				ret.add(line);
@@ -100,26 +96,11 @@ public class ExtractMarkdownFromCode {
 	}
 	
 	private static Collection<String> uncommentThreeDots(Collection<String> lines) {
-		return Collections2.transform(lines, new Function<String, String>() {
-
-			@Override
-			public String apply(String input) {
-				return input.replace("// ...", "...");
-			}
-		});
+		return Collections2.transform(lines, input -> input.replace("// ...", "..."));
 	}
 	
 	private static Collection<String> compactEmptyLines(Collection<String> lines) {
-		return Collections2.filter(Collections2.transform(lines, new Function<String, String>() {
-
-			@Override
-			public String apply(String input) {
-				if (input.trim().isEmpty()) {
-					return "";
-				}
-				return input;
-			}
-		}),new Predicate<String>() {
+		return Collections2.filter(Collections2.transform(lines, StringUtils::trimToEmpty), new Predicate<String>() {
 			boolean lastOneWasEmpty=false;
 			@Override
 			public boolean apply(String input) {
@@ -137,15 +118,11 @@ public class ExtractMarkdownFromCode {
 	}
 
 	private static Collection<String> shiftOneTabLeft(Collection<String> lines) {
-		return Collections2.transform(lines, new Function<String, String>() {
-
-			@Override
-			public String apply(String input) {
-				if ((!input.isEmpty()) && (input.charAt(0) == '\t'))
-					return input.substring(1);
-				return input;
-			}
-		});
+		return Collections2.transform(lines, input -> {
+            if ((StringUtils.isNotEmpty(input)) && (input.charAt(0) == '\t'))
+                return input.substring(1);
+            return input;
+        });
 	}
 
 	private static Collection<String> stripNonCodeLines(Collection<String> lines) {
@@ -173,13 +150,7 @@ public class ExtractMarkdownFromCode {
 	}
 
 	private static Collection<String> freeHeader(Collection<String> lines) {
-		return Collections2.transform(lines, new Function<String, String>() {
-
-			@Override
-			public String apply(String input) {
-				return input.replace("// ###", "###");
-			}
-		});
+		return Collections2.transform(lines, input -> input.replace("// ###", "###"));
 	}
 
 	private static Collection<String> startWithFirstHeader(Collection<String> lines) {

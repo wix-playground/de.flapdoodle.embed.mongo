@@ -89,7 +89,7 @@ public abstract class AbstractMongoProcess<T extends IMongoConfig, E extends Exe
 	}
 	
 	private Set<String> knownFailureMessages() {
-		HashSet<String> ret = new HashSet<String>();
+		HashSet<String> ret = new HashSet<>();
 		ret.add("failed errno");
 		ret.add("ERROR:");
 		ret.add("error command line");

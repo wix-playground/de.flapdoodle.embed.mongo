@@ -35,7 +35,7 @@ public class Mongos extends AbstractMongo {
 
 	public static List<String> getCommandLine(IMongosConfig config, IExtractedFileSet files)
 			throws UnknownHostException {
-		List<String> ret = new ArrayList<String>();
+		List<String> ret = new ArrayList<>();
 
 		ret.add(files.executable().getAbsolutePath());
 		if (!config.version().enabled(Feature.NO_CHUNKSIZE_ARG)) {

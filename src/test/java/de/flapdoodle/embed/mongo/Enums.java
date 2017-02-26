@@ -20,18 +20,12 @@
  */
 package de.flapdoodle.embed.mongo;
 
-import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
+
+import java.lang.reflect.Field;
+import java.util.*;
 
 public class Enums {
 
@@ -43,8 +37,8 @@ public class Enums {
 		return Arrays.asList(type.getEnumConstants());
 	}
 
-	public static <T extends Enum<T>> Collection<T> filter(Collection<T> source, Predicate<? super T> predicate) {
-		return Collections2.filter(source, predicate);
+	public static <T extends Enum<T>> Collection<T> filter(Collection<T> source, java.util.function.Predicate<? super T> predicate) {
+		return Collections2.filter(source, predicate::test);
 	}
 
 	public static <T extends Enum<T>> Collection<T> unique(Collection<T> source, Comparator<T> comparator) {
@@ -52,7 +46,7 @@ public class Enums {
 
 		if (!source.isEmpty()) {
 			List<T> copy = Lists.newArrayList(source);
-			Collections.sort(copy, comparator);
+			copy.sort(comparator);
 
 			T last = copy.get(0);
 			ret.add(last);
@@ -69,7 +63,7 @@ public class Enums {
 
 	static class NotDeprecated<T extends Enum<T>> implements Predicate<T> {
 
-		Set<T> deprecatedValues = new HashSet<T>();
+		Set<T> deprecatedValues = new HashSet<>();
 
 		public NotDeprecated(Class<T> type) {
 			Field[] fields = type.getDeclaredFields();
@@ -77,9 +71,7 @@ public class Enums {
 				if ((f.isEnumConstant()) && (f.getAnnotation(Deprecated.class) != null)) {
 					try {
 						deprecatedValues.add((T) f.get(null));
-					} catch (IllegalArgumentException e) {
-						e.printStackTrace();
-					} catch (IllegalAccessException e) {
+					} catch (IllegalArgumentException | IllegalAccessException e) {
 						e.printStackTrace();
 					}
 				}
