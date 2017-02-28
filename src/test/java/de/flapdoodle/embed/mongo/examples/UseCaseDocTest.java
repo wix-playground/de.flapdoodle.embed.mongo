@@ -30,6 +30,9 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.junit.ClassRule;
+import org.junit.Test;
+
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
@@ -37,13 +40,18 @@ import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
 
 import de.flapdoodle.embed.mongo.Command;
+import de.flapdoodle.embed.mongo.MongoImportExecutable;
+import de.flapdoodle.embed.mongo.MongoImportProcess;
+import de.flapdoodle.embed.mongo.MongoImportStarter;
 import de.flapdoodle.embed.mongo.MongodExecutable;
 import de.flapdoodle.embed.mongo.MongodProcess;
 import de.flapdoodle.embed.mongo.MongodStarter;
 import de.flapdoodle.embed.mongo.config.DownloadConfigBuilder;
 import de.flapdoodle.embed.mongo.config.ExtractedArtifactStoreBuilder;
+import de.flapdoodle.embed.mongo.config.IMongoImportConfig;
 import de.flapdoodle.embed.mongo.config.IMongodConfig;
 import de.flapdoodle.embed.mongo.config.MongoCmdOptionsBuilder;
+import de.flapdoodle.embed.mongo.config.MongoImportConfigBuilder;
 import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
 import de.flapdoodle.embed.mongo.config.Net;
 import de.flapdoodle.embed.mongo.config.RuntimeConfigBuilder;
@@ -70,13 +78,19 @@ import de.flapdoodle.embed.process.io.directories.IDirectory;
 import de.flapdoodle.embed.process.io.progress.LoggingProgressListener;
 import de.flapdoodle.embed.process.runtime.ICommandLinePostProcessor;
 import de.flapdoodle.embed.process.runtime.Network;
-import junit.framework.TestCase;
+import de.flapdoodle.testdoc.Includes;
+import de.flapdoodle.testdoc.Recorder;
+import de.flapdoodle.testdoc.Recording;
+import de.flapdoodle.testdoc.TabSize;
 
-public class TestExampleReadMeCode extends TestCase {
+public class UseCaseDocTest {
 
-	// ### Usage
+	@ClassRule
+	public static final Recording recording=Recorder.generateMarkDown("usecase.md",TabSize.spaces(2));
+	
+	@Test
 	public void testStandard() throws UnknownHostException, IOException {
-		// ->
+		recording.begin();
 		MongodStarter starter = MongodStarter.getDefaultInstance();
 
 		int port = Network.getFreeServerPort();
@@ -99,28 +113,12 @@ public class TestExampleReadMeCode extends TestCase {
 			if (mongodExecutable != null)
 				mongodExecutable.stop();
 		}
-		// <-
+		recording.end();
 	}
 
-	// ### Usage - Optimization
-	/*
-	// ->
- 		You should make the MongodStarter instance or the RuntimeConfig instance static (per Class or per JVM).
- 		The main purpose of that is the caching of extracted executables and library files. This is done by the ArtifactStore instance
- 		configured with the RuntimeConfig instance. Each instance uses its own cache so multiple RuntimeConfig instances will use multiple
- 		ArtifactStores an multiple caches with much less cache hits:)  
-	// <-
-	 */
-	
-	// ### Usage - custom mongod filename 
-	/*
-	// ->
-		To avoid windows firewall dialog popups you can chose a stable executable name with UserTempNaming. 
-		This way the firewall dialog only popup once any your done. See [Executable Naming](#executable-naming) 
-	// <-
-	 */
+	@Test
 	public void testCustomMongodFilename() throws UnknownHostException, IOException {
-		// ->		
+		recording.begin();		
 		int port = Network.getFreeServerPort();
 
 		Command command = Command.MongoD;
@@ -155,19 +153,17 @@ public class TestExampleReadMeCode extends TestCase {
 			if (mongodExecutable != null)
 				mongodExecutable.stop();
 		}
-		// <-
+		recording.end();		
 	}
 
-	// ### Unit Tests
 	public void testUnitTests() {
 		// @include AbstractMongoDBTest.java
 		Class<?> see = AbstractMongoDBTest.class;
 	}
 
-	// #### ... with some more help
+	@Test
 	public void testMongodForTests() throws IOException {
-		// ->
-		// ...
+		recording.begin();
 		MongodForTestsFactory factory = null;
 		try {
 			factory = MongodForTestsFactory.with(Version.Main.PRODUCTION);
@@ -181,14 +177,12 @@ public class TestExampleReadMeCode extends TestCase {
 			if (factory != null)
 				factory.shutdown();
 		}
-		// ...
-		// <-
+		recording.end();
 	}
 
-	// ### Customize Download URL
+	@Test
 	public void testCustomizeDownloadURL() {
-		// ->
-		// ...
+		recording.begin();
 		Command command = Command.MongoD;
 
 		IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder()
@@ -199,14 +193,12 @@ public class TestExampleReadMeCode extends TestCase {
 								.defaultsForCommand(command)
 								.downloadPath("http://my.custom.download.domain/")))
 				.build();
-		// ...
-		// <-
+		recording.end();
 	}
 
-	// ### Customize Proxy for Download 
+	@Test 
 	public void testCustomProxy() {
-		// ->
-		// ...
+		recording.begin();
 		Command command = Command.MongoD;
 
 		IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder()
@@ -217,13 +209,11 @@ public class TestExampleReadMeCode extends TestCase {
 								.defaultsForCommand(command)
 								.proxyFactory(new HttpProxyFactory("fooo", 1234))))
 				.build();
-		// ...
-		// <-
+		recording.end();
 	}
 	
-	// ### Customize Artifact Storage
+	@Test
 	public void testCustomizeArtifactStorage() throws IOException {
-
 		IMongodConfig mongodConfig = new MongodConfigBuilder()
 				.version(Version.Main.PRODUCTION)
 				.net(new Net(Network.getFreeServerPort(), Network.localhostIsIPv6()))
@@ -231,6 +221,7 @@ public class TestExampleReadMeCode extends TestCase {
 
 		// ->
 		// ...
+		recording.begin();
 		IDirectory artifactStorePath = new FixedPath(System.getProperty("user.home") + "/.embeddedMongodbCustomPath");
 		ITempNaming executableNaming = new UUIDTempNaming();
 
@@ -248,6 +239,7 @@ public class TestExampleReadMeCode extends TestCase {
 
 		MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
 		MongodExecutable mongodExe = runtime.prepare(mongodConfig);
+		recording.end();
 		// ...
 		// <-
 		MongodProcess mongod = mongodExe.start();
@@ -256,11 +248,11 @@ public class TestExampleReadMeCode extends TestCase {
 		mongodExe.stop();
 	}
 
-	// ### Usage - custom mongod process output
-	// #### ... to console with line prefix
+	@Test
 	public void testCustomOutputToConsolePrefix() {
 		// ->
 		// ...
+		recording.begin();
 		ProcessOutput processOutput = new ProcessOutput(Processors.namedConsole("[mongod>]"),
 				Processors.namedConsole("[MONGOD>]"), Processors.namedConsole("[console>]"));
 
@@ -270,14 +262,17 @@ public class TestExampleReadMeCode extends TestCase {
 				.build();
 
 		MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
+		recording.end();
 		// ...
 		// <-
 	}
 
-	// #### ... to file
+	@Test
 	public void testCustomOutputToFile() throws FileNotFoundException, IOException {
+		recording.include(FileStreamProcessor.class, Includes.WithoutImports, Includes.WithoutPackage, Includes.Trim);
 		// ->
 		// ...
+		recording.begin();
 		IStreamProcessor mongodOutput = Processors.named("[mongod>]",
 				new FileStreamProcessor(File.createTempFile("mongod", "log")));
 		IStreamProcessor mongodError = new FileStreamProcessor(File.createTempFile("mongod-error", "log"));
@@ -289,24 +284,16 @@ public class TestExampleReadMeCode extends TestCase {
 				.build();
 
 		MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
+		recording.end();
 		// ...
 		// <-
 	}
 
-	/*
-	 * Ist fürs Readme, deshalb nicht statisch und public
-	 */
-	// ->
-
-	// ...
-	
-	// ...
-	// <-
-
-	// #### ... to java logging
+	@Test
 	public void testCustomOutputToLogging() throws FileNotFoundException, IOException {
 		// ->
 		// ...
+		recording.begin();
 		Logger logger = Logger.getLogger(getClass().getName());
 
 		ProcessOutput processOutput = new ProcessOutput(Processors.logTo(logger, Level.INFO), Processors.logTo(logger,
@@ -323,14 +310,17 @@ public class TestExampleReadMeCode extends TestCase {
 				.build();
 
 		MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
+		recording.end();
 		// ...
 		// <-
 	}
 
 	// #### ... to default java logging (the easy way)
+	@Test
 	public void testDefaultOutputToLogging() throws FileNotFoundException, IOException {
 		// ->
 		// ...
+		recording.begin();
 		Logger logger = Logger.getLogger(getClass().getName());
 
 		IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder()
@@ -338,11 +328,13 @@ public class TestExampleReadMeCode extends TestCase {
 				.build();
 
 		MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
+		recording.end();
 		// ...
 		// <-
 	}
 
 	// #### ... to null device
+	@Test
 	public void testDefaultOutputToNone() throws FileNotFoundException, IOException {
 		int port = 12345;
 		IMongodConfig mongodConfig = new MongodConfigBuilder()
@@ -351,6 +343,7 @@ public class TestExampleReadMeCode extends TestCase {
 				.build();
 		// ->
 		// ...
+		recording.begin();
 		Logger logger = Logger.getLogger(getClass().getName());
 
 		IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder()
@@ -359,6 +352,7 @@ public class TestExampleReadMeCode extends TestCase {
 				.build();
 
 		MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
+		recording.end();
 		// ...
 		// <-
 		MongodProcess mongod = null;
@@ -383,9 +377,11 @@ public class TestExampleReadMeCode extends TestCase {
 	}
 
 	// ### Custom Version
+	@Test
 	public void testCustomVersion() throws UnknownHostException, IOException {
 		// ->
 		// ...
+		recording.begin();
 		int port = 12345;
 		IMongodConfig mongodConfig = new MongodConfigBuilder()
 				.version(Versions.withFeatures(new GenericVersion("2.0.7-rc1"), Feature.SYNC_DELAY))
@@ -401,10 +397,12 @@ public class TestExampleReadMeCode extends TestCase {
 			mongod = mongodExecutable.start();
 
 			// <-
+			recording.end();
 			MongoClient mongo = new MongoClient("localhost", port);
 			DB db = mongo.getDB("test");
 			DBCollection col = db.createCollection("testCol", new BasicDBObject());
 			col.save(new BasicDBObject("testDoc", new Date()));
+			recording.begin();
 			// ->
 			// ...
 
@@ -415,14 +413,17 @@ public class TestExampleReadMeCode extends TestCase {
 			if (mongodExecutable != null)
 				mongodExecutable.stop();
 		}
+		recording.end();
 		// ...
 		// <-
 
 	}
 
 	// ### Main Versions
+	@Test
 	public void testMainVersions() throws UnknownHostException, IOException {
 		// ->
+		recording.begin();
 		IVersion version = Version.V2_2_5;
 		// uses latest supported 2.2.x Version
 		version = Version.Main.V2_2;
@@ -430,6 +431,7 @@ public class TestExampleReadMeCode extends TestCase {
 		version = Version.Main.PRODUCTION;
 		// uses latest supported development version
 		version = Version.Main.DEVELOPMENT;
+		recording.end();
 		// <-
 	}
 
@@ -440,18 +442,23 @@ public class TestExampleReadMeCode extends TestCase {
 	// <-
 	 */
 	// #### ... by hand
+	@Test
 	public void testFreeServerPort() throws UnknownHostException, IOException {
 		// ->
 		// ...
+		recording.begin();
 		int port = Network.getFreeServerPort();
+		recording.end();
 		// ...
 		// <-
 	}
 
 	// #### ... automagic
+	@Test
 	public void testFreeServerPortAuto() throws UnknownHostException, IOException {
 		// ->
 		// ...
+		recording.begin();
 		IMongodConfig mongodConfig = new MongodConfigBuilder().version(Version.Main.PRODUCTION).build();
 
 		MongodStarter runtime = MongodStarter.getDefaultInstance();
@@ -465,9 +472,11 @@ public class TestExampleReadMeCode extends TestCase {
 			MongoClient mongo = new MongoClient(
 					new ServerAddress(mongodConfig.net().getServerAddress(), mongodConfig.net().getPort()));
 			// <-
+			recording.end();
 			DB db = mongo.getDB("test");
 			DBCollection col = db.createCollection("testCol", new BasicDBObject());
 			col.save(new BasicDBObject("testDoc", new Date()));
+			recording.begin();
 			// ->
 			// ...
 
@@ -478,27 +487,33 @@ public class TestExampleReadMeCode extends TestCase {
 			if (mongodExecutable != null)
 				mongodExecutable.stop();
 		}
+		recording.end();
 		// ...
 		// <-
 	}
 
 	// ### ... custom timeouts
+	@Test
 	public void testCustomTimeouts() throws UnknownHostException, IOException {
 		// ->
 		// ...
+		recording.begin();
 		IMongodConfig mongodConfig = new MongodConfigBuilder()
 				.version(Version.Main.PRODUCTION)
 				.timeout(new Timeout(30000))
 				.build();
+		recording.end();
 		// ...
 		// <-
 	}
 
 	// ### Command Line Post Processing
+	@Test
 	public void testCommandLinePostProcessing() {
 
 		// ->
 		// ...
+		recording.begin();
 		ICommandLinePostProcessor postProcessor = // ...
 				// <-
 				new ICommandLinePostProcessor() {
@@ -507,12 +522,14 @@ public class TestExampleReadMeCode extends TestCase {
 						return null;
 					}
 				};
+		recording.end();
 		// ->
-
+		recording.begin();
 		IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder()
 				.defaults(Command.MongoD)
 				.commandLinePostProcessor(postProcessor)
 				.build();
+		recording.end();
 		// ...
 		// <-
 	}
@@ -523,8 +540,10 @@ public class TestExampleReadMeCode extends TestCase {
 		We changed the syncDelay to 0 which turns off sync to disc. To turn on default value used defaultSyncDelay().
 	// <-
 	 */
+	@Test
 	public void testCommandLineOptions() throws UnknownHostException, IOException {
 		// ->
+		recording.begin();
 		IMongodConfig mongodConfig = new MongodConfigBuilder()
 				.version(Version.Main.PRODUCTION)
 				.cmdOptions(new MongoCmdOptionsBuilder()
@@ -535,6 +554,7 @@ public class TestExampleReadMeCode extends TestCase {
 						.enableTextSearch(true)
 						.build())
 				.build();
+		recording.end();
 		// ...
 		// <-
 
@@ -546,9 +566,11 @@ public class TestExampleReadMeCode extends TestCase {
 		We changed the syncDelay to 0 which turns off sync to disc. To get the files to create an snapshot you must turn on default value (use defaultSyncDelay()).
 	// <-
 	 */
+	@Test
 	public void testSnapshotDbFiles() throws UnknownHostException, IOException {
 		File destination = null;
 		// ->
+		recording.begin();
 		IMongodConfig mongodConfig = new MongodConfigBuilder()
 				.version(Version.Main.PRODUCTION)
 				.processListener(new ProcessListenerBuilder()
@@ -558,6 +580,7 @@ public class TestExampleReadMeCode extends TestCase {
 						.defaultSyncDelay()
 						.build())
 				.build();
+		recording.end();
 		// ...
 		// <-
 	}
@@ -567,14 +590,17 @@ public class TestExampleReadMeCode extends TestCase {
 		If you set a custom database directory, it will not be deleted after shutdown
 	// <-
 	 */
+	@Test
 	public void testCustomDatabaseDirectory() throws UnknownHostException, IOException {
 		// ->
+		recording.begin();
 		Storage replication = new Storage("/custom/databaseDir",null,0);
 		
 		IMongodConfig mongodConfig = new MongodConfigBuilder()
 				.version(Version.Main.PRODUCTION)
 				.replication(replication)
 				.build();
+		recording.end();
 		// ...
 		// <-
 	}
@@ -592,4 +618,52 @@ public class TestExampleReadMeCode extends TestCase {
 	// <-
 	*/
 	
+  @Test
+  public void importJsonIntoMongoDB() throws UnknownHostException, IOException {
+		String jsonFile = Thread.currentThread().getContextClassLoader().getResource("sample.json").toString();
+		jsonFile = jsonFile.replaceFirst("file:", "");
+		String defaultHost = "localhost";
+		
+  	recording.begin();
+		int defaultConfigPort = Network.getFreeServerPort();
+		String database = "importTestDB";
+		String collection = "importedCollection";
+
+		IMongodConfig mongoConfigConfig = new MongodConfigBuilder()
+				.version(Version.Main.PRODUCTION)
+				.net(new Net(defaultConfigPort, Network.localhostIsIPv6()))
+				.build();
+
+		MongodExecutable mongodExecutable = MongodStarter.getDefaultInstance().prepare(mongoConfigConfig);
+		MongodProcess mongod = mongodExecutable.start();
+
+		try {
+			IMongoImportConfig mongoImportConfig = new MongoImportConfigBuilder()
+					.version(Version.Main.PRODUCTION)
+					.net(new Net(defaultConfigPort, Network.localhostIsIPv6()))
+					.db(database)
+					.collection(collection)
+					.upsert(true)
+					.dropCollection(true)
+					.jsonArray(true)
+					.importFile(jsonFile)
+					.build();
+
+			MongoImportExecutable mongoImportExecutable = MongoImportStarter.getDefaultInstance().prepare(mongoImportConfig);
+			MongoImportProcess mongoImport = mongoImportExecutable.start();
+			try {
+				recording.end();
+				MongoClient mongoClient = new MongoClient(defaultHost, defaultConfigPort);
+				System.out.println("DB Names: " + mongoClient.getDatabaseNames());
+				recording.begin();
+			}
+			finally {
+				mongoImport.stop();
+			}
+		}
+		finally {
+			mongod.stop();
+		}
+		recording.end();
+  }
 }
