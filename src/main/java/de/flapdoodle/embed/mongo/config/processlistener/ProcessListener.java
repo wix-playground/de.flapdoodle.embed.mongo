@@ -46,7 +46,7 @@ public abstract class ProcessListener {
 		private final List<IMongoProcessListener> _listener;
 
 		public ProcessListenerCollection(List<IMongoProcessListener> listener) {
-			_listener = new ArrayList<IMongoProcessListener>(listener);
+			_listener = new ArrayList<>(listener);
 		}
 
 		@Override

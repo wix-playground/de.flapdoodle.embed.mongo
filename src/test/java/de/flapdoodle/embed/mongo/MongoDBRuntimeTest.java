@@ -177,7 +177,7 @@ public class MongoDBRuntimeTest extends TestCase {
 		long _start = System.currentTimeMillis();
 		long _last = _start;
 
-		List<String> _log = new ArrayList<String>();
+		List<String> _log = new ArrayList<>();
 
 		void check(String label) {
 			long current = System.currentTimeMillis();

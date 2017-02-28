@@ -87,8 +87,8 @@ public class MongosSystemForTestFactory {
 	}
 
 	public void start() throws Throwable {
-		this.mongodProcessList = new ArrayList<MongodProcess>();
-		this.mongodConfigProcessList = new ArrayList<MongodProcess>();
+		this.mongodProcessList = new ArrayList<>();
+		this.mongodConfigProcessList = new ArrayList<>();
 		for (Entry<String, List<IMongodConfig>> entry : replicaSets.entrySet()) {
 			initializeReplicaSet(entry);
 		}

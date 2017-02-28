@@ -29,7 +29,7 @@ import de.flapdoodle.embed.process.builder.AbstractBuilder;
 
 public class ProcessListenerBuilder extends AbstractBuilder<IMongoProcessListener> {
 
-	List<IMongoProcessListener> _listener=new ArrayList<IMongoProcessListener>();
+	List<IMongoProcessListener> _listener= new ArrayList<>();
 	
 	public ProcessListenerBuilder add(IMongoProcessListener listener) {
 		_listener.add(listener);

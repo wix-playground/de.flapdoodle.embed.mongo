@@ -38,10 +38,10 @@ public class MongodConfigBuilder extends AbstractMongoConfigBuilder<IMongodConfi
 	protected static final TypedProperty<Boolean> CONFIG_SERVER = TypedProperty.with("ConfigServer", Boolean.class);
 	protected static final TypedProperty<Boolean> SHARD_SERVER = TypedProperty.with("ShardServer", Boolean.class);
 	protected static final TypedProperty<IMongoProcessListener> PROCESS_LISTENER = TypedProperty.with("ProcessListener", IMongoProcessListener.class);
-	protected Map<String,String> params=new LinkedHashMap<String, String>();
-	protected Map<String,String> args=new LinkedHashMap<String, String>();
+	protected Map<String,String> params= new LinkedHashMap<>();
+	protected Map<String,String> args= new LinkedHashMap<>();
 
-	public MongodConfigBuilder() throws UnknownHostException, IOException {
+	public MongodConfigBuilder() throws IOException {
 		super();
 		property(REPLICATION).setDefault(new Storage());
 		property(CONFIG_SERVER).setDefault(false);
@@ -142,8 +142,8 @@ public class MongodConfigBuilder extends AbstractMongoConfigBuilder<IMongodConfi
 			_configServer = configServer;
 			_shardServer = shardServer;
 			_processListener = processListener;
-			_params = new LinkedHashMap<String, String>(params);
-			_args = new LinkedHashMap<String, String>(args);
+			_params = new LinkedHashMap<>(params);
+			_args = new LinkedHashMap<>(args);
 		}
 
 		@Override

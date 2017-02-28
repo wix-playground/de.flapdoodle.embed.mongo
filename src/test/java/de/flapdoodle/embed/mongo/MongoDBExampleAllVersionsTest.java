@@ -57,7 +57,7 @@ import de.flapdoodle.embed.process.runtime.Network;
 public class MongoDBExampleAllVersionsTest {
 	@Parameters
 	public static Collection<Object[]> data() {
-		Collection<Object[]> result = new ArrayList<Object[]>();
+		Collection<Object[]> result = new ArrayList<>();
 		for (IVersion version : Versions.testableVersions(Version.Main.class)) {
 			result.add(new Object[]{version});
 		}

@@ -33,9 +33,9 @@ public class MongosConfigBuilder extends AbstractMongoConfigBuilder<IMongosConfi
 
 	protected static final TypedProperty<String> CONFIG_DB = TypedProperty.with("ConfigDB", String.class);
 	protected static final TypedProperty<String> RELICA_SET = TypedProperty.with("ReplicaSet", String.class);
-	protected Map<String,String> args=new LinkedHashMap<String, String>();
+	protected Map<String,String> args= new LinkedHashMap<>();
 
-	public MongosConfigBuilder() throws UnknownHostException, IOException {
+	public MongosConfigBuilder() throws IOException {
 		super();
 		property(PID_FILE).setDefault("mongos.pid");
 		property(RELICA_SET).setDefault("");
@@ -100,7 +100,7 @@ public class MongosConfigBuilder extends AbstractMongoConfigBuilder<IMongosConfi
 			super(MongosSupportConfig.getInstance(), version, net, null, null, timeout, cmdOptions, pidFile);
 			_configDB = configDB;
 			this.replicaSet = replicaSet;
-			_args = new LinkedHashMap<String, String>(args);
+			_args = new LinkedHashMap<>(args);
 		}
 
 		@Override

@@ -75,7 +75,7 @@ import junit.framework.TestCase;
 public class TestExampleReadMeCode extends TestCase {
 
 	// ### Usage
-	public void testStandard() throws UnknownHostException, IOException {
+	public void testStandard() throws IOException {
 		// ->
 		MongodStarter starter = MongodStarter.getDefaultInstance();
 
@@ -119,7 +119,7 @@ public class TestExampleReadMeCode extends TestCase {
 		This way the firewall dialog only popup once any your done. See [Executable Naming](#executable-naming) 
 	// <-
 	 */
-	public void testCustomMongodFilename() throws UnknownHostException, IOException {
+	public void testCustomMongodFilename() throws IOException {
 		// ->		
 		int port = Network.getFreeServerPort();
 
@@ -275,7 +275,7 @@ public class TestExampleReadMeCode extends TestCase {
 	}
 
 	// #### ... to file
-	public void testCustomOutputToFile() throws FileNotFoundException, IOException {
+	public void testCustomOutputToFile() throws IOException {
 		// ->
 		// ...
 		IStreamProcessor mongodOutput = Processors.named("[mongod>]",
@@ -304,7 +304,7 @@ public class TestExampleReadMeCode extends TestCase {
 	// <-
 
 	// #### ... to java logging
-	public void testCustomOutputToLogging() throws FileNotFoundException, IOException {
+	public void testCustomOutputToLogging() throws IOException {
 		// ->
 		// ...
 		Logger logger = Logger.getLogger(getClass().getName());
@@ -328,7 +328,7 @@ public class TestExampleReadMeCode extends TestCase {
 	}
 
 	// #### ... to default java logging (the easy way)
-	public void testDefaultOutputToLogging() throws FileNotFoundException, IOException {
+	public void testDefaultOutputToLogging() throws IOException {
 		// ->
 		// ...
 		Logger logger = Logger.getLogger(getClass().getName());
@@ -343,7 +343,7 @@ public class TestExampleReadMeCode extends TestCase {
 	}
 
 	// #### ... to null device
-	public void testDefaultOutputToNone() throws FileNotFoundException, IOException {
+	public void testDefaultOutputToNone() throws IOException {
 		int port = 12345;
 		IMongodConfig mongodConfig = new MongodConfigBuilder()
 				.version(Versions.withFeatures(new GenericVersion("2.0.7-rc1"), Feature.SYNC_DELAY))
@@ -383,7 +383,7 @@ public class TestExampleReadMeCode extends TestCase {
 	}
 
 	// ### Custom Version
-	public void testCustomVersion() throws UnknownHostException, IOException {
+	public void testCustomVersion() throws IOException {
 		// ->
 		// ...
 		int port = 12345;
@@ -421,7 +421,7 @@ public class TestExampleReadMeCode extends TestCase {
 	}
 
 	// ### Main Versions
-	public void testMainVersions() throws UnknownHostException, IOException {
+	public void testMainVersions() throws IOException {
 		// ->
 		IVersion version = Version.V2_2_5;
 		// uses latest supported 2.2.x Version
@@ -440,7 +440,7 @@ public class TestExampleReadMeCode extends TestCase {
 	// <-
 	 */
 	// #### ... by hand
-	public void testFreeServerPort() throws UnknownHostException, IOException {
+	public void testFreeServerPort() throws IOException {
 		// ->
 		// ...
 		int port = Network.getFreeServerPort();
@@ -449,7 +449,7 @@ public class TestExampleReadMeCode extends TestCase {
 	}
 
 	// #### ... automagic
-	public void testFreeServerPortAuto() throws UnknownHostException, IOException {
+	public void testFreeServerPortAuto() throws IOException {
 		// ->
 		// ...
 		IMongodConfig mongodConfig = new MongodConfigBuilder().version(Version.Main.PRODUCTION).build();
@@ -483,7 +483,7 @@ public class TestExampleReadMeCode extends TestCase {
 	}
 
 	// ### ... custom timeouts
-	public void testCustomTimeouts() throws UnknownHostException, IOException {
+	public void testCustomTimeouts() throws IOException {
 		// ->
 		// ...
 		IMongodConfig mongodConfig = new MongodConfigBuilder()
@@ -501,12 +501,7 @@ public class TestExampleReadMeCode extends TestCase {
 		// ...
 		ICommandLinePostProcessor postProcessor = // ...
 				// <-
-				new ICommandLinePostProcessor() {
-					@Override
-					public List<String> process(Distribution distribution, List<String> args) {
-						return null;
-					}
-				};
+				(distribution, args) -> null;
 		// ->
 
 		IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder()
@@ -523,7 +518,7 @@ public class TestExampleReadMeCode extends TestCase {
 		We changed the syncDelay to 0 which turns off sync to disc. To turn on default value used defaultSyncDelay().
 	// <-
 	 */
-	public void testCommandLineOptions() throws UnknownHostException, IOException {
+	public void testCommandLineOptions() throws IOException {
 		// ->
 		IMongodConfig mongodConfig = new MongodConfigBuilder()
 				.version(Version.Main.PRODUCTION)
@@ -546,7 +541,7 @@ public class TestExampleReadMeCode extends TestCase {
 		We changed the syncDelay to 0 which turns off sync to disc. To get the files to create an snapshot you must turn on default value (use defaultSyncDelay()).
 	// <-
 	 */
-	public void testSnapshotDbFiles() throws UnknownHostException, IOException {
+	public void testSnapshotDbFiles() throws IOException {
 		File destination = null;
 		// ->
 		IMongodConfig mongodConfig = new MongodConfigBuilder()
@@ -567,7 +562,7 @@ public class TestExampleReadMeCode extends TestCase {
 		If you set a custom database directory, it will not be deleted after shutdown
 	// <-
 	 */
-	public void testCustomDatabaseDirectory() throws UnknownHostException, IOException {
+	public void testCustomDatabaseDirectory() throws IOException {
 		// ->
 		Storage replication = new Storage("/custom/databaseDir",null,0);
 		

@@ -33,7 +33,7 @@ public class MongoDump extends AbstractMongo {
 
    public static List<String> getCommandLine(IMongoDumpConfig config, IExtractedFileSet files)
       throws UnknownHostException {
-      List<String> ret = new ArrayList<String>();
+      List<String> ret = new ArrayList<>();
       ret.addAll(Arrays.asList(files.executable().getAbsolutePath()));
       if (config.isVerbose()) {
          ret.add("-v");

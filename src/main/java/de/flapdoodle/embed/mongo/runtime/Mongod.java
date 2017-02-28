@@ -105,10 +105,8 @@ public class Mongod extends AbstractMongo {
 			try {
 				s.close();
 				Thread.sleep(WAITING_TIME_SHUTDOWN_IN_MS);
-			} catch (InterruptedException ix) {
+			} catch (InterruptedException | IOException ix) {
 				logger.warn("sendShutdown closing {}:{}", hostname, port, ix);
-			} catch (IOException iox) {
-				logger.warn("sendShutdown closing {}:{}", hostname, port, iox);
 			}
 		}
 		return false;
@@ -126,7 +124,7 @@ public class Mongod extends AbstractMongo {
 
 	public static List<String> getCommandLine(IMongodConfig config, IExtractedFileSet files, File dbDir)
 			throws UnknownHostException {
-		List<String> ret = new ArrayList<String>();
+		List<String> ret = new ArrayList<>();
 		ret.addAll(asList(Files.fileOf(files.baseDir(), files.executable()).getAbsolutePath(),
 			"--dbpath", "" + dbDir.getAbsolutePath()));
 
@@ -217,7 +215,7 @@ public class Mongod extends AbstractMongo {
 		if (NUMA.isNUMA(new SupportConfig(Command.MongoD), distribution.getPlatform())) {
 			switch (distribution.getPlatform()) {
 			case Linux:
-				List<String> ret = new ArrayList<String>();
+				List<String> ret = new ArrayList<>();
 				ret.add("numactl");
 				ret.add("--interleave=all");
 				ret.addAll(commands);
