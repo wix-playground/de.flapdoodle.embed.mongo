@@ -18,7 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.embed.mongo.examples;
+package de.flapdoodle.embed.mongo.doc;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -61,6 +61,8 @@ import de.flapdoodle.embed.mongo.config.processlistener.ProcessListenerBuilder;
 import de.flapdoodle.embed.mongo.distribution.Feature;
 import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.mongo.distribution.Versions;
+import de.flapdoodle.embed.mongo.examples.AbstractMongoDBTest;
+import de.flapdoodle.embed.mongo.examples.FileStreamProcessor;
 import de.flapdoodle.embed.mongo.tests.MongodForTestsFactory;
 import de.flapdoodle.embed.process.config.IRuntimeConfig;
 import de.flapdoodle.embed.process.config.io.ProcessOutput;
