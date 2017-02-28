@@ -21,11 +21,8 @@
 package de.flapdoodle.embed.mongo.examples;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.UnknownHostException;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -53,11 +50,11 @@ import de.flapdoodle.embed.mongo.config.processlistener.ProcessListenerBuilder;
 import de.flapdoodle.embed.mongo.distribution.Feature;
 import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.mongo.distribution.Versions;
+import de.flapdoodle.embed.mongo.doc.HowToDocTest;
 import de.flapdoodle.embed.mongo.tests.MongodForTestsFactory;
 import de.flapdoodle.embed.process.config.IRuntimeConfig;
 import de.flapdoodle.embed.process.config.io.ProcessOutput;
 import de.flapdoodle.embed.process.config.store.HttpProxyFactory;
-import de.flapdoodle.embed.process.distribution.Distribution;
 import de.flapdoodle.embed.process.distribution.GenericVersion;
 import de.flapdoodle.embed.process.distribution.IVersion;
 import de.flapdoodle.embed.process.extract.ITempNaming;
@@ -70,9 +67,14 @@ import de.flapdoodle.embed.process.io.directories.IDirectory;
 import de.flapdoodle.embed.process.io.progress.LoggingProgressListener;
 import de.flapdoodle.embed.process.runtime.ICommandLinePostProcessor;
 import de.flapdoodle.embed.process.runtime.Network;
-import junit.framework.TestCase;
 
-public class TestExampleReadMeCode extends TestCase {
+/**
+ * @see HowToDocTest
+ * @author mosmann
+ *
+ */
+@Deprecated
+public class TestExampleReadMeCode /*extends TestCase*/ {
 
 	// ### Usage
 	public void testStandard() throws IOException {

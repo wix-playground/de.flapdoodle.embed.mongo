@@ -212,58 +212,59 @@ public class MongosSystemForTestFactory {
 		MongoClientOptions options = MongoClientOptions.builder()
 				.connectTimeout(10)
 				.build();
-		Mongo mongo = new MongoClient(
+		try (MongoClient mongo = new MongoClient(
 				new ServerAddress(this.config.net().getServerAddress()
-						.getHostName(), this.config.net().getPort()), options);
-		DB mongoAdminDB = mongo.getDB(ADMIN_DATABASE_NAME);
-
-		// Add shard from the replica set list
-		for (Entry<String, List<IMongodConfig>> entry : this.replicaSets
-				.entrySet()) {
-			String replicaName = entry.getKey();
-			String command = "";
-			for (IMongodConfig mongodConfig : entry.getValue()) {
-				if (command.isEmpty()) {
-					command = replicaName + "/";
-				} else {
-					command += ",";
+						.getHostName(), this.config.net().getPort()), options)) {
+			DB mongoAdminDB = mongo.getDB(ADMIN_DATABASE_NAME);
+	
+			// Add shard from the replica set list
+			for (Entry<String, List<IMongodConfig>> entry : this.replicaSets
+					.entrySet()) {
+				String replicaName = entry.getKey();
+				String command = "";
+				for (IMongodConfig mongodConfig : entry.getValue()) {
+					if (command.isEmpty()) {
+						command = replicaName + "/";
+					} else {
+						command += ",";
+					}
+					command += mongodConfig.net().getServerAddress().getHostName()
+							+ ":" + mongodConfig.net().getPort();
 				}
-				command += mongodConfig.net().getServerAddress().getHostName()
-						+ ":" + mongodConfig.net().getPort();
+				logger.info("Execute add shard command: {}", command);
+				cr = mongoAdminDB.command(new BasicDBObject("addShard", command));
+				logger.info(cr.toString());
 			}
-			logger.info("Execute add shard command: {}", command);
-			cr = mongoAdminDB.command(new BasicDBObject("addShard", command));
+	
+			logger.info("Execute list shards.");
+			cr = mongoAdminDB.command(new BasicDBObject("listShards", 1));
 			logger.info(cr.toString());
-		}
-
-		logger.info("Execute list shards.");
-		cr = mongoAdminDB.command(new BasicDBObject("listShards", 1));
-		logger.info(cr.toString());
-
-		// Enabled sharding at database level
-		logger.info("Enabled sharding at database level");
-		cr = mongoAdminDB.command(new BasicDBObject("enableSharding",
-				this.shardDatabase));
-		logger.info(cr.toString());
-
-		// Create index in sharded collection
-		logger.info("Create index in sharded collection");
-		DB db = mongo.getDB(this.shardDatabase);
-		db.getCollection(this.shardCollection).createIndex(this.shardKey);
-
-		// Shard the collection
-		logger.info("Shard the collection: {}.{}", this.shardDatabase, this.shardCollection);
-		DBObject cmd = new BasicDBObject();
-		cmd.put("shardCollection", this.shardDatabase + "." + this.shardCollection);
-		cmd.put("key", new BasicDBObject(this.shardKey, 1));
-		cr = mongoAdminDB.command(cmd);
-		logger.info(cr.toString());
-
-		logger.info("Get info from config/shards");
-		DBCursor cursor = mongo.getDB("config").getCollection("shards").find();
-		while (cursor.hasNext()) {
-			DBObject item = cursor.next();
-			logger.info(item.toString());
+	
+			// Enabled sharding at database level
+			logger.info("Enabled sharding at database level");
+			cr = mongoAdminDB.command(new BasicDBObject("enableSharding",
+					this.shardDatabase));
+			logger.info(cr.toString());
+	
+			// Create index in sharded collection
+			logger.info("Create index in sharded collection");
+			DB db = mongo.getDB(this.shardDatabase);
+			db.getCollection(this.shardCollection).createIndex(this.shardKey);
+	
+			// Shard the collection
+			logger.info("Shard the collection: {}.{}", this.shardDatabase, this.shardCollection);
+			DBObject cmd = new BasicDBObject();
+			cmd.put("shardCollection", this.shardDatabase + "." + this.shardCollection);
+			cmd.put("key", new BasicDBObject(this.shardKey, 1));
+			cr = mongoAdminDB.command(cmd);
+			logger.info(cr.toString());
+	
+			logger.info("Get info from config/shards");
+			DBCursor cursor = mongo.getDB("config").getCollection("shards").find();
+			while (cursor.hasNext()) {
+				DBObject item = cursor.next();
+				logger.info(item.toString());
+			}
 		}
 
 	}
