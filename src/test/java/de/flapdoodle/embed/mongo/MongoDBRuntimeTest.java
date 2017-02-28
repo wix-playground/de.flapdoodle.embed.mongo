@@ -28,7 +28,6 @@ import java.util.List;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
-import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
 
 import de.flapdoodle.embed.mongo.config.DownloadConfigBuilder;
@@ -152,14 +151,15 @@ public class MongoDBRuntimeTest extends TestCase {
 			mongodProcess = mongod.start();
 			timer.check("After mongodProcess");
 
-			Mongo mongo = new MongoClient("localhost", port);
-			timer.check("After Mongo");
-			DB db = mongo.getDB("test");
-			timer.check("After DB test");
-			DBCollection col = db.createCollection("testCol", new BasicDBObject());
-			timer.check("After Collection testCol");
-			col.save(new BasicDBObject("testDoc", new Date()));
-			timer.check("After save");
+			try (MongoClient mongo = new MongoClient("localhost", port)) {
+				timer.check("After Mongo");
+				DB db = mongo.getDB("test");
+				timer.check("After DB test");
+				DBCollection col = db.createCollection("testCol", new BasicDBObject());
+				timer.check("After Collection testCol");
+				col.save(new BasicDBObject("testDoc", new Date()));
+				timer.check("After save");
+			}
 
 		} finally {
 			if (mongodProcess != null)

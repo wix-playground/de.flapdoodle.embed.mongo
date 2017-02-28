@@ -83,10 +83,10 @@ import de.flapdoodle.testdoc.Recorder;
 import de.flapdoodle.testdoc.Recording;
 import de.flapdoodle.testdoc.TabSize;
 
-public class UseCaseDocTest {
+public class HowToDocTest {
 
 	@ClassRule
-	public static final Recording recording=Recorder.generateMarkDown("usecase.md",TabSize.spaces(2));
+	public static final Recording recording=Recorder.generateMarkDown("Howto.md",TabSize.spaces(2));
 	
 	@Test
 	public void testStandard() throws UnknownHostException, IOException {
@@ -104,10 +104,11 @@ public class UseCaseDocTest {
 			mongodExecutable = starter.prepare(mongodConfig);
 			MongodProcess mongod = mongodExecutable.start();
 
-			MongoClient mongo = new MongoClient("localhost", port);
-			DB db = mongo.getDB("test");
-			DBCollection col = db.createCollection("testCol", new BasicDBObject());
-			col.save(new BasicDBObject("testDoc", new Date()));
+			try (MongoClient mongo = new MongoClient("localhost", port)) {
+				DB db = mongo.getDB("test");
+				DBCollection col = db.createCollection("testCol", new BasicDBObject());
+				col.save(new BasicDBObject("testDoc", new Date()));
+			}
 
 		} finally {
 			if (mongodExecutable != null)
@@ -144,10 +145,11 @@ public class UseCaseDocTest {
 			mongodExecutable = runtime.prepare(mongodConfig);
 			MongodProcess mongod = mongodExecutable.start();
 
-			MongoClient mongo = new MongoClient("localhost", port);
-			DB db = mongo.getDB("test");
-			DBCollection col = db.createCollection("testCol", new BasicDBObject());
-			col.save(new BasicDBObject("testDoc", new Date()));
+			try (MongoClient mongo = new MongoClient("localhost", port)) {
+				DB db = mongo.getDB("test");
+				DBCollection col = db.createCollection("testCol", new BasicDBObject());
+				col.save(new BasicDBObject("testDoc", new Date()));
+			}
 
 		} finally {
 			if (mongodExecutable != null)
@@ -168,10 +170,11 @@ public class UseCaseDocTest {
 		try {
 			factory = MongodForTestsFactory.with(Version.Main.PRODUCTION);
 
-			MongoClient mongo = factory.newMongo();
-			DB db = mongo.getDB("test-" + UUID.randomUUID());
-			DBCollection col = db.createCollection("testCol", new BasicDBObject());
-			col.save(new BasicDBObject("testDoc", new Date()));
+			try (MongoClient mongo = factory.newMongo()) {
+				DB db = mongo.getDB("test-" + UUID.randomUUID());
+				DBCollection col = db.createCollection("testCol", new BasicDBObject());
+				col.save(new BasicDBObject("testDoc", new Date()));
+			}
 
 		} finally {
 			if (factory != null)
@@ -362,10 +365,11 @@ public class UseCaseDocTest {
 			mongodExecutable = runtime.prepare(mongodConfig);
 			mongod = mongodExecutable.start();
 
-			MongoClient mongo = new MongoClient("localhost", port);
-			DB db = mongo.getDB("test");
-			DBCollection col = db.createCollection("testCol", new BasicDBObject());
-			col.save(new BasicDBObject("testDoc", new Date()));
+			try (MongoClient mongo = new MongoClient("localhost", port)) {
+				DB db = mongo.getDB("test");
+				DBCollection col = db.createCollection("testCol", new BasicDBObject());
+				col.save(new BasicDBObject("testDoc", new Date()));
+			}
 
 		} finally {
 			if (mongod != null) {
@@ -398,10 +402,11 @@ public class UseCaseDocTest {
 
 			// <-
 			recording.end();
-			MongoClient mongo = new MongoClient("localhost", port);
-			DB db = mongo.getDB("test");
-			DBCollection col = db.createCollection("testCol", new BasicDBObject());
-			col.save(new BasicDBObject("testDoc", new Date()));
+			try (MongoClient mongo = new MongoClient("localhost", port)) {
+				DB db = mongo.getDB("test");
+				DBCollection col = db.createCollection("testCol", new BasicDBObject());
+				col.save(new BasicDBObject("testDoc", new Date()));
+			}
 			recording.begin();
 			// ->
 			// ...
@@ -469,14 +474,15 @@ public class UseCaseDocTest {
 			mongodExecutable = runtime.prepare(mongodConfig);
 			mongod = mongodExecutable.start();
 
-			MongoClient mongo = new MongoClient(
-					new ServerAddress(mongodConfig.net().getServerAddress(), mongodConfig.net().getPort()));
+			try (MongoClient mongo = new MongoClient(
+					new ServerAddress(mongodConfig.net().getServerAddress(), mongodConfig.net().getPort()))) {
 			// <-
-			recording.end();
-			DB db = mongo.getDB("test");
-			DBCollection col = db.createCollection("testCol", new BasicDBObject());
-			col.save(new BasicDBObject("testDoc", new Date()));
-			recording.begin();
+				recording.end();
+				DB db = mongo.getDB("test");
+				DBCollection col = db.createCollection("testCol", new BasicDBObject());
+				col.save(new BasicDBObject("testDoc", new Date()));
+				recording.begin();
+			}
 			// ->
 			// ...
 

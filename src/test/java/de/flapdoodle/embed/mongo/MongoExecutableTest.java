@@ -69,11 +69,12 @@ public class MongoExecutableTest extends TestCase {
 				MongodProcess mongod = mongodExe.start();
 
 				if (useMongodb) {
-					MongoClient mongo = new MongoClient(
-							new ServerAddress(mongodConfig.net().getServerAddress(), mongodConfig.net().getPort()));
-					DB db = mongo.getDB("test");
-					DBCollection col = db.createCollection("testCol", new BasicDBObject());
-					col.save(new BasicDBObject("testDoc", new Date()));
+					try (MongoClient mongo = new MongoClient(
+							new ServerAddress(mongodConfig.net().getServerAddress(), mongodConfig.net().getPort()))) {
+						DB db = mongo.getDB("test");
+						DBCollection col = db.createCollection("testCol", new BasicDBObject());
+						col.save(new BasicDBObject("testDoc", new Date()));
+					}
 				}
 
 				mongod.stop();
