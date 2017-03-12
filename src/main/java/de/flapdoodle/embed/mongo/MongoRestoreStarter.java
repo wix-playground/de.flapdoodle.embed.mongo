@@ -39,7 +39,10 @@ public class MongoRestoreStarter extends Starter<IMongoRestoreConfig,MongoRestor
     }
 
     public static MongoRestoreStarter getDefaultInstance() {
-        return getInstance(new RuntimeConfigBuilder().defaults(Command.MongoRestore).build());
+        return getInstance(new RuntimeConfigBuilder()
+                .defaults(Command.MongoRestore)
+                .daemonProcess(false)
+                .build());
     }
 
     @Override

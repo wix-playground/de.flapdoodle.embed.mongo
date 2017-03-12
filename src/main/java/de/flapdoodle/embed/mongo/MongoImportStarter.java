@@ -28,9 +28,6 @@ import de.flapdoodle.embed.process.distribution.Distribution;
 import de.flapdoodle.embed.process.extract.IExtractedFileSet;
 import de.flapdoodle.embed.process.runtime.Starter;
 
-/**
- * Created by canyaman on 10/04/14.
- */
 public class MongoImportStarter extends Starter<IMongoImportConfig,MongoImportExecutable,MongoImportProcess> {
 
     private MongoImportStarter(IRuntimeConfig config) {
@@ -42,7 +39,10 @@ public class MongoImportStarter extends Starter<IMongoImportConfig,MongoImportEx
     }
 
     public static MongoImportStarter getDefaultInstance() {
-        return getInstance(new RuntimeConfigBuilder().defaults(Command.MongoImport).build());
+        return getInstance(new RuntimeConfigBuilder()
+                .defaults(Command.MongoImport)
+                .daemonProcess(false)
+                .build());
     }
 
     @Override
