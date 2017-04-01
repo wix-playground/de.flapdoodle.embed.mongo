@@ -39,7 +39,9 @@ public class MongoDumpStarter extends Starter<IMongoDumpConfig,MongoDumpExecutab
     }
 
     public static MongoDumpStarter getDefaultInstance() {
-        return getInstance(new RuntimeConfigBuilder().defaults(Command.MongoDump).build());
+        return getInstance(new RuntimeConfigBuilder().defaults(Command.MongoDump)
+                .daemonProcess(false)
+                .build());
     }
 
     @Override

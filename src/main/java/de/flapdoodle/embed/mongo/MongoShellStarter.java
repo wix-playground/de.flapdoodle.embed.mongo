@@ -27,9 +27,6 @@ import de.flapdoodle.embed.process.distribution.Distribution;
 import de.flapdoodle.embed.process.extract.IExtractedFileSet;
 import de.flapdoodle.embed.process.runtime.Starter;
 
-/**
- *
- */
 public class MongoShellStarter extends Starter<IMongoShellConfig, MongoShellExecutable ,MongoShellProcess> {
 
 	private MongoShellStarter(IRuntimeConfig config) {
@@ -41,7 +38,10 @@ public class MongoShellStarter extends Starter<IMongoShellConfig, MongoShellExec
 	}
 
 	public static MongoShellStarter getDefaultInstance() {
-		return getInstance(new RuntimeConfigBuilder().defaults(Command.Mongo).build());
+		return getInstance(new RuntimeConfigBuilder()
+				.defaults(Command.Mongo)
+				.daemonProcess(false)
+				.build());
 	}
 
 	@Override

@@ -24,13 +24,13 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.UUID;
 
+import com.mongodb.Mongo;
+import com.mongodb.client.MongoDatabase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mongodb.DB;
-import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
-import com.mongodb.MongoException;
 import com.mongodb.ServerAddress;
 
 import de.flapdoodle.embed.mongo.Command;
@@ -49,7 +49,7 @@ import de.flapdoodle.embed.mongo.distribution.Version;
  */
 public class MongodForTestsFactory {
 
-	private static Logger logger = LoggerFactory.getLogger(MongodForTestsFactory.class
+	private static final Logger logger = LoggerFactory.getLogger(MongodForTestsFactory.class
 			.getName());
 
 	public static MongodForTestsFactory with(final IFeatureAwareVersion version)
@@ -65,7 +65,6 @@ public class MongodForTestsFactory {
 	 * Create the testing utility using the latest production version of
 	 * MongoDB.
 	 * 
-	 * @throws IOException
 	 */
 	public MongodForTestsFactory() throws IOException {
 		this(Version.Main.PRODUCTION);
@@ -87,17 +86,15 @@ public class MongodForTestsFactory {
 
 	}
 
-	protected IMongodConfig newMongodConfig(final IFeatureAwareVersion version) throws UnknownHostException, IOException {
+	protected IMongodConfig newMongodConfig(final IFeatureAwareVersion version) throws IOException {
 		return new MongodConfigBuilder().version(version).build();
 	}
 
 	/**
 	 * Creates a new Mongo connection.
 	 * 
-	 * @throws MongoException
-	 * @throws UnknownHostException
 	 */
-	public MongoClient newMongo() throws UnknownHostException, MongoException {
+	public MongoClient newMongo() throws UnknownHostException {
 		return new MongoClient(new ServerAddress(mongodProcess.getConfig().net().getServerAddress(),
 				mongodProcess.getConfig().net().getPort()));
 	}
@@ -105,8 +102,16 @@ public class MongodForTestsFactory {
 	/**
 	 * Creates a new DB with unique name for connection.
 	 */
+	@Deprecated
 	public DB newDB(Mongo mongo) {
 		return mongo.getDB(UUID.randomUUID().toString());
+	}
+
+	/**
+	 * Creates a new DB with unique name for connection.
+	 */
+	public MongoDatabase newDatabase(MongoClient mongo) {
+		return mongo.getDatabase(UUID.randomUUID().toString());
 	}
 
 	/**

@@ -198,11 +198,11 @@ public enum Version implements IFeatureAwareVersion {
    * Latest 3 series production release
    */
   V3_3_1("3.3.1", Feature.SYNC_DELAY, Feature.STORAGE_ENGINE),
-  V3_4_1("3.4.1", Feature.SYNC_DELAY, Feature.STORAGE_ENGINE, Feature.ONLY_64BIT, Feature.NO_CHUNKSIZE_ARG, Feature.MONGOS_CONFIGDB_SET_STYLE),
+  V3_4_3("3.4.3", Feature.SYNC_DELAY, Feature.STORAGE_ENGINE, Feature.ONLY_64BIT, Feature.NO_CHUNKSIZE_ARG, Feature.MONGOS_CONFIGDB_SET_STYLE),
   /**
    * Latest 3 development release
    */
-  V3_5_1("3.5.1", Feature.SYNC_DELAY, Feature.STORAGE_ENGINE, Feature.ONLY_64BIT, Feature.NO_CHUNKSIZE_ARG, Feature.MONGOS_CONFIGDB_SET_STYLE),
+  V3_5_5("3.5.5", Feature.SYNC_DELAY, Feature.STORAGE_ENGINE, Feature.ONLY_64BIT, Feature.NO_CHUNKSIZE_ARG, Feature.MONGOS_CONFIGDB_SET_STYLE),
 
   ;
 
@@ -229,7 +229,7 @@ public enum Version implements IFeatureAwareVersion {
 		return "Version{" + specificVersion + '}';
 	}
 
-	public static enum Main implements IFeatureAwareVersion {
+	public enum Main implements IFeatureAwareVersion {
 		@Deprecated
 		V1_8(V1_8_5),
 
@@ -259,8 +259,8 @@ public enum Version implements IFeatureAwareVersion {
 		@Deprecated
 		V3_2(V3_2_1),
 		V3_3(V3_3_1),
-		V3_4(V3_4_1),
-		V3_5(V3_5_1),
+		V3_4(V3_4_3),
+		V3_5(V3_5_5),
         
 		@Deprecated
 		LEGACY(V2_6),
