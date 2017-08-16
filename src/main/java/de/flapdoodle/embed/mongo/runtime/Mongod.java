@@ -187,6 +187,9 @@ public class Mongod extends AbstractMongo {
 		if (config.isConfigServer()) {
 			ret.add("--configsvr");
 		}
+		if (config.isShardServer()) {
+			ret.add("--shardsvr");
+		}
 		if (config.version().enabled(Feature.SYNC_DELAY)) {
 			applySyncDelay(ret, config.cmdOptions());
 		}
