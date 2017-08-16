@@ -34,66 +34,67 @@ import de.flapdoodle.embed.mongo.config.IMongodConfig;
 import de.flapdoodle.embed.mongo.config.MongoCmdOptionsBuilder;
 import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
 import de.flapdoodle.embed.mongo.distribution.Version;
-import junit.framework.TestCase;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
-public class ShardServerMongoDBTest extends TestCase {
+import static org.junit.Assert.fail;
 
-	private MongodExecutable _mongodExe;
-	private MongodProcess _mongod;
+public class ShardServerMongoDBTest {
 
-	private MongoClient _mongo;
+    private MongodExecutable mongodExe;
+    private MongodProcess mongod;
 
-	@Override
-	protected void setUp() throws Exception {
+    private MongoClient mongo;
 
-		MongodStarter runtime = MongodStarter.getDefaultInstance();
-		IMongodConfig config = new MongodConfigBuilder()
-		    .version(Version.Main.PRODUCTION)
-		    .cmdOptions(new MongoCmdOptionsBuilder().useNoJournal(false).build())
-		    .shardServer(true)
-		    .build();
-		
-		_mongodExe = runtime.prepare(config);
-		_mongod = _mongodExe.start();
+    @Before
+    public void setUp() throws Exception {
 
-		super.setUp();
+        MongodStarter runtime = MongodStarter.getDefaultInstance();
+        IMongodConfig config = new MongodConfigBuilder()
+                .version(Version.Main.PRODUCTION)
+                .cmdOptions(new MongoCmdOptionsBuilder().useNoJournal(false).build())
+                .shardServer(true)
+                .build();
 
-		_mongo = new MongoClient(config.net().getServerAddress().getHostName(),
-				config.net().getPort());
-	}
+        mongodExe = runtime.prepare(config);
+        mongod = mongodExe.start();
 
-	@Override
-	protected void tearDown() throws Exception {
-		super.tearDown();
+        mongo = new MongoClient(config.net().getServerAddress().getHostName(),
+                config.net().getPort());
+    }
 
-		_mongod.stop();
-		_mongodExe.stop();
-	}
+    @After
+    public void tearDown() throws Exception {
 
-	public Mongo getMongo() {
-		return _mongo;
-	}
+        mongod.stop();
+        mongodExe.stop();
+    }
 
-	/*
-	 * Get command list options (http://docs.mongodb.org/manual/reference/command/getCmdLineOpts/)
-	 */
-	public void testIsShardServer() {
-		DB mongoAdminDB = getMongo().getDB("admin");
-		CommandResult cr = mongoAdminDB.command(new BasicDBObject(
-				"getCmdLineOpts", 1));
-		Object arguments = cr.get("argv");
-		if (arguments instanceof BasicDBList) {
-			BasicDBList argumentList = (BasicDBList) arguments;
-			for(Object arg: argumentList) {
-				if (arg.equals("--shardsvr")) {
-					return;
-				}
-			}
-			fail("Could not find --shardsvr in the argument list.");
-		}
-		else{
-			fail("Could not get argv from getCmdLineOpts command.");
-		}
-	}
+    public Mongo getMongo() {
+        return mongo;
+    }
+
+    /*
+     * Get command list options (http://docs.mongodb.org/manual/reference/command/getCmdLineOpts/)
+     */
+    @Test
+    public void testIsShardServer() {
+        DB mongoAdminDB = getMongo().getDB("admin");
+        CommandResult cr = mongoAdminDB.command(new BasicDBObject(
+                "getCmdLineOpts", 1));
+        Object arguments = cr.get("argv");
+        if (arguments instanceof BasicDBList) {
+            BasicDBList argumentList = (BasicDBList) arguments;
+            for (Object arg : argumentList) {
+                if (arg.equals("--shardsvr")) {
+                    return;
+                }
+            }
+            fail("Could not find --shardsvr in the argument list.");
+        } else {
+            fail("Could not get argv from getCmdLineOpts command.");
+        }
+    }
 
 }
