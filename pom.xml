@@ -18,6 +18,7 @@
 
 	<modules>
 		<module>de.flapdoodle.embed.mongo</module>
+		<module>de.flapdoodle.embed.mongo.download.and.extract</module>
 	</modules>
 
 	<scm>
